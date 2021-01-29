@@ -4,7 +4,8 @@
   "description": "",
   "main": "sketch.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npx parcel index.html"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/2011-FSA-CRAB/DSLD/issues"
   },
-  "homepage": "https://github.com/2011-FSA-CRAB/DSLD#readme"
+  "homepage": "https://github.com/2011-FSA-CRAB/DSLD#readme",
+  "dependencies": {
+    "ml5": "^0.6.0",
+    "p5": "^1.2.0",
+    "parcel-bundler": "^1.12.4"
+  }
 }
