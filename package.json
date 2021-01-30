@@ -5,7 +5,8 @@
   "main": "sketch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "npx parcel public/index.html"
+    "server": "npx parcel public/index.html",
+    "build": "npx parcel build src/index.html"
   },
   "repository": {
     "type": "git",
@@ -21,9 +22,14 @@
   "dependencies": {
     "ml5": "^0.6.0",
     "p5": "^1.2.0",
-    "parcel-bundler": "^1.12.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-webcam": "^5.2.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "parcel-bundler": "^1.12.4"
   }
 }
