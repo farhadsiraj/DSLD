@@ -5,7 +5,7 @@
   "main": "sketch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "npx parcel index.html"
+    "server": "npx parcel public/index.html"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,9 @@
   "dependencies": {
     "ml5": "^0.6.0",
     "p5": "^1.2.0",
-    "parcel-bundler": "^1.12.4"
+    "parcel-bundler": "^1.12.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-webcam": "^5.2.2"
   }
 }
