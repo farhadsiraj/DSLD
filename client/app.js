@@ -1,4 +1,4 @@
-import React, { useRef, Component } from 'react'
+import React, { useRef } from 'react'
 import ReactDOM from 'react-dom'
 import * as tf from '@tensorflow/tfjs'
 import * as posenet from '@tensorflow-models/posenet'
@@ -11,9 +11,32 @@ function App() {
   const runPosenet = async () => {
     const net = await posenet.load({
       inputResolution: { width: 640, height: 480 },
-      scale: 0.5,
+      scale: 0.5, // Makes model faster but less accurate
     })
+
+    setInterval(() => {
+      detect(net)
+    }, 100) // Run Posenet detections every 100ms
   }
+
+  const detect = async (net) => {
+    if (
+      typeof webCamRef.current !== 'undefined' &&
+      webCamRef.current !== null &&
+      webCamRef.current.video.readyState === 4
+    ) {
+      const video = webCamRef.current.video
+      const videoHeight = webCamRef.current.video.videoHeight
+      const videoWidth = webCamRef.current.video.videoWidth
+      webCamRef.current.video.width = videoWidth
+      webCamRef.current.video.height = videoHeight
+
+      const pose = await net.estimateSinglePose(video)
+      console.log(pose)
+    }
+  }
+
+  runPosenet()
 
   return (
     <div>
