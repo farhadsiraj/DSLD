@@ -5,7 +5,7 @@
   "main": "sketch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx parcel public/index.html",
+    "start": "npx parcel public/teachable-test.html",
     "build": "npx parcel build src/index.html"
   },
   "repository": {
