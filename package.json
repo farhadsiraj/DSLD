@@ -5,7 +5,7 @@
   "main": "sketch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "npx parcel public/index.html",
+    "start": "npx parcel public/index.html",
     "build": "npx parcel build src/index.html"
   },
   "repository": {
@@ -20,8 +20,12 @@
   },
   "homepage": "https://github.com/2011-FSA-CRAB/DSLD#readme",
   "dependencies": {
-    "ml5": "^0.6.0",
-    "p5": "^1.2.0",
+    "@tensorflow-models/posenet": "^2.2.1",
+    "@tensorflow/tfjs": "^3.0.0",
+    "@tensorflow/tfjs-backend-cpu": "^3.0.0",
+    "@tensorflow/tfjs-converter": "^3.0.0",
+    "@tensorflow/tfjs-core": "^3.0.0",
+    "@tensorflow/tfjs-node": "^3.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-webcam": "^5.2.2"
