@@ -5,8 +5,11 @@
   "main": "sketch.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx parcel public/teachable-test.html",
-    "build": "npx parcel build src/index.html"
+
+    "start": "npx parcel serve watch public/index.html",
+    "start-dev": "npx parcel build watch serve public/index.html",
+    "build": "npx parcel build public/index.html --out-dir dist"
+
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,7 @@
   },
   "homepage": "https://github.com/2011-FSA-CRAB/DSLD#readme",
   "dependencies": {
+    "@teachablemachine/pose": "^0.8.6",
     "@tensorflow-models/posenet": "^2.2.1",
     "@tensorflow/tfjs": "^3.0.0",
     "@tensorflow/tfjs-backend-cpu": "^3.0.0",
