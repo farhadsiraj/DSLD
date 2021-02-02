@@ -1,20 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as tf from '@tensorflow/tfjs-core';
+import * as tf from '@tensorflow/tfjs';
 import * as tmPose from '@teachablemachine/pose';
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-const URL = 'https://teachablemachine.withgoogle.com/models/c0TmxXpy4/';
+const URL = '../squat/';
 let model, webcam, ctx, labelContainer, maxPredictions;
 
-let startingPosition;
-let endingPosition;
-let counterStatus = 'pending';
-
-async function init() {
+export async function init() {
   const modelURL = URL + 'model.json';
   const metadataURL = URL + 'metadata.json';
 
@@ -25,7 +19,7 @@ async function init() {
   maxPredictions = model.getTotalClasses();
 
   // Convenience function to setup a webcam
-  const size = 640;
+  const size = 200;
   const flip = true; // whether to flip the webcam
   webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
   await webcam.setup(); // request access to the webcam
@@ -65,29 +59,6 @@ async function predict() {
 
   // finally draw the poses
   drawPose(pose);
-
-  //console.log(prediction);
-  // define state outside of function
-  let repCount = 0;
-  startingPosition = prediction[0].probability;
-  endingPosition = prediction[1].probability;
-  // console.log(prediction);
-
-  if (counterStatus === 'pending' && startingPosition > 0.9) {
-    counterStatus = 'ready';
-  }
-
-  if (counterStatus === 'ready' && endingPosition > 0.9) {
-    counterStatus = 'active';
-  }
-
-  if (counterStatus === 'active' && startingPosition > 0.9) {
-    counterStatus === 'ready';
-    repCount = repCount++;
-  }
-
-  console.log('counterStatus ---->', counterStatus);
-  console.log('repCount ---->', repCount);
 }
 
 function drawPose(pose) {
@@ -101,17 +72,3 @@ function drawPose(pose) {
     }
   }
 }
-
-function Model() {
-  return (
-    <div>
-      <button onClick={() => init()}>Start!</button>
-      <div>
-        <canvas id="canvas"></canvas>
-        <div id="label-container"></div>
-      </div>
-    </div>
-  );
-}
-
-ReactDOM.render(<Model />, document.getElementById('app'));
