@@ -113,7 +113,12 @@ function drawPose(pose) {
 }
 
 function pause() {
-  button = 'stop';
+  if (button === 'start') {
+    button = 'stop';
+  } else {
+    button = 'start';
+    window.requestAnimationFrame(loop);
+  }
   console.log(button);
 }
 
