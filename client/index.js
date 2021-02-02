@@ -39,11 +39,18 @@ async function init() {
     labelContainer.appendChild(document.createElement('div'));
   }
 }
-
+let button = 'start';
 async function loop(timestamp) {
   webcam.update(); // update the webcam frame
   await predict();
-  window.requestAnimationFrame(loop);
+  if (button === 'start') {
+    window.requestAnimationFrame(loop);
+  } else {
+    if (button === 'stop') {
+      window.cancelAnimationFrame(window.requestAnimationFrame(loop));
+    }
+  }
+  // console.log(window.requestAnimationFrame(loop));
 }
 
 // Initialize vars for repCount
@@ -68,7 +75,6 @@ async function predict() {
   // finally draw the poses
   drawPose(pose);
 
-  // define state outside of function
   startingPosition = prediction[0].probability;
   endingPosition = prediction[1].probability;
 
@@ -106,6 +112,11 @@ function drawPose(pose) {
   }
 }
 
+function pause() {
+  button = 'stop';
+  console.log(button);
+}
+
 function Model() {
   return (
     <div>
@@ -115,6 +126,7 @@ function Model() {
         <div id="label-container"></div>
         <div id="rep-container"></div>
       </div>
+      <button onClick={() => pause()}>Pause</button>
     </div>
   );
 }
