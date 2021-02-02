@@ -10,10 +10,6 @@ import * as tmPose from '@teachablemachine/pose';
 const URL = 'https://teachablemachine.withgoogle.com/models/c0TmxXpy4/';
 let model, webcam, ctx, labelContainer, maxPredictions;
 
-let startingPosition;
-let endingPosition;
-let counterStatus = 'pending';
-
 async function init() {
   const modelURL = URL + 'model.json';
   const metadataURL = URL + 'metadata.json';
@@ -50,6 +46,12 @@ async function loop(timestamp) {
   window.requestAnimationFrame(loop);
 }
 
+// Initialize vars for repCount
+let repCount = 0;
+let startingPosition;
+let endingPosition;
+let counterStatus = 'pending';
+
 async function predict() {
   // Prediction #1: run input through posenet
   // estimatePose can take in an image, video or canvas html element
@@ -66,28 +68,30 @@ async function predict() {
   // finally draw the poses
   drawPose(pose);
 
-  //console.log(prediction);
   // define state outside of function
-  let repCount = 0;
   startingPosition = prediction[0].probability;
   endingPosition = prediction[1].probability;
-  // console.log(prediction);
 
   if (counterStatus === 'pending' && startingPosition > 0.9) {
+    console.log('Step 1');
     counterStatus = 'ready';
   }
 
   if (counterStatus === 'ready' && endingPosition > 0.9) {
+    console.log('Step 2');
     counterStatus = 'active';
   }
 
   if (counterStatus === 'active' && startingPosition > 0.9) {
-    counterStatus === 'ready';
-    repCount = repCount++;
+    console.log('Step 3');
+    repCount = repCount + 1;
+    counterStatus = 'ready';
   }
+  let repContainer = document.getElementById('rep-container');
+  repContainer.innerHTML = repCount;
 
-  console.log('counterStatus ---->', counterStatus);
-  console.log('repCount ---->', repCount);
+  // console.log('counterStatus ---->', counterStatus);
+  // console.log('In func repCount ---->', repCount);
 }
 
 function drawPose(pose) {
@@ -109,6 +113,7 @@ function Model() {
       <div>
         <canvas id="canvas"></canvas>
         <div id="label-container"></div>
+        <div id="rep-container"></div>
       </div>
     </div>
   );
