@@ -5,11 +5,15 @@ import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Container = styled.nav`
   display: flex;
+  position: fixed;
+  top: 0;
   width: 100%;
   height: 65px;
   justify-content: space-between;
   flex-grow: 1;
   box-shadow: 0 0.1rem 0.8rem 0 rgba(0, 0, 0, 0.19);
+  z-index: 9;
+  background-color: white;
 `
 
 const NavItem = styled.div`
