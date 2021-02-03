@@ -42,18 +42,25 @@ async function init() {
     labelContainer.appendChild(document.createElement('div'))
   }
 }
-let button = 'start'
+
+
+let predictStatus = 'active';
+
 async function loop(timestamp) {
-  webcam.update() // update the webcam frame
-  await predict()
-  if (button === 'start') {
-    window.requestAnimationFrame(loop)
-  } else {
-    if (button === 'stop') {
-      window.cancelAnimationFrame(window.requestAnimationFrame(loop))
-    }
+  webcam.update(); // update the webcam frame
+
+  // app starts with prediction active and drawPose using poseNet
+  if (predictStatus === 'active') {
+    // document.getElementById('togglePredict').innerHTML('Pause');
+    await predict(true);
   }
-  // console.log(window.requestAnimationFrame(loop));
+  // when pause button is pressed, drawPose switches to webcam feed
+  if (predictStatus === 'pending') {
+    drawPose();
+    await predict(false);
+
+  }
+  window.requestAnimationFrame(loop);
 }
 
 // Initialize vars for repCount
@@ -62,45 +69,66 @@ let startingPosition
 let endingPosition
 let counterStatus = 'pending'
 
-async function predict() {
-  // Prediction #1: run input through posenet
-  // estimatePose can take in an image, video or canvas html element
-  const { pose, posenetOutput } = await model.estimatePose(webcam.canvas)
-  // Prediction 2: run input through teachable machine classification model
-  const prediction = await model.predict(posenetOutput)
+async function predict(bool) {
+  if (bool === true) {
+    // Prediction #1: run input through posenet
+    // estimatePose can take in an image, video or canvas html element
+    const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+    // Prediction 2: run input through teachable machine classification model
+    const prediction = await model.predict(posenetOutput);
 
-  for (let i = 0; i < maxPredictions; i++) {
-    const classPrediction =
-      prediction[i].className + ': ' + prediction[i].probability.toFixed(2)
-    labelContainer.childNodes[i].innerHTML = classPrediction
+    for (let i = 0; i < maxPredictions; i++) {
+      const classPrediction =
+        prediction[i].className + ': ' + prediction[i].probability.toFixed(2);
+      labelContainer.childNodes[i].innerHTML = classPrediction;
+    }
+
+    // finally draw the poses
+    drawPose(pose);
+
+    startingPosition = prediction[0].probability;
+    endingPosition = prediction[1].probability;
+
+    if (counterStatus === 'pending' && startingPosition > 0.9) {
+      console.log('Step 1');
+      counterStatus = 'active';
+    }
+
+    // if (counterStatus === 'active' && endingPosition < 0.7) {
+    //   console.log('Step 2');
+    //   counterStatus = 'fail';
+    // }
+
+    if (counterStatus === 'active' && endingPosition > 0.9) {
+      console.log('Step 3');
+      counterStatus = 'success';
+    }
+
+    if (counterStatus === 'success' && startingPosition > 0.9) {
+      console.log('Step 4');
+      repCount = repCount + 1;
+      playAudio(positiveFeedback);
+      counterStatus = 'pending';
+    }
+
+    // if (counterStatus === 'fail' && startingPosition > 0.9) {
+    //   console.log('Step 5');
+
+    //   // playAudio(negativeFeedback);
+    //   counterStatus = 'pending';
+    // }
+
+
+    console.log(counterStatus);
+
+    let repContainer = document.getElementById('rep-container');
+    repContainer.innerHTML = repCount;
+
+    // console.log('counterStatus ---->', counterStatus);
+    // console.log('In func repCount ---->', repCount);
+  } else {
+    return;
   }
-
-  // finally draw the poses
-  drawPose(pose)
-
-  startingPosition = prediction[0].probability
-  endingPosition = prediction[1].probability
-
-  if (counterStatus === 'pending' && startingPosition > 0.9) {
-    console.log('Step 1')
-    counterStatus = 'ready'
-  }
-
-  if (counterStatus === 'ready' && endingPosition > 0.9) {
-    console.log('Step 2')
-    counterStatus = 'active'
-  }
-
-  if (counterStatus === 'active' && startingPosition > 0.9) {
-    console.log('Step 3')
-    repCount = repCount + 1
-    counterStatus = 'ready'
-  }
-  let repContainer = document.getElementById('rep-container')
-  repContainer.innerHTML = repCount
-
-  // console.log('counterStatus ---->', counterStatus);
-  // console.log('In func repCount ---->', repCount);
 }
 
 function drawPose(pose) {
@@ -115,62 +143,51 @@ function drawPose(pose) {
   }
 }
 
-function pause() {
-  if (button === 'start') {
-    play(yodelBuffer)
-    // beep(15, 0.5, 10000);
-    button = 'stop'
-  } else {
-    button = 'start'
-    window.requestAnimationFrame(loop)
+
+// toggles predictStatus
+async function togglePredict() {
+  console.log(predictStatus);
+  if (predictStatus === 'pending') {
+    predictStatus = 'active';
+  } else if (predictStatus === 'active') {
+    predictStatus = 'pending';
   }
-  console.log(button)
 }
 
-// Figure out how this audio code works
-// Move the call below to the repCounter
-// Two audio contexts, one for positiveFeedback and the other for negativeFeedback
-// positiveFeedback plays when a rep is incremented
-// negativeFeedback plays when status is start, class4 and then start again
-const audioURL = negativeFeedback
-
-const context = new AudioContext()
-//const playButton = document.querySelector('#play');
-
-let yodelBuffer
-
-window
-  .fetch(audioURL)
-  .then((response) => response.arrayBuffer())
-  .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
-  .then((audioBuffer) => {
-    //playButton.disabled = false;
-    yodelBuffer = audioBuffer
-  })
-
-//playButton.onclick = () => play(yodelBuffer);
-
-function play(audioBuffer) {
-  const source = context.createBufferSource()
-  source.buffer = audioBuffer
-  source.connect(context.destination)
-  source.start()
-}
-
-// let a = new AudioContext(); // browsers limit the number of concurrent audio contexts, so you better re-use'em
-
-// function beep(vol, freq, duration) {
-//   let v, u;
-//   v = a.createOscillator();
-//   u = a.createGain();
-//   v.connect(u);
-//   v.frequency.value = freq;
-//   v.type = 'square';
-//   u.connect(a.destination);
-//   u.gain.value = vol * 0.01;
-//   v.start(a.currentTime);
-//   v.stop(a.currentTime + duration * 0.001);
+// let button = 'start';
+// function pause() {
+//   if (button === 'start') {
+//     playAudio(positiveFeedback);
+//     // play(yodelBuffer);
+//     // beep(15, 0.5, 10000);
+//     button = 'stop';
+//   } else {
+//     button = 'start';
+//     playAudio(negativeFeedback);
+//     window.requestAnimationFrame(loop);
+//   }
+//   console.log(button);
 // }
+
+let sound;
+
+
+async function playAudio(audio) {
+  const context = new AudioContext();
+  await window
+    .fetch(audio)
+    .then((response) => response.arrayBuffer())
+    .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
+    .then((audioBuffer) => {
+      sound = audioBuffer;
+    });
+
+
+  const source = context.createBufferSource();
+  source.buffer = sound;
+  source.connect(context.destination);
+  source.start();
+}
 
 function Model() {
   return (
@@ -181,7 +198,9 @@ function Model() {
         <div id="label-container"></div>
         <div id="rep-container"></div>
       </div>
-      <button onClick={() => pause()}>Pause</button>
+      <button id="togglePredict" onClick={() => togglePredict()}>
+        Toggle
+      </button>
     </div>
   )
 }
