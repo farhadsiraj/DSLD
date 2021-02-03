@@ -9,6 +9,7 @@ const Container = styled.nav`
   height: 65px;
   justify-content: space-between;
   flex-grow: 1;
+  box-shadow: 0 0.1rem 0.8rem 0 rgba(0, 0, 0, 0.19);
 `
 
 const NavItem = styled.div`
