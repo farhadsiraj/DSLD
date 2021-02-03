@@ -116,11 +116,13 @@ function drawPose(pose) {
 
 function pause() {
   if (button === 'start') {
-    play(yodelBuffer);
+    playAudio(positiveFeedback);
+    // play(yodelBuffer);
     // beep(15, 0.5, 10000);
     button = 'stop';
   } else {
     button = 'start';
+    playAudio(negativeFeedback);
     window.requestAnimationFrame(loop);
   }
   console.log(button);
@@ -131,45 +133,25 @@ function pause() {
 // Two audio contexts, one for positiveFeedback and the other for negativeFeedback
 // positiveFeedback plays when a rep is incremented
 // negativeFeedback plays when status is start, class4 and then start again
-const audioURL = negativeFeedback;
 
-const context = new AudioContext();
-//const playButton = document.querySelector('#play');
+let sound;
 
-let yodelBuffer;
+function playAudio(audio) {
+  const context = new AudioContext();
 
-window
-  .fetch(audioURL)
-  .then((response) => response.arrayBuffer())
-  .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
-  .then((audioBuffer) => {
-    //playButton.disabled = false;
-    yodelBuffer = audioBuffer;
-  });
+  window
+    .fetch(audio)
+    .then((response) => response.arrayBuffer())
+    .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
+    .then((audioBuffer) => {
+      sound = audioBuffer;
+    });
 
-//playButton.onclick = () => play(yodelBuffer);
-
-function play(audioBuffer) {
   const source = context.createBufferSource();
-  source.buffer = audioBuffer;
+  source.buffer = sound;
   source.connect(context.destination);
   source.start();
 }
-
-// let a = new AudioContext(); // browsers limit the number of concurrent audio contexts, so you better re-use'em
-
-// function beep(vol, freq, duration) {
-//   let v, u;
-//   v = a.createOscillator();
-//   u = a.createGain();
-//   v.connect(u);
-//   v.frequency.value = freq;
-//   v.type = 'square';
-//   u.connect(a.destination);
-//   u.gain.value = vol * 0.01;
-//   v.start(a.currentTime);
-//   v.stop(a.currentTime + duration * 0.001);
-// }
 
 function Model() {
   return (
