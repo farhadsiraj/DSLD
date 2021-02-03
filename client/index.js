@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom'
 import * as tf from '@tensorflow/tfjs-core'
 import * as tmPose from '@teachablemachine/pose'
 import Home from './components/Home'
+import positiveFeedback from '../public/audio/positiveFeedback.mp3'
+import negativeFeedback from '../public/audio/negativeFeedback.mp3'
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
@@ -115,6 +117,8 @@ function drawPose(pose) {
 
 function pause() {
   if (button === 'start') {
+    play(yodelBuffer)
+    // beep(15, 0.5, 10000);
     button = 'stop'
   } else {
     button = 'start'
@@ -122,6 +126,51 @@ function pause() {
   }
   console.log(button)
 }
+
+// Figure out how this audio code works
+// Move the call below to the repCounter
+// Two audio contexts, one for positiveFeedback and the other for negativeFeedback
+// positiveFeedback plays when a rep is incremented
+// negativeFeedback plays when status is start, class4 and then start again
+const audioURL = negativeFeedback
+
+const context = new AudioContext()
+//const playButton = document.querySelector('#play');
+
+let yodelBuffer
+
+window
+  .fetch(audioURL)
+  .then((response) => response.arrayBuffer())
+  .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
+  .then((audioBuffer) => {
+    //playButton.disabled = false;
+    yodelBuffer = audioBuffer
+  })
+
+//playButton.onclick = () => play(yodelBuffer);
+
+function play(audioBuffer) {
+  const source = context.createBufferSource()
+  source.buffer = audioBuffer
+  source.connect(context.destination)
+  source.start()
+}
+
+// let a = new AudioContext(); // browsers limit the number of concurrent audio contexts, so you better re-use'em
+
+// function beep(vol, freq, duration) {
+//   let v, u;
+//   v = a.createOscillator();
+//   u = a.createGain();
+//   v.connect(u);
+//   v.frequency.value = freq;
+//   v.type = 'square';
+//   u.connect(a.destination);
+//   u.gain.value = vol * 0.01;
+//   v.start(a.currentTime);
+//   v.stop(a.currentTime + duration * 0.001);
+// }
 
 function Model() {
   return (
