@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/2011-FSA-CRAB/DSLD#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@teachablemachine/pose": "^0.8.6",
     "@tensorflow-models/posenet": "^2.2.1",
     "@tensorflow/tfjs": "^3.0.0",
@@ -31,7 +34,8 @@
     "firebase": "^8.2.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-webcam": "^5.2.2"
+    "react-webcam": "^5.2.2",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

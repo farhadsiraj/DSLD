@@ -1,46 +1,48 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as tf from '@tensorflow/tfjs-core';
-import * as tmPose from '@teachablemachine/pose';
-import positiveFeedback from '../public/audio/positiveFeedback.mp3';
-import negativeFeedback from '../public/audio/negativeFeedback.mp3';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import * as tf from '@tensorflow/tfjs-core'
+import * as tmPose from '@teachablemachine/pose'
+import Home from './components/Home'
+import positiveFeedback from '../public/audio/positiveFeedback.mp3'
+import negativeFeedback from '../public/audio/negativeFeedback.mp3'
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-const URL = 'https://teachablemachine.withgoogle.com/models/c0TmxXpy4/';
-let model, webcam, ctx, labelContainer, maxPredictions;
+const URL = 'https://teachablemachine.withgoogle.com/models/c0TmxXpy4/'
+let model, webcam, ctx, labelContainer, maxPredictions
 
 async function init() {
-  const modelURL = URL + 'model.json';
-  const metadataURL = URL + 'metadata.json';
+  const modelURL = URL + 'model.json'
+  const metadataURL = URL + 'metadata.json'
 
   // load the model and metadata
   // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
   // Note: the pose library adds a tmPose object to your window (window.tmPose)
-  model = await tmPose.load(modelURL, metadataURL);
-  maxPredictions = model.getTotalClasses();
+  model = await tmPose.load(modelURL, metadataURL)
+  maxPredictions = model.getTotalClasses()
 
   // Convenience function to setup a webcam
-  const size = 640;
-  const flip = true; // whether to flip the webcam
-  webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
-  await webcam.setup(); // request access to the webcam
-  await webcam.play();
-  window.requestAnimationFrame(loop);
+  const size = 640
+  const flip = true // whether to flip the webcam
+  webcam = new tmPose.Webcam(size, size, flip) // width, height, flip
+  await webcam.setup() // request access to the webcam
+  await webcam.play()
+  window.requestAnimationFrame(loop)
 
   // append/get elements to the DOM
-  const canvas = document.getElementById('canvas');
-  canvas.width = size;
-  canvas.height = size;
-  ctx = canvas.getContext('2d');
-  labelContainer = document.getElementById('label-container');
+  const canvas = document.getElementById('canvas')
+  canvas.width = size
+  canvas.height = size
+  ctx = canvas.getContext('2d')
+  labelContainer = document.getElementById('label-container')
   for (let i = 0; i < maxPredictions; i++) {
     // and class labels
-    labelContainer.appendChild(document.createElement('div'));
+    labelContainer.appendChild(document.createElement('div'))
   }
 }
+
 
 let predictStatus = 'active';
 
@@ -56,15 +58,16 @@ async function loop(timestamp) {
   if (predictStatus === 'pending') {
     drawPose();
     await predict(false);
+
   }
   window.requestAnimationFrame(loop);
 }
 
 // Initialize vars for repCount
-let repCount = 0;
-let startingPosition;
-let endingPosition;
-let counterStatus = 'pending';
+let repCount = 0
+let startingPosition
+let endingPosition
+let counterStatus = 'pending'
 
 async function predict(bool) {
   if (bool === true) {
@@ -115,6 +118,7 @@ async function predict(bool) {
     //   counterStatus = 'pending';
     // }
 
+
     console.log(counterStatus);
 
     let repContainer = document.getElementById('rep-container');
@@ -129,15 +133,16 @@ async function predict(bool) {
 
 function drawPose(pose) {
   if (webcam.canvas) {
-    ctx.drawImage(webcam.canvas, 0, 0);
+    ctx.drawImage(webcam.canvas, 0, 0)
     // draw the keypoints and skeleton
     if (pose) {
-      const minPartConfidence = 0.5;
-      tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-      tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+      const minPartConfidence = 0.5
+      tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx)
+      tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx)
     }
   }
 }
+
 
 // toggles predictStatus
 async function togglePredict() {
@@ -166,6 +171,7 @@ async function togglePredict() {
 
 let sound;
 
+
 async function playAudio(audio) {
   const context = new AudioContext();
   await window
@@ -175,6 +181,7 @@ async function playAudio(audio) {
     .then((audioBuffer) => {
       sound = audioBuffer;
     });
+
 
   const source = context.createBufferSource();
   source.buffer = sound;
@@ -195,7 +202,7 @@ function Model() {
         Toggle
       </button>
     </div>
-  );
+  )
 }
 
-ReactDOM.render(<Model />, document.getElementById('app'));
+ReactDOM.render(<Home />, document.getElementById('app'))
