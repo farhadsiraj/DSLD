@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as tf from '@tensorflow/tfjs-core';
 import * as tmPose from '@teachablemachine/pose';
-import useSound from 'use-sound';
 import positiveFeedback from '../public/audio/positiveFeedback.mp3';
 import negativeFeedback from '../public/audio/negativeFeedback.mp3';
 
