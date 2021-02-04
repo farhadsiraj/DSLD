@@ -29,7 +29,8 @@ async function init() {
   webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
   await webcam.setup(); // request access to the webcam
   await webcam.play();
-  window.requestAnimationFrame(loop);
+
+  // window.requestAnimationFrame(loop);
 
   // append/get elements to the DOM
   const canvas = document.getElementById('canvas');
@@ -41,9 +42,11 @@ async function init() {
     // and class labels
     labelContainer.appendChild(document.createElement('div'));
   }
+  // drawPose();
+  setTimeout(window.requestAnimationFrame, 10000, loop);
 }
 
-let predictStatus = 'active';
+let predictStatus = 'pending';
 
 async function loop(timestamp) {
   webcam.update(); // update the webcam frame
@@ -68,6 +71,16 @@ let squattingPosition;
 let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
+
+// function countdown() {
+//   let seconds = 10,
+//     countdownSeconds = document.getElementById('#countdown');
+//   (function countdown() {
+//     countdownSeconds.textContent =
+//       seconds + ' second' + (seconds == 1 ? '' : 's');
+//     if (seconds-- > 0) setTimeout(countdown, 1000);
+//   })();
+// }
 
 async function predict(bool) {
   if (bool === true) {
@@ -197,6 +210,7 @@ function Model() {
         <canvas id="canvas"></canvas>
         <div id="label-container"></div>
         <div id="rep-container"></div>
+        <div id="countdown"></div>
       </div>
       <button id="togglePredict" onClick={() => togglePredict()}>
         Toggle
