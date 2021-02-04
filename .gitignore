@@ -5,3 +5,6 @@ dist
 .cache
 DSLD.code-workspace
 package-lock.json
+trainedModel
+reference
+squatModel_v2_tm.tm
