@@ -1,10 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Routes from '../routes';
-import styled from 'styled-components';
-import GlobalStyles from '../GlobalStyles';
-import NavBar from './NavBar';
-import gym from '../../public/assets/images/gym.jpg';
+import React from 'react'
+import styled from 'styled-components'
+import GlobalStyles from '../GlobalStyles'
+import NavBar from './NavBar'
+import gym from '../../public/assets/images/gym.jpg'
+import { Link } from 'react-router-dom'
+import Routes from '../routes'
+import firebase from '../../firebase'
+
+const db = firebase.firestore()
 
 const GradientContainer = styled.div`
   display: flex;
@@ -30,7 +33,7 @@ const GradientContainer = styled.div`
     height: 100%;
     z-index: -1;
   }
-`;
+`
 
 const ContentContainer = styled.div`
   display: flex;
@@ -40,7 +43,7 @@ const ContentContainer = styled.div`
   width: 100%;
   margin-top: 65px;
   z-index: 1;
-`;
+`
 // const Header = styled.div`
 //   width: 80%;
 //   height: 300px;
@@ -57,21 +60,21 @@ const Box = styled.div`
   background-color: #355c7d;
   margin: 1rem;
   border-radius: 2rem;
-`;
+`
 
 const MobileHeader = styled.img`
   margin-top: 1rem;
   width: 90%;
   height: 20%;
   border-radius: 2rem;
-`;
+`
 
 const InfoContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
-`;
+`
 
 export function Home() {
   return (
@@ -109,5 +112,5 @@ export function Home() {
 
       <Routes></Routes>
     </GradientContainer>
-  );
+  )
 }

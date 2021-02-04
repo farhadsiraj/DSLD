@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { withRouter, Route, Switch } from 'react-router-dom';
-import { FormCheck } from './components/FormCheck';
-import { Home } from './components/Home';
+import React, { Component } from 'react'
+import { withRouter, Route, Switch } from 'react-router-dom'
+import { FormCheck } from './components/FormCheck'
+import { Home } from './components/Home'
 
 class Routes extends Component {
   render() {
@@ -10,8 +10,8 @@ class Routes extends Component {
         {/* <Route path="/" component={Home} /> */}
         <Route path="/formcheck" component={FormCheck} />
       </Switch>
-    );
+    )
   }
 }
 
-export default withRouter(Routes);
+export default withRouter(Routes)
