@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import GlobalStyles from '../GlobalStyles'
 import NavBar from './NavBar'
 import gym from '../../public/assets/images/gym.jpg'
+import { Link } from 'react-router-dom'
+import Routes from '../routes'
 import firebase from '../../firebase'
 
 const firestore = firebase.firestore()
@@ -81,36 +83,41 @@ const InfoContainer = styled.div`
   align-items: center;
 `
 
-export default function Home() {
+export function Home() {
   return (
     <GradientContainer>
       <GlobalStyles />
       <NavBar />
+      {window.location.pathname !== '/' ? (
+        ''
+      ) : (
+        <ContentContainer>
+          {/* <Header /> */}
+          <MobileHeader src={gym} title="gym" />
+          <InfoContainer>
+            <Box>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  width: '100%',
+                  height: '100%',
+                  color: 'white',
+                }}
+              >
+                <div>Hipster Ipsum</div>
+              </div>
+            </Box>
 
-      <ContentContainer>
-        {/* <Header /> */}
-        <MobileHeader src={gym} title="gym" />
-        <InfoContainer>
-          <Box>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                width: '100%',
-                height: '100%',
-                color: 'white',
-              }}
-            >
-              <div>Hipster ipsum</div>
-            </div>
-          </Box>
+            <Box />
+            <Box />
+          </InfoContainer>
+        </ContentContainer>
+      )}
 
-          <Box />
-          <Box />
-        </InfoContainer>
-      </ContentContainer>
+      <Routes></Routes>
     </GradientContainer>
   )
 }
