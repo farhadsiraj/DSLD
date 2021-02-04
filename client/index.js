@@ -1,50 +1,52 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import * as tf from '@tensorflow/tfjs-core'
-import * as tmPose from '@teachablemachine/pose'
-import Home from './components/Home'
-import positiveFeedback from '../public/audio/positiveFeedback.mp3'
-import negativeFeedback from '../public/audio/negativeFeedback.mp3'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import * as tf from '@tensorflow/tfjs-core';
+import * as tmPose from '@teachablemachine/pose';
+import Home from './components/Home';
+import positiveFeedback from '../public/audio/positiveFeedback.mp3';
+import negativeFeedback from '../public/audio/negativeFeedback.mp3';
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-const URL = 'https://teachablemachine.withgoogle.com/models/c0TmxXpy4/'
-let model, webcam, ctx, labelContainer, maxPredictions
+const URL = 'https://teachablemachine.withgoogle.com/models/J5d1HwacC/';
+let model, webcam, ctx, labelContainer, maxPredictions;
 
 async function init() {
-  const modelURL = URL + 'model.json'
-  const metadataURL = URL + 'metadata.json'
+  const modelURL = URL + 'model.json';
+  const metadataURL = URL + 'metadata.json';
 
   // load the model and metadata
   // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
   // Note: the pose library adds a tmPose object to your window (window.tmPose)
-  model = await tmPose.load(modelURL, metadataURL)
-  maxPredictions = model.getTotalClasses()
+  model = await tmPose.load(modelURL, metadataURL);
+  maxPredictions = model.getTotalClasses();
 
   // Convenience function to setup a webcam
-  const size = 640
-  const flip = true // whether to flip the webcam
-  webcam = new tmPose.Webcam(size, size, flip) // width, height, flip
-  await webcam.setup() // request access to the webcam
-  await webcam.play()
-  window.requestAnimationFrame(loop)
+  const size = 640;
+  const flip = true; // whether to flip the webcam
+  webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+  await webcam.setup(); // request access to the webcam
+  await webcam.play();
+
+  // window.requestAnimationFrame(loop);
 
   // append/get elements to the DOM
-  const canvas = document.getElementById('canvas')
-  canvas.width = size
-  canvas.height = size
-  ctx = canvas.getContext('2d')
-  labelContainer = document.getElementById('label-container')
+  const canvas = document.getElementById('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  ctx = canvas.getContext('2d');
+  labelContainer = document.getElementById('label-container');
   for (let i = 0; i < maxPredictions; i++) {
     // and class labels
-    labelContainer.appendChild(document.createElement('div'))
+    labelContainer.appendChild(document.createElement('div'));
   }
+  // drawPose();
+  setTimeout(window.requestAnimationFrame, 10000, loop);
 }
 
-
-let predictStatus = 'active';
+let predictStatus = 'pending';
 
 async function loop(timestamp) {
   webcam.update(); // update the webcam frame
@@ -58,16 +60,27 @@ async function loop(timestamp) {
   if (predictStatus === 'pending') {
     drawPose();
     await predict(false);
-
   }
   window.requestAnimationFrame(loop);
 }
 
 // Initialize vars for repCount
-let repCount = 0
-let startingPosition
-let endingPosition
-let counterStatus = 'pending'
+let repCount = 0;
+let startingPosition;
+let squattingPosition;
+let middlePosition;
+let setupPosition;
+let counterStatus = 'pending';
+
+// function countdown() {
+//   let seconds = 10,
+//     countdownSeconds = document.getElementById('#countdown');
+//   (function countdown() {
+//     countdownSeconds.textContent =
+//       seconds + ' second' + (seconds == 1 ? '' : 's');
+//     if (seconds-- > 0) setTimeout(countdown, 1000);
+//   })();
+// }
 
 async function predict(bool) {
   if (bool === true) {
@@ -82,42 +95,45 @@ async function predict(bool) {
         prediction[i].className + ': ' + prediction[i].probability.toFixed(2);
       labelContainer.childNodes[i].innerHTML = classPrediction;
     }
+    // console.log('prediction---->', prediction);
 
     // finally draw the poses
     drawPose(pose);
 
     startingPosition = prediction[0].probability;
-    endingPosition = prediction[1].probability;
+    squattingPosition = prediction[1].probability;
+    middlePosition = prediction[2].probability;
+    setupPosition = prediction[3].probability;
 
     if (counterStatus === 'pending' && startingPosition > 0.9) {
       console.log('Step 1');
-      counterStatus = 'active';
+      counterStatus = 'starting';
     }
 
-    // if (counterStatus === 'active' && endingPosition < 0.7) {
-    //   console.log('Step 2');
-    //   counterStatus = 'fail';
-    // }
+    if (counterStatus === 'starting' && middlePosition > 0.5) {
+      console.log('Step 2');
+      counterStatus = 'middle';
+    }
 
-    if (counterStatus === 'active' && endingPosition > 0.9) {
+    if (counterStatus === 'middle' && squattingPosition > 0.9) {
       console.log('Step 3');
-      counterStatus = 'success';
+      counterStatus = 'squatting';
     }
 
-    if (counterStatus === 'success' && startingPosition > 0.9) {
+    if (counterStatus === 'squatting' && startingPosition > 0.9) {
       console.log('Step 4');
+      console.log('success');
       repCount = repCount + 1;
       playAudio(positiveFeedback);
       counterStatus = 'pending';
     }
 
-    // if (counterStatus === 'fail' && startingPosition > 0.9) {
-    //   console.log('Step 5');
-
-    //   // playAudio(negativeFeedback);
-    //   counterStatus = 'pending';
-    // }
-
+    if (counterStatus === 'middle' && startingPosition > 0.9) {
+      console.log('Step 5');
+      console.log('fail');
+      playAudio(negativeFeedback);
+      counterStatus = 'pending';
+    }
 
     console.log(counterStatus);
 
@@ -133,16 +149,15 @@ async function predict(bool) {
 
 function drawPose(pose) {
   if (webcam.canvas) {
-    ctx.drawImage(webcam.canvas, 0, 0)
+    ctx.drawImage(webcam.canvas, 0, 0);
     // draw the keypoints and skeleton
     if (pose) {
-      const minPartConfidence = 0.5
-      tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx)
-      tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx)
+      const minPartConfidence = 0.5;
+      tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+      tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
     }
   }
 }
-
 
 // toggles predictStatus
 async function togglePredict() {
@@ -171,7 +186,6 @@ async function togglePredict() {
 
 let sound;
 
-
 async function playAudio(audio) {
   const context = new AudioContext();
   await window
@@ -181,7 +195,6 @@ async function playAudio(audio) {
     .then((audioBuffer) => {
       sound = audioBuffer;
     });
-
 
   const source = context.createBufferSource();
   source.buffer = sound;
@@ -197,12 +210,13 @@ function Model() {
         <canvas id="canvas"></canvas>
         <div id="label-container"></div>
         <div id="rep-container"></div>
+        <div id="countdown"></div>
       </div>
       <button id="togglePredict" onClick={() => togglePredict()}>
         Toggle
       </button>
     </div>
-  )
+  );
 }
 
-ReactDOM.render(<Home />, document.getElementById('app'))
+ReactDOM.render(<Model />, document.getElementById('app'));

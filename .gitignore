@@ -4,3 +4,7 @@ dist
 .vscode/settings.json
 .cache
 DSLD.code-workspace
+package-lock.json
+/trainedModel
+reference
+
