@@ -6,7 +6,6 @@ import gym from '../../public/assets/images/gym.jpg'
 import { Link } from 'react-router-dom'
 import Routes from '../routes'
 import firebase from '../../firebase'
-
 const db = firebase.firestore()
 
 const GradientContainer = styled.div`

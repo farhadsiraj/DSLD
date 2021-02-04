@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import * as tf from '@tensorflow/tfjs-core'
 import * as tmPose from '@teachablemachine/pose'
 import positiveFeedback from '../../public/audio/positiveFeedback.mp3'
 import negativeFeedback from '../../public/audio/negativeFeedback.mp3'
+import styled from 'styled-components'
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
@@ -203,18 +204,53 @@ async function playAudio(audio) {
 }
 
 export function Model() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [toggleStart, setToggle] = useState(false)
+
+  useEffect(() => {
+    init()
+    setIsLoading(false)
+    return () => console.log('Model cleaned up.')
+  }, [])
   return (
-    <div>
-      <button onClick={() => init()}>Start!</button>
+    <Container>
       <div>
-        <canvas id="canvas"></canvas>
+        {isLoading ? <Placeholder /> : <canvas id="canvas"></canvas>}
         <div id="label-container"></div>
         <div id="rep-container"></div>
         <div id="countdown"></div>
       </div>
-      <button id="togglePredict" onClick={() => togglePredict()}>
-        Toggle
-      </button>
-    </div>
+      <Button
+        id="togglePredict"
+        onClick={() => {
+          togglePredict()
+          setToggle(!toggleStart)
+        }}
+      >
+        {toggleStart === true ? 'Stop' : 'Start'}
+      </Button>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  display: flex;
+  border: 1px solid red;
+  width: 100%;
+`
+
+const Button = styled.button`
+  padding: 1rem;
+  text-decoration: none;
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  background-color: #f67280;
+  border: 0px;
+  width: 10rem;
+`
+const Placeholder = styled.div`
+  height: 640px;
+  width: 640px;
+  background-color: pink;
+`

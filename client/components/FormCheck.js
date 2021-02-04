@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import GlobalStyles from '../GlobalStyles';
-import NavBar from './NavBar';
-import { Model } from '../Models/SquatModel';
+import React from 'react'
+import styled from 'styled-components'
+import GlobalStyles from '../GlobalStyles'
+import NavBar from './NavBar'
+import { Model } from '../Models/SquatModel'
 
 const GradientContainer = styled.div`
   /* display: flex;
@@ -28,14 +28,14 @@ const GradientContainer = styled.div`
     height: 100%;
     z-index: -1;
   }
-`;
+`
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-`;
+`
 
 const ContentContainer = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ const ContentContainer = styled.div`
   width: 100%;
   margin-top: 65px;
   z-index: 1;
-`;
+`
 
 export function FormCheck() {
   return (
@@ -60,7 +60,7 @@ export function FormCheck() {
         <video autoplay="true" id="videoElement"></video>
       </div> */}
     </GradientContainer>
-  );
+  )
 }
 
 //media query look for screen width
