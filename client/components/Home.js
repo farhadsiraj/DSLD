@@ -4,12 +4,29 @@ import GlobalStyles from '../GlobalStyles'
 import NavBar from './NavBar'
 
 const GradientContainer = styled.div`
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 65px;
   width: 100%;
+
+  &:after {
+    background: rgb(242, 102, 39);
+    background: linear-gradient(
+      -190deg,
+      rgba(242, 102, 39, 1) 0%,
+      rgba(255, 255, 255, 1) 75%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
 `
 
 const InfoContainer = styled.div`
@@ -40,9 +57,9 @@ export default function Home() {
       <GlobalStyles />
       <NavBar />
 
-      <div
+      {/* <div
         className="custom-shape-divider-top-1612397001"
-        style={{ zIndex: '0' }}
+        style={{ zIndex: '0', height: '1200px' }}
       >
         <svg
           data-name="Layer 1"
@@ -72,9 +89,16 @@ export default function Home() {
             ></path>
           </svg>
         </svg>
-      </div>
+      </div> */}
       {/* <Box /> */}
       <InfoContainer>
+        <Box />
+        <Box />
+        <Box />
+        <Box />
+        <Box />
+        <Box />
+        <Box />
         <Box />
         <Box />
         <Box />

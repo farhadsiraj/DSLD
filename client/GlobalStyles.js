@@ -1,8 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
-
-
   html, body {
     margin: 0;
     padding: 0;
@@ -10,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
   }
 
-  .custom-shape-divider-top-1612397001 {
+  /* .custom-shape-divider-top-1612397001 {
     position: absolute;
     top: 0;
     left: 0;
@@ -28,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
 
 .custom-shape-divider-top-1612397001 .shape-fill {
     fill: #F26627;
-}
+} */
 `
 
 export default GlobalStyle
