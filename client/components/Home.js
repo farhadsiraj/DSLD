@@ -3,6 +3,16 @@ import styled from 'styled-components'
 import GlobalStyles from '../GlobalStyles'
 import NavBar from './NavBar'
 import gym from '../../public/assets/images/gym.jpg'
+import firebase from '../../firebase'
+
+const firestore = firebase.firestore()
+
+console.log(firestore)
+
+firestore
+  .collection('users')
+  .doc('removeCDN')
+  .set({ name: 'Ricky', admin: false })
 
 const GradientContainer = styled.div`
   display: flex;
