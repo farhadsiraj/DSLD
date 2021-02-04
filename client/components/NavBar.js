@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const Container = styled.nav`
   display: flex;
@@ -57,7 +58,16 @@ export default function NavBar() {
         />
         {hamburgerDropdown ? (
           <Dropdown>
-            <DropdownItem>Link</DropdownItem>
+            <DropdownItem>
+              <Link
+                to="/formcheck"
+                onClick={function () {
+                  setHamburgerDropdown(false);
+                }}
+              >
+                Formcheck
+              </Link>
+            </DropdownItem>
             <DropdownItem>Link</DropdownItem>
             <DropdownItem>Link</DropdownItem>
           </Dropdown>
