@@ -10,8 +10,8 @@ import negativeFeedback from '../public/audio/negativeFeedback.mp3';
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
-const URL = 'https://teachablemachine.withgoogle.com/models/J5d1HwacC/'
-let model, webcam, ctx, labelContainer, maxPredictions
+const URL = 'https://teachablemachine.withgoogle.com/models/J5d1HwacC/';
+let model, webcam, ctx, labelContainer, maxPredictions;
 
 async function init() {
   const modelURL = URL + 'model.json';
@@ -43,88 +43,94 @@ async function init() {
   }
 }
 
-let predictStatus = 'active'
+let predictStatus = 'active';
 
 async function loop(timestamp) {
-  webcam.update() // update the webcam frame
+  webcam.update(); // update the webcam frame
 
   // app starts with prediction active and drawPose using poseNet
   if (predictStatus === 'active') {
     // document.getElementById('togglePredict').innerHTML('Pause');
-    await predict(true)
+    await predict(true);
   }
   // when pause button is pressed, drawPose switches to webcam feed
   if (predictStatus === 'pending') {
-    drawPose()
-    await predict(false)
+    drawPose();
+    await predict(false);
   }
-  window.requestAnimationFrame(loop)
+  window.requestAnimationFrame(loop);
 }
 
 // Initialize vars for repCount
 let repCount = 0;
 let startingPosition;
-let endingPosition;
+let squattingPosition;
+let middlePosition;
+let setupPosition;
 let counterStatus = 'pending';
 
 async function predict(bool) {
   if (bool === true) {
     // Prediction #1: run input through posenet
     // estimatePose can take in an image, video or canvas html element
-    const { pose, posenetOutput } = await model.estimatePose(webcam.canvas)
+    const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
     // Prediction 2: run input through teachable machine classification model
-    const prediction = await model.predict(posenetOutput)
+    const prediction = await model.predict(posenetOutput);
 
     for (let i = 0; i < maxPredictions; i++) {
       const classPrediction =
-        prediction[i].className + ': ' + prediction[i].probability.toFixed(2)
-      labelContainer.childNodes[i].innerHTML = classPrediction
+        prediction[i].className + ': ' + prediction[i].probability.toFixed(2);
+      labelContainer.childNodes[i].innerHTML = classPrediction;
     }
+    // console.log('prediction---->', prediction);
 
     // finally draw the poses
-    drawPose(pose)
+    drawPose(pose);
 
-    startingPosition = prediction[0].probability
-    endingPosition = prediction[1].probability
+    startingPosition = prediction[0].probability;
+    squattingPosition = prediction[1].probability;
+    middlePosition = prediction[2].probability;
+    setupPosition = prediction[3].probability;
 
     if (counterStatus === 'pending' && startingPosition > 0.9) {
-      console.log('Step 1')
-      counterStatus = 'active'
+      console.log('Step 1');
+      counterStatus = 'starting';
     }
 
-    // if (counterStatus === 'active' && endingPosition < 0.7) {
-    //   console.log('Step 2');
-    //   counterStatus = 'fail';
-    // }
-
-    if (counterStatus === 'active' && endingPosition > 0.9) {
-      console.log('Step 3')
-      counterStatus = 'success'
+    if (counterStatus === 'starting' && middlePosition > 0.5) {
+      console.log('Step 2');
+      counterStatus = 'middle';
     }
 
-    if (counterStatus === 'success' && startingPosition > 0.9) {
-      console.log('Step 4')
-      repCount = repCount + 1
-      // playAudio(positiveFeedback)
-      counterStatus = 'pending'
+    if (counterStatus === 'middle' && squattingPosition > 0.9) {
+      console.log('Step 3');
+      counterStatus = 'squatting';
     }
 
-    // if (counterStatus === 'fail' && startingPosition > 0.9) {
-    //   console.log('Step 5');
+    if (counterStatus === 'squatting' && startingPosition > 0.9) {
+      console.log('Step 4');
+      console.log('success');
+      repCount = repCount + 1;
+      playAudio(positiveFeedback);
+      counterStatus = 'pending';
+    }
 
-    //   // playAudio(negativeFeedback);
-    //   counterStatus = 'pending';
-    // }
+    if (counterStatus === 'middle' && startingPosition > 0.9) {
+      console.log('Step 5');
+      console.log('fail');
+      playAudio(negativeFeedback);
+      counterStatus = 'pending';
+    }
 
-    console.log(counterStatus)
+    console.log(counterStatus);
 
-    let repContainer = document.getElementById('rep-container')
-    repContainer.innerHTML = repCount
+    let repContainer = document.getElementById('rep-container');
+    repContainer.innerHTML = repCount;
 
     // console.log('counterStatus ---->', counterStatus);
     // console.log('In func repCount ---->', repCount);
   } else {
-    return
+    return;
   }
 }
 
@@ -142,11 +148,11 @@ function drawPose(pose) {
 
 // toggles predictStatus
 async function togglePredict() {
-  console.log(predictStatus)
+  console.log(predictStatus);
   if (predictStatus === 'pending') {
-    predictStatus = 'active'
+    predictStatus = 'active';
   } else if (predictStatus === 'active') {
-    predictStatus = 'pending'
+    predictStatus = 'pending';
   }
 }
 
@@ -165,22 +171,22 @@ async function togglePredict() {
 //   console.log(button);
 // }
 
-let sound
+let sound;
 
 async function playAudio(audio) {
-  const context = new AudioContext()
+  const context = new AudioContext();
   await window
     .fetch(audio)
     .then((response) => response.arrayBuffer())
     .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
     .then((audioBuffer) => {
-      sound = audioBuffer
-    })
+      sound = audioBuffer;
+    });
 
-  const source = context.createBufferSource()
-  source.buffer = sound
-  source.connect(context.destination)
-  source.start()
+  const source = context.createBufferSource();
+  source.buffer = sound;
+  source.connect(context.destination);
+  source.start();
 }
 
 function Model() {
