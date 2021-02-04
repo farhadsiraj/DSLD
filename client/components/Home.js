@@ -7,14 +7,7 @@ import { Link } from 'react-router-dom'
 import Routes from '../routes'
 import firebase from '../../firebase'
 
-const firestore = firebase.firestore()
-
-console.log(firestore)
-
-firestore
-  .collection('users')
-  .doc('removeCDN')
-  .set({ name: 'Ricky', admin: false })
+const db = firebase.firestore()
 
 const GradientContainer = styled.div`
   display: flex;
