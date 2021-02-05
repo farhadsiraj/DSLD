@@ -1,11 +1,11 @@
 import React from 'react'
+import Routes from '../routes'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import GlobalStyles from '../GlobalStyles'
+import firebase from '../../firebase'
 import NavBar from './NavBar'
 import gym from '../../public/assets/images/gym.jpg'
-import { Link } from 'react-router-dom'
-import Routes from '../routes'
-import firebase from '../../firebase'
 const db = firebase.firestore()
 
 const GradientContainer = styled.div`

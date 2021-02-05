@@ -255,19 +255,16 @@ const Webcam = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  border: 1px solid red;
 `
 const LabelContainer = styled.div`
   display: flex;
   flex: 1;
   justify-content: center;
   align-items: center;
-  border: 1px solid green;
 `
 const Label = styled.div`
   color: #325d79;
   font-size: 2rem;
-  border: 1px solid red;
   @media only screen and (max-width: 1200px) {
     font-size: 1.3rem;
   }
