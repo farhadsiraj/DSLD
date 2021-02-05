@@ -116,9 +116,9 @@ async function predict(bool) {
     middlePosition = prediction[2].probability;
     setupPosition = prediction[0].probability;
 
-    let border = document.getElementById('border');
+    // let border = document.getElementById('border');
 
-    console.log('border----->', border.border);
+    // console.log('border----->', border.border);
 
     if (counterStatus === 'pending' && startingPosition > 0.9) {
       console.log('Step 1');
@@ -220,6 +220,7 @@ async function playAudio(audio) {
 export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
+  const [borderColor, setBorderColor] = useState('cyan');
 
   useEffect(() => {
     init();
@@ -230,10 +231,10 @@ export function Model() {
   return (
     <Container>
       <Webcam>
-        {/* <canvas width="640" height="640" id="canvas"></canvas> */}
-        <Canvas id="border">
+        <canvas width="640" height="640" id="canvas"></canvas>
+        {/* <Canvas id="border">
           <canvas width="640" height="640" id="canvas"></canvas>
-        </Canvas>
+        </Canvas> */}
         <WebcamToolbar>
           <Label id="rep-container"></Label>
           <Button
