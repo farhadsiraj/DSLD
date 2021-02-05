@@ -40,6 +40,13 @@ const DropdownItem = styled.div`
   font-size: 1.7rem;
   padding: 0.5rem 1rem 0 1rem;
 `
+const Logo = styled.div`
+  display: flex;
+  width: 33%;
+  color: #f26627;
+  font-family: 'Sansita', sans-serif;
+  font-size: 3rem;
+`
 
 export default function NavBar() {
   const [hamburgerDropdown, setHamburgerDropdown] = useState(false)
@@ -75,9 +82,9 @@ export default function NavBar() {
           ''
         )}
       </NavItem>
-      <NavItem style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Logo style={{ justifyContent: 'center', alignItems: 'center' }}>
         DSLD
-      </NavItem>
+      </Logo>
       <NavItem style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
         <FontAwesomeIcon
           onClick={function () {
