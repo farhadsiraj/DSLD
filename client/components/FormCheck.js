@@ -46,6 +46,7 @@ const ContentContainer = styled.div`
   width: 90%;
   margin-top: 65px;
   z-index: 1;
+  border: 1px solid red;
 `
 const TopToolbar = styled.div`
   display: flex;

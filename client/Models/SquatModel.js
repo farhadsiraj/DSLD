@@ -11,7 +11,12 @@ import styled from 'styled-components'
 
 // the link to your model provided by Teachable Machine export panel
 
-const URL = 'https://teachablemachine.withgoogle.com/models/J5d1HwacC/'
+// Squat v2
+// https://teachablemachine.withgoogle.com/models/J5d1HwacC/
+// Squat v3
+// https://teachablemachine.withgoogle.com/models/gzTttOI1O/
+
+const URL = 'https://teachablemachine.withgoogle.com/models/gzTttOI1O/'
 let model, webcam, ctx, labelContainer, maxPredictions
 
 async function init() {
