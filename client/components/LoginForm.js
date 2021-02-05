@@ -10,9 +10,6 @@ const ContentContainer = styled.div`
   width: 100%;
   margin-top: 65px;
   z-index: 1;
-  /* @media only screen and (max-width: 1200px) {
-    width: 90%;
-  } */
 `;
 
 const LogInContainer = styled.form`

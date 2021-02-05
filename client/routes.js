@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import { FormCheck } from './components/FormCheck';
 import { Home } from './components/Home';
-import { Login } from './components/Login';
+import { Login } from './components/LoginForm';
 
 class Routes extends Component {
   render() {
