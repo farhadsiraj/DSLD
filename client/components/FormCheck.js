@@ -43,10 +43,12 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  width: 70%;
   margin-top: 65px;
   z-index: 1;
-  border: 1px solid red;
+  @media only screen and (max-width: 1200px) {
+    width: 90%;
+  }
 `
 const TopToolbar = styled.div`
   display: flex;
