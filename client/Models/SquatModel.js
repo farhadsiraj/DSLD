@@ -116,6 +116,10 @@ async function predict(bool) {
     middlePosition = prediction[2].probability;
     setupPosition = prediction[0].probability;
 
+    let border = document.getElementById('border');
+
+    console.log('border----->', border.border);
+
     if (counterStatus === 'pending' && startingPosition > 0.9) {
       console.log('Step 1');
       counterStatus = 'starting';
@@ -136,6 +140,7 @@ async function predict(bool) {
       console.log('success');
       lineColor = 'green';
       drawPose(pose, lineColor);
+      // border.border = lineColor;
       repCount = repCount + 1;
       playAudio(positiveFeedback);
       counterStatus = 'pending';
@@ -145,6 +150,7 @@ async function predict(bool) {
       console.log('Step 5');
       console.log('fail');
       lineColor = 'red';
+      // border.color = lineColor;
       drawPose(pose, lineColor);
       playAudio(negativeFeedback);
       counterStatus = 'pending';
@@ -224,7 +230,10 @@ export function Model() {
   return (
     <Container>
       <Webcam>
-        <canvas width="640" height="640" id="canvas"></canvas>
+        {/* <canvas width="640" height="640" id="canvas"></canvas> */}
+        <Canvas id="border">
+          <canvas width="640" height="640" id="canvas"></canvas>
+        </Canvas>
         <WebcamToolbar>
           <Label id="rep-container"></Label>
           <Button
@@ -254,6 +263,12 @@ const Container = styled.div`
   @media only screen and (max-width: 1200px) {
     flex-direction: column;
   }
+`;
+
+const Canvas = styled.div`
+  width: 640;
+  height: 640;
+  border: 10px solid cyan;
 `;
 
 const Webcam = styled.div`
