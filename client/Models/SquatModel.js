@@ -240,22 +240,35 @@ export function Model() {
 const Container = styled.div`
   display: flex;
   width: 100%;
+  margin: 2rem;
+
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
 `
 
 const Webcam = styled.div`
   display: flex;
+  flex: 1;
   flex-direction: column;
   border: 1px solid red;
 `
 const LabelContainer = styled.div`
   display: flex;
+  flex: 1;
+  justify-content: space-around;
   align-items: center;
   border: 1px solid green;
+  margin: 1rem;
 `
 const Label = styled.div`
   color: white;
   font-size: 2rem;
   border: 1px solid red;
+  @media only screen and (max-width: 1200px) {
+    color: black;
+    font-size: 1.3rem;
+  }
 `
 
 const Button = styled.button`
