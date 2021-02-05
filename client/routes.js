@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, Route, Switch } from 'react-router-dom';
 import { FormCheck } from './components/FormCheck';
 import { Home } from './components/Home';
+import { Login } from './components/Login';
 
 class Routes extends Component {
   render() {
@@ -9,6 +10,7 @@ class Routes extends Component {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/formcheck" component={FormCheck} />
+        <Route path="/login" component={Login} />
       </Switch>
     );
   }
