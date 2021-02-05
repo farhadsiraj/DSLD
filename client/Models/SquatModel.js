@@ -78,6 +78,8 @@ let squattingPosition;
 let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
+let lineColor = 'cyan';
+
 
 // function countdown() {
 //   let seconds = 10,
@@ -107,12 +109,17 @@ async function predict(bool) {
     // console.log('prediction---->', prediction);
 
     // finally draw the poses
-    drawPose(pose);
 
-    startingPosition = prediction[0].probability;
-    squattingPosition = prediction[1].probability;
+    drawPose(pose, lineColor);
+
+    startingPosition = prediction[1].probability;
+    squattingPosition = prediction[3].probability;
     middlePosition = prediction[2].probability;
-    setupPosition = prediction[3].probability;
+    setupPosition = prediction[0].probability;
+
+    // let border = document.getElementById('border');
+
+    // console.log('border----->', border.border);
 
     if (counterStatus === 'pending' && startingPosition > 0.9) {
       console.log('Step 1');
@@ -132,6 +139,10 @@ async function predict(bool) {
     if (counterStatus === 'squatting' && startingPosition > 0.9) {
       console.log('Step 4');
       console.log('success');
+      lineColor = 'green';
+      drawPose(pose, lineColor);
+      // border.border = lineColor;
+
       repCount = repCount + 1;
       playAudio(positiveFeedback);
       counterStatus = 'pending';
@@ -140,6 +151,11 @@ async function predict(bool) {
     if (counterStatus === 'middle' && startingPosition > 0.9) {
       console.log('Step 5');
       console.log('fail');
+
+      lineColor = 'red';
+      // border.color = lineColor;
+      drawPose(pose, lineColor);
+
       playAudio(negativeFeedback);
       counterStatus = 'pending';
     }
@@ -156,14 +172,25 @@ async function predict(bool) {
   }
 }
 
-function drawPose(pose) {
+function drawPose(pose, color) {
   if (webcam.canvas) {
     ctx.drawImage(webcam.canvas, 0, 0);
     // draw the keypoints and skeleton
     if (pose) {
       const minPartConfidence = 0.5;
-      tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-      tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+
+      tmPose.drawKeypoints(
+        pose.keypoints,
+        minPartConfidence,
+        ctx,
+        5,
+        color,
+        color
+      );
+      tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx, null, color);
+      // console.log(tmPose.drawKeypoints);
+      // console.log(tmPose.drawSkeleton);
+
     }
   }
 }
@@ -178,20 +205,7 @@ async function togglePredict() {
   }
 }
 
-// let button = 'start';
-// function pause() {
-//   if (button === 'start') {
-//     playAudio(positiveFeedback);
-//     // play(yodelBuffer);
-//     // beep(15, 0.5, 10000);
-//     button = 'stop';
-//   } else {
-//     button = 'start';
-//     playAudio(negativeFeedback);
-//     window.requestAnimationFrame(loop);
-//   }
-//   console.log(button);
-// }
+
 
 let sound;
 
@@ -215,6 +229,9 @@ export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
 
+  const [borderColor, setBorderColor] = useState('cyan');
+
+
   useEffect(() => {
     init();
 
@@ -225,6 +242,9 @@ export function Model() {
     <Container>
       <Webcam>
         <canvas width="640" height="640" id="canvas"></canvas>
+        {/* <Canvas id="border">
+          <canvas width="640" height="640" id="canvas"></canvas>
+        </Canvas> */}
         <WebcamToolbar>
           <Label id="rep-container"></Label>
           <Button
@@ -254,6 +274,12 @@ const Container = styled.div`
   @media only screen and (max-width: 1200px) {
     flex-direction: column;
   }
+`;
+
+const Canvas = styled.div`
+  width: 640;
+  height: 640;
+  border: 10px solid cyan;
 `;
 
 const Webcam = styled.div`
