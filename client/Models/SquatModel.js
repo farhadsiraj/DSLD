@@ -22,6 +22,7 @@ async function init() {
   // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
   // Note: the pose library adds a tmPose object to your window (window.tmPose)
   model = await tmPose.load(modelURL, metadataURL)
+
   maxPredictions = model.getTotalClasses()
 
   // Convenience function to setup a webcam
@@ -92,8 +93,10 @@ async function predict(bool) {
     const prediction = await model.predict(posenetOutput)
 
     for (let i = 0; i < maxPredictions; i++) {
-      const classPrediction =
-        prediction[i].className + ': ' + prediction[i].probability.toFixed(2)
+      const classPrediction = `${prediction[i].className}: ${Math.ceil(
+        prediction[i].probability.toFixed(2) * 100
+      )}%`
+      console.log(classPrediction)
       labelContainer.childNodes[i].innerHTML = classPrediction
     }
     // console.log('prediction---->', prediction);
@@ -139,7 +142,7 @@ async function predict(bool) {
     console.log(counterStatus)
 
     let repContainer = document.getElementById('rep-container')
-    repContainer.innerHTML = repCount
+    repContainer.innerHTML = `Total Reps: ${repCount}`
 
     // console.log('counterStatus ---->', counterStatus);
     // console.log('In func repCount ---->', repCount);
@@ -209,34 +212,50 @@ export function Model() {
 
   useEffect(() => {
     init()
-    setIsLoading(false)
     return () => console.log('Model cleaned up.')
   }, [])
   return (
     <Container>
-      <div>
-        {isLoading ? <Placeholder /> : <canvas id="canvas"></canvas>}
-        <div id="label-container"></div>
-        <div id="rep-container"></div>
-        <div id="countdown"></div>
-      </div>
-      <Button
-        id="togglePredict"
-        onClick={() => {
-          togglePredict()
-          setToggle(!toggleStart)
-        }}
-      >
-        {toggleStart === true ? 'Stop' : 'Start'}
-      </Button>
+      <Webcam>
+        <canvas id="canvas"></canvas>
+        <Button
+          id="togglePredict"
+          onClick={() => {
+            togglePredict()
+            setToggle(!toggleStart)
+          }}
+        >
+          {toggleStart ? 'Stop' : 'Start'}
+        </Button>
+      </Webcam>
+      <LabelContainer>
+        <Label id="label-container"></Label>
+        <Label id="rep-container"></Label>
+        <Label id="countdown"></Label>
+      </LabelContainer>
     </Container>
   )
 }
 
 const Container = styled.div`
   display: flex;
-  border: 1px solid red;
   width: 100%;
+`
+
+const Webcam = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+`
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  border: 1px solid green;
+`
+const Label = styled.div`
+  color: white;
+  font-size: 2rem;
+  border: 1px solid red;
 `
 
 const Button = styled.button`
@@ -248,6 +267,7 @@ const Button = styled.button`
   background-color: #f67280;
   border: 0px;
   width: 10rem;
+  border: 1px solid black;
 `
 const Placeholder = styled.div`
   height: 640px;
