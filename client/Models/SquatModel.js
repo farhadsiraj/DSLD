@@ -264,7 +264,7 @@ const LabelContainer = styled.div`
 `
 const Label = styled.div`
   color: #325d79;
-  font-size: 2rem;
+  font-size: 3.2rem;
   @media only screen and (max-width: 1200px) {
     font-size: 1.3rem;
   }
