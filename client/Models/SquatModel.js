@@ -80,6 +80,7 @@ let setupPosition;
 let counterStatus = 'pending';
 let lineColor = 'cyan';
 
+
 // function countdown() {
 //   let seconds = 10,
 //     countdownSeconds = document.getElementById('#countdown');
@@ -141,6 +142,7 @@ async function predict(bool) {
       lineColor = 'green';
       drawPose(pose, lineColor);
       // border.border = lineColor;
+
       repCount = repCount + 1;
       playAudio(positiveFeedback);
       counterStatus = 'pending';
@@ -149,9 +151,11 @@ async function predict(bool) {
     if (counterStatus === 'middle' && startingPosition > 0.9) {
       console.log('Step 5');
       console.log('fail');
+
       lineColor = 'red';
       // border.color = lineColor;
       drawPose(pose, lineColor);
+
       playAudio(negativeFeedback);
       counterStatus = 'pending';
     }
@@ -174,6 +178,7 @@ function drawPose(pose, color) {
     // draw the keypoints and skeleton
     if (pose) {
       const minPartConfidence = 0.5;
+
       tmPose.drawKeypoints(
         pose.keypoints,
         minPartConfidence,
@@ -185,6 +190,7 @@ function drawPose(pose, color) {
       tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx, null, color);
       // console.log(tmPose.drawKeypoints);
       // console.log(tmPose.drawSkeleton);
+
     }
   }
 }
@@ -198,6 +204,8 @@ async function togglePredict() {
     predictStatus = 'pending';
   }
 }
+
+
 
 let sound;
 
@@ -220,7 +228,9 @@ async function playAudio(audio) {
 export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
+
   const [borderColor, setBorderColor] = useState('cyan');
+
 
   useEffect(() => {
     init();
