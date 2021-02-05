@@ -1,16 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import * as tf from '@tensorflow/tfjs-core'
 import * as tmPose from '@teachablemachine/pose'
 import positiveFeedback from '../../public/audio/positiveFeedback.mp3'
 import negativeFeedback from '../../public/audio/negativeFeedback.mp3'
+import styled from 'styled-components'
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
 
 // the link to your model provided by Teachable Machine export panel
 
-const URL = 'https://teachablemachine.withgoogle.com/models/J5d1HwacC/'
+// Squat v2
+// https://teachablemachine.withgoogle.com/models/J5d1HwacC/
+// Squat v3
+// https://teachablemachine.withgoogle.com/models/gzTttOI1O/
+
+const URL = 'https://teachablemachine.withgoogle.com/models/gzTttOI1O/'
 let model, webcam, ctx, labelContainer, maxPredictions
 
 async function init() {
@@ -21,6 +27,7 @@ async function init() {
   // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
   // Note: the pose library adds a tmPose object to your window (window.tmPose)
   model = await tmPose.load(modelURL, metadataURL)
+
   maxPredictions = model.getTotalClasses()
 
   // Convenience function to setup a webcam
@@ -91,8 +98,10 @@ async function predict(bool) {
     const prediction = await model.predict(posenetOutput)
 
     for (let i = 0; i < maxPredictions; i++) {
-      const classPrediction =
-        prediction[i].className + ': ' + prediction[i].probability.toFixed(2)
+      const classPrediction = `${prediction[i].className}: ${Math.ceil(
+        prediction[i].probability.toFixed(2) * 100
+      )}%`
+      console.log(classPrediction)
       labelContainer.childNodes[i].innerHTML = classPrediction
     }
     // console.log('prediction---->', prediction);
@@ -138,7 +147,7 @@ async function predict(bool) {
     console.log(counterStatus)
 
     let repContainer = document.getElementById('rep-container')
-    repContainer.innerHTML = repCount
+    repContainer.innerHTML = `Total Reps: ${repCount}`
 
     // console.log('counterStatus ---->', counterStatus);
     // console.log('In func repCount ---->', repCount);
@@ -203,18 +212,87 @@ async function playAudio(audio) {
 }
 
 export function Model() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [toggleStart, setToggle] = useState(false)
+
+  useEffect(() => {
+    init()
+
+    return () => console.log('Model cleaned up.')
+  }, [])
+
   return (
-    <div>
-      <button onClick={() => init()}>Start!</button>
-      <div>
-        <canvas id="canvas"></canvas>
-        <div id="label-container"></div>
-        <div id="rep-container"></div>
-        <div id="countdown"></div>
-      </div>
-      <button id="togglePredict" onClick={() => togglePredict()}>
-        Toggle
-      </button>
-    </div>
+    <Container>
+      <Webcam>
+        <canvas width="640" height="640" id="canvas"></canvas>
+        <WebcamToolbar>
+          <Label id="rep-container"></Label>
+          <Button
+            id="togglePredict"
+            onClick={() => {
+              togglePredict()
+              setToggle(!toggleStart)
+            }}
+          >
+            {toggleStart ? 'Stop' : 'Start'}
+          </Button>
+        </WebcamToolbar>
+      </Webcam>
+      <LabelContainer>
+        <Label id="label-container"></Label>
+        <Label id="countdown"></Label>
+      </LabelContainer>
+    </Container>
   )
 }
+
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  margin: 2rem;
+
+  @media only screen and (max-width: 1200px) {
+    flex-direction: column;
+  }
+`
+
+const Webcam = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+`
+const LabelContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`
+const Label = styled.div`
+  color: #325d79;
+  font-size: 3.2rem;
+  @media only screen and (max-width: 1200px) {
+    font-size: 1.3rem;
+  }
+`
+
+const WebcamToolbar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
+`
+
+const Button = styled.button`
+  padding: 1rem;
+  text-decoration: none;
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  background-color: #f67280;
+  border: 0px;
+  width: 10rem;
+`
+const Placeholder = styled.div`
+  height: 640px;
+  width: 640px;
+  background-color: pink;
+`
