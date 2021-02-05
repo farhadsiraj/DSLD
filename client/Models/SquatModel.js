@@ -212,25 +212,29 @@ export function Model() {
 
   useEffect(() => {
     init()
+
     return () => console.log('Model cleaned up.')
   }, [])
+
   return (
     <Container>
       <Webcam>
-        <canvas id="canvas"></canvas>
-        <Button
-          id="togglePredict"
-          onClick={() => {
-            togglePredict()
-            setToggle(!toggleStart)
-          }}
-        >
-          {toggleStart ? 'Stop' : 'Start'}
-        </Button>
+        <canvas width="640" height="640" id="canvas"></canvas>
+        <WebcamToolbar>
+          <Label id="rep-container"></Label>
+          <Button
+            id="togglePredict"
+            onClick={() => {
+              togglePredict()
+              setToggle(!toggleStart)
+            }}
+          >
+            {toggleStart ? 'Stop' : 'Start'}
+          </Button>
+        </WebcamToolbar>
       </Webcam>
       <LabelContainer>
         <Label id="label-container"></Label>
-        <Label id="rep-container"></Label>
         <Label id="countdown"></Label>
       </LabelContainer>
     </Container>
@@ -256,19 +260,23 @@ const Webcam = styled.div`
 const LabelContainer = styled.div`
   display: flex;
   flex: 1;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   border: 1px solid green;
-  margin: 1rem;
 `
 const Label = styled.div`
-  color: white;
+  color: #325d79;
   font-size: 2rem;
   border: 1px solid red;
   @media only screen and (max-width: 1200px) {
-    color: black;
     font-size: 1.3rem;
   }
+`
+
+const WebcamToolbar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.7rem;
 `
 
 const Button = styled.button`
@@ -280,7 +288,6 @@ const Button = styled.button`
   background-color: #f67280;
   border: 0px;
   width: 10rem;
-  border: 1px solid black;
 `
 const Placeholder = styled.div`
   height: 640px;
