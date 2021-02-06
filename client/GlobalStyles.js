@@ -15,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
     border-bottom-style: solid;
     border-bottom-width: 3px;
   }
+
+  p {
+    margin: 0;
+  }
 `
 
 export default GlobalStyle
