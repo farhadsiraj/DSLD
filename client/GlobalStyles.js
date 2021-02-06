@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
   }
 
-  a {
+  a, Link {
     color: #325D79;
     text-decoration: none;
     border-bottom: #F9A26C;
