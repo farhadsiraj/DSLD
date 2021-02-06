@@ -109,9 +109,19 @@ const Text = styled.p`
 
 const ImageBox = styled.img`
   width: 45%;
-  height: 70%;
-  border-radius: 2rem;
-  padding: 1rem;
+  height: auto;
+  max-width: 100%;
+  /* border-radius: 2rem; */
+  /* padding: 1rem; */
+`
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 10vh;
+  background-color: #9bd7d1;
 `
 
 export function Home() {
@@ -146,6 +156,14 @@ export function Home() {
             <Text style={{ textAlign: 'center' }}>Unlock Skins</Text>
           </Box>
         </InfoContainer>
+        <Footer>
+          <Link to="/signup" style={{ margin: '0.2rem' }}>
+            Sign Up
+          </Link>
+          <Link to="/login" style={{ margin: '0.2rem' }}>
+            Login
+          </Link>
+        </Footer>
       </ContentContainer>
     </GradientContainer>
   )
