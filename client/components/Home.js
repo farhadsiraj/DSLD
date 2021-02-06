@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import GlobalStyles from '../GlobalStyles'
 import firebase from '../../firebase'
+import 'firebase/firestore'
 import gym from '../../public/assets/images/gym.jpg'
+
 const db = firebase.firestore()
 
 const GradientContainer = styled.div`
