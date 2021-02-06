@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import GlobalStyles from '../GlobalStyles';
-import { Model } from '../Models/SquatModel';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faForward } from '@fortawesome/free-solid-svg-icons';
+import React from 'react'
+import styled from 'styled-components'
+import GlobalStyles from '../GlobalStyles'
+import { Model } from '../Models/SquatModel'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faForward } from '@fortawesome/free-solid-svg-icons'
 
 const GradientContainer = styled.div`
   /* display: flex;
@@ -29,14 +29,14 @@ const GradientContainer = styled.div`
     height: 100%;
     z-index: -1;
   }
-`;
+`
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-`;
+`
 
 const ContentContainer = styled.div`
   display: flex;
@@ -49,13 +49,13 @@ const ContentContainer = styled.div`
   @media only screen and (max-width: 1200px) {
     width: 90%;
   }
-`;
+`
 const TopToolbar = styled.div`
   display: flex;
   margin-top: 1rem;
   justify-content: space-between;
   width: 100%;
-`;
+`
 
 const WorkoutType = styled.div`
   display: flex;
@@ -68,7 +68,7 @@ const WorkoutType = styled.div`
   background-color: #355c7d;
   border: 0px;
   width: 10rem;
-`;
+`
 
 export function FormCheck() {
   return (
@@ -87,14 +87,6 @@ export function FormCheck() {
           <Model />
         </ContentContainer>
       </Container>
-      {/* <div id="container">
-        <video autoplay="true" id="videoElement"></video>
-      </div> */}
     </GradientContainer>
-  );
+  )
 }
-
-//media query look for screen width
-// 375 x 812  = 2.16 h/w  .46
-// 480 x 640  = 1.33 h/w
-//

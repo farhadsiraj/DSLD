@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import GlobalStyles from '../GlobalStyles';
-import firebase from '../../firebase';
-import gym from '../../public/assets/images/gym.jpg';
-const db = firebase.firestore();
+import React from 'react'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import GlobalStyles from '../GlobalStyles'
+import firebase from '../../firebase'
+import gym from '../../public/assets/images/gym.jpg'
+const db = firebase.firestore()
 
 const GradientContainer = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const GradientContainer = styled.div`
     height: 100%;
     z-index: -1;
   }
-`;
+`
 
 const ContentContainer = styled.div`
   display: flex;
@@ -40,16 +40,7 @@ const ContentContainer = styled.div`
   width: 100%;
   margin-top: 65px;
   z-index: 1;
-`;
-// const Header = styled.div`
-//   width: 80%;
-//   height: 300px;
-//   margin: 1rem;
-//   border-radius: 10px;
-//   background-image: url('../../public/assets/images/gym.jpg');
-//   background-position: center;
-//   z-index: 29;
-// `
+`
 
 const Box = styled.div`
   width: 90%;
@@ -57,28 +48,27 @@ const Box = styled.div`
   background-color: #355c7d;
   margin: 1rem;
   border-radius: 2rem;
-`;
+`
 
 const MobileHeader = styled.img`
   margin-top: 1rem;
   width: 90%;
   height: 20%;
   border-radius: 2rem;
-`;
+`
 
 const InfoContainer = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
-`;
+`
 
 export function Home() {
   return (
     <GradientContainer>
       <GlobalStyles />
       <ContentContainer>
-        {/* <Header /> */}
         <MobileHeader src={gym} title="gym" />
         <InfoContainer>
           <Box>
@@ -102,5 +92,5 @@ export function Home() {
         </InfoContainer>
       </ContentContainer>
     </GradientContainer>
-  );
+  )
 }
