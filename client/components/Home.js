@@ -86,7 +86,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
-  height: 250px;
+  height: 100%;
   background-color: #355c7d;
   margin: 1rem;
   border-radius: 2rem;
@@ -119,6 +119,7 @@ const ImageBox = styled.img`
   width: 50%;
   height: auto;
   max-width: 100%;
+  padding: 1rem;
 `
 
 const Footer = styled.div`
@@ -128,6 +129,18 @@ const Footer = styled.div`
   width: 100%;
   height: 10vh;
   background-color: #9bd7d1;
+`
+
+const DetailsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media only screen and (min-width: 960px) {
+    flex-direction: row;
+    width: 92%;
+  }
 `
 
 export function Home() {
@@ -147,18 +160,20 @@ export function Home() {
               </Text>
             </HeaderFlex>
           </HeaderBox>
-          <Box style={{ backgroundColor: '#F9A26C' }}>
-            <ImageBox src={ball} />
-            <Subtitle>Make Your Reps Count</Subtitle>
-          </Box>
-          <Box style={{ backgroundColor: '#9BD7D1' }}>
-            <ImageBox src={ohp} />
-            <Subtitle>Stay Accountable with Leaderboards</Subtitle>
-          </Box>
-          <Box style={{ backgroundColor: '#355c7d' }}>
-            <ImageBox src={press} />
-            <Subtitle>Unlock Skins</Subtitle>
-          </Box>
+          <DetailsContainer>
+            <Box style={{ backgroundColor: '#F9A26C' }}>
+              <ImageBox src={ball} />
+              <Subtitle>Make Your Reps Count</Subtitle>
+            </Box>
+            <Box style={{ backgroundColor: '#9BD7D1' }}>
+              <ImageBox src={ohp} />
+              <Subtitle>Stay Accountable with Leaderboards</Subtitle>
+            </Box>
+            <Box style={{ backgroundColor: '#355c7d' }}>
+              <ImageBox src={press} />
+              <Subtitle>Unlock Skins</Subtitle>
+            </Box>
+          </DetailsContainer>
         </InfoContainer>
         <Footer>
           <Link to="/signup" style={{ margin: '0.2rem' }}>
