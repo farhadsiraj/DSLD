@@ -107,6 +107,13 @@ const Text = styled.p`
   width: 80%;
 `
 
+const ImageBox = styled.img`
+  width: 45%;
+  height: 70%;
+  border-radius: 2rem;
+  padding: 1rem;
+`
+
 export function Home() {
   return (
     <GradientContainer>
@@ -124,7 +131,20 @@ export function Home() {
               </Text>
             </HeaderFlex>
           </HeaderBox>
-          <Box>Hello</Box>
+          <Box>
+            <ImageBox src={ball} />
+            <Text style={{ textAlign: 'center' }}>Make Your Reps Count</Text>
+          </Box>
+          <Box>
+            <ImageBox src={ohp} />
+            <Text style={{ textAlign: 'center' }}>
+              Stay Accountable with Leaderboards
+            </Text>
+          </Box>
+          <Box>
+            <ImageBox src={press} />
+            <Text style={{ textAlign: 'center' }}>Unlock Skins</Text>
+          </Box>
         </InfoContainer>
       </ContentContainer>
     </GradientContainer>
