@@ -101,9 +101,25 @@ export default function NavBar() {
             }}
           >
             <DropdownItem>
-              <Link to="/login">Login</Link>
+              <Link
+                to="/login"
+                onClick={function () {
+                  setUserDropdown(!userDropdown);
+                }}
+              >
+                Login
+              </Link>
             </DropdownItem>
-            <DropdownItem>Signup</DropdownItem>
+            <DropdownItem>
+              <Link
+                to="/createaccount"
+                onClick={function () {
+                  setUserDropdown(!userDropdown);
+                }}
+              >
+                Create an Account
+              </Link>
+            </DropdownItem>
           </Dropdown>
         ) : (
           ''
