@@ -107,12 +107,18 @@ const Text = styled.p`
   width: 80%;
 `
 
+const Subtitle = styled.h2`
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 400;
+  padding-top: 0.5rem;
+`
+
 const ImageBox = styled.img`
-  width: 45%;
+  width: 50%;
   height: auto;
   max-width: 100%;
-  /* border-radius: 2rem; */
-  /* padding: 1rem; */
 `
 
 const Footer = styled.div`
@@ -141,19 +147,17 @@ export function Home() {
               </Text>
             </HeaderFlex>
           </HeaderBox>
-          <Box>
+          <Box style={{ backgroundColor: '#F9A26C' }}>
             <ImageBox src={ball} />
-            <Text style={{ textAlign: 'center' }}>Make Your Reps Count</Text>
+            <Subtitle>Make Your Reps Count</Subtitle>
           </Box>
-          <Box>
+          <Box style={{ backgroundColor: '#9BD7D1' }}>
             <ImageBox src={ohp} />
-            <Text style={{ textAlign: 'center' }}>
-              Stay Accountable with Leaderboards
-            </Text>
+            <Subtitle>Stay Accountable with Leaderboards</Subtitle>
           </Box>
-          <Box>
+          <Box style={{ backgroundColor: '#355c7d' }}>
             <ImageBox src={press} />
-            <Text style={{ textAlign: 'center' }}>Unlock Skins</Text>
+            <Subtitle>Unlock Skins</Subtitle>
           </Box>
         </InfoContainer>
         <Footer>
