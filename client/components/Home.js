@@ -109,12 +109,18 @@ const HeaderTitle = styled.h1`
   font-size: 1.4rem;
   color: white;
   font-weight: 300;
+  @media only screen and (min-width: 960px) {
+    font-size: 2rem;
+  }
 `
 
 const Text = styled.p`
   color: white;
   font-size: 0.7rem;
   width: 80%;
+  @media only screen and (min-width: 960px) {
+    font-size: 1rem;
+  }
 `
 
 const Subtitle = styled.h2`
@@ -165,15 +171,25 @@ const NestedHeaderImage = styled.img`
   display: none;
   @media only screen and (min-width: 960px) {
     display: flex;
-    flex: 1;
-    width: 400px;
-    height: 300px;
+    width: 40rem;
+    height: auto;
+    max-height: 100%;
+    max-width: 90%;
     border-radius: 2rem;
   }
 `
 
 const HeaderBox = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  @media only screen and (min-width: 960px) {
+    display: flex;
+    flex-direction: column;
+    height: 85%;
+  }
 `
 
 export function Home() {
