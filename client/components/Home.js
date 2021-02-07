@@ -2,21 +2,21 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import GlobalStyles from '../GlobalStyles'
-import firebase from '../../firebase'
-import 'firebase/firestore'
 import gym from '../../public/assets/images/gym.jpg'
 import ball from '../../public/assets/images/ball.png'
 import ohp from '../../public/assets/images/ohp.png'
 import press from '../../public/assets/images/press.png'
+import firebase from '../../firebase'
+import 'firebase/firestore'
 
 const db = firebase.firestore()
 
 const GradientContainer = styled.div`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 100%; */
 
   &:after {
     background: rgb(242, 102, 39);
@@ -59,6 +59,9 @@ const MobileHeader = styled.img`
   width: 90%;
   height: 20%;
   border-radius: 2rem;
+  @media only screen and (min-width: 960px) {
+    display: none;
+  }
 `
 
 const HeaderBox = styled.div`
@@ -129,6 +132,14 @@ const Footer = styled.div`
   width: 100%;
   height: 10vh;
   background-color: #9bd7d1;
+
+  @media only screen and (min-width: 960px) {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 7vh;
+  }
 `
 
 const DetailsContainer = styled.div`

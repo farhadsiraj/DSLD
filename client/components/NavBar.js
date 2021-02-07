@@ -83,7 +83,7 @@ export default function NavBar() {
                   setHamburgerDropdown(false)
                 }}
               >
-                Formcheck
+                Workout
               </Link>
             </DropdownItem>
           </Dropdown>
