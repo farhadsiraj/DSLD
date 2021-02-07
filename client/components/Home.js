@@ -64,7 +64,7 @@ const MobileHeader = styled.img`
   }
 `
 
-const HeaderBox = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -74,6 +74,10 @@ const HeaderBox = styled.div`
   background-color: #355c7d;
   margin-top: 3vh;
   border-radius: 2rem;
+
+  @media only screen and (min-width: 960px) {
+    height: 40vh;
+  }
 `
 
 const HeaderFlex = styled.div`
@@ -83,6 +87,9 @@ const HeaderFlex = styled.div`
   border-radius: 2rem;
   justify-content: center;
   align-items: center;
+  @media only screen and (min-width: 960px) {
+    flex-direction: row;
+  }
 `
 
 const Box = styled.div`
@@ -154,6 +161,21 @@ const DetailsContainer = styled.div`
   }
 `
 
+const NestedHeaderImage = styled.img`
+  display: none;
+  @media only screen and (min-width: 960px) {
+    display: flex;
+    flex: 1;
+    width: 400px;
+    height: 300px;
+    border-radius: 2rem;
+  }
+`
+
+const HeaderBox = styled.div`
+  display: flex;
+`
+
 export function Home() {
   return (
     <GradientContainer>
@@ -161,16 +183,21 @@ export function Home() {
       <ContentContainer>
         <MobileHeader src={gym} title="DSLD keeps you fit" />
         <InfoContainer>
-          <HeaderBox>
+          <HeaderContainer>
             <HeaderFlex>
-              <HeaderTitle>Your Workout Companion.</HeaderTitle>
-              <Text>
-                DSLD (a.k.a Don't Skip Leg Day) keeps you honest by verifying
-                completed reps to ensure you get the most out of your time in
-                the gym.
-              </Text>
+              <HeaderBox>
+                <NestedHeaderImage src={gym} />
+              </HeaderBox>
+              <HeaderBox>
+                <HeaderTitle>Your Workout Companion.</HeaderTitle>
+                <Text>
+                  DSLD (a.k.a Don't Skip Leg Day) keeps you honest by verifying
+                  completed reps to ensure you get the most out of your time in
+                  the gym.
+                </Text>
+              </HeaderBox>
             </HeaderFlex>
-          </HeaderBox>
+          </HeaderContainer>
           <DetailsContainer>
             <Box style={{ backgroundColor: '#F9A26C' }}>
               <ImageBox src={ball} />
