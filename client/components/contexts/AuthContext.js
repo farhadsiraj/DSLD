@@ -47,12 +47,12 @@ export function AuthProvider({ children }) {
     // we set user here
     // take in a user and allow us to set the user to current user or null
     // use unsusbscribe to unsubscribe us from this listener (onAuthStateChanged) when we're done by using it
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       // setLoading is set to false once we have a user
       // use this will currentUser is changing from null to the current user
       // as soon as we get this first useEffect that runs that means it did the verification to see if there is a user then we set loading to false
-      setCurrentUser(user);
-      setLoading(false);
+      await setCurrentUser(user);
+      await setLoading(false);
     });
     return unsubscribe;
   }, []);

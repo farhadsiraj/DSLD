@@ -42,7 +42,7 @@ export default function ForgotPassword() {
               <Form.Control type="email" ref={emailRef} required />
             </Form.Group>
             <Button
-              disable={loading}
+              disable={loading.toString()}
               type="submit"
               className="w-100 text-center mt-2"
             >
