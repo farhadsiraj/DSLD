@@ -86,6 +86,10 @@ export default function NavBar() {
                 Workout
               </Link>
             </DropdownItem>
+
+            <DropdownItem>Link</DropdownItem>
+            <DropdownItem>Link</DropdownItem>
+
           </Dropdown>
         ) : (
           ''
