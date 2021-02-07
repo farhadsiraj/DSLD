@@ -53,7 +53,7 @@ export default function Signup() {
               <Form.Control type="password" ref={passwordConfirmRef} required />
             </Form.Group>
             <Button
-              disable={loading}
+              disable={loading.toString()}
               type="submit"
               className="w-100 text-center mt-2"
             >
