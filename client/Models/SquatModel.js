@@ -210,15 +210,9 @@ export function Model() {
           color,
           color
         );
-        tmPose.drawSkeleton(
-          pose.keypoints,
-          minPartConfidence,
-          ctx,
-          null,
-          color
-        );
+        tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx, 5, color);
         // console.log(tmPose.drawKeypoints);
-        // console.log(tmPose.drawSkeleton);
+        console.log(tmPose.drawSkeleton);
       }
     }
   }
