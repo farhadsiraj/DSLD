@@ -66,15 +66,27 @@ export default function NavBar() {
         {hamburgerDropdown ? (
           <Dropdown>
             <DropdownItem>
+              {' '}
+              <Link
+                to="/"
+                onClick={function () {
+                  setHamburgerDropdown(false);
+                }}
+              >
+                Home
+              </Link>
+            </DropdownItem>
+            <DropdownItem>
               <Link
                 to="/formcheck"
                 onClick={function () {
                   setHamburgerDropdown(false);
                 }}
               >
-                Formcheck
+                Workout
               </Link>
             </DropdownItem>
+
             <DropdownItem>Link</DropdownItem>
             <DropdownItem>Link</DropdownItem>
           </Dropdown>
@@ -101,9 +113,25 @@ export default function NavBar() {
             }}
           >
             <DropdownItem>
-              <Link to="/login">Login</Link>
+              <Link
+                to="/login"
+                onClick={function () {
+                  setUserDropdown(!userDropdown);
+                }}
+              >
+                Login
+              </Link>
             </DropdownItem>
-            <DropdownItem>Signup</DropdownItem>
+            <DropdownItem>
+              <Link
+                to="/createaccount"
+                onClick={function () {
+                  setUserDropdown(!userDropdown);
+                }}
+              >
+                Create an Account
+              </Link>
+            </DropdownItem>
           </Dropdown>
         ) : (
           ''

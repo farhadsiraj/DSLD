@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { AuthProvider } from './components/contexts/AuthContext';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -9,6 +10,7 @@ import LoginForm from './components/LoginForm';
 import PrivateRoute from './components/PrivateRoute';
 import ForgotPassword from './components/ForgotPassword';
 import UpdateProfile from './components/UpdateProfile';
+
 
 class Routes extends Component {
   render() {
@@ -27,7 +29,8 @@ class Routes extends Component {
         </AuthProvider>
       </Router>
     );
+
   }
 }
 
-export default Routes;
+export default Routes
