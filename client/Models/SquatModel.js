@@ -7,12 +7,23 @@ import negativeFeedback from '../../public/audio/negativeFeedback_v1.mp3';
 import styled from 'styled-components';
 
 // needs to be outside of Model function scope to toggle Start/Stop
+// Initialize vars for repCount
+let repCount = 0;
+let startingPosition;
+let squattingPosition;
+let middlePosition;
+let setupPosition;
+let counterStatus = 'pending';
+let lineColor = 'cyan';
+let totalReps = 5;
+let successfulReps = totalReps;
+let reps = totalReps;
 let predictStatus = 'pending';
 
 export function Model() {
+  // Hooks
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
-
   const [borderColor, setBorderColor] = useState('cyan');
 
   // More API functions here:
@@ -78,15 +89,6 @@ export function Model() {
     window.requestAnimationFrame(loop);
   }
 
-  // Initialize vars for repCount
-  let repCount = 0;
-  let startingPosition;
-  let squattingPosition;
-  let middlePosition;
-  let setupPosition;
-  let counterStatus = 'pending';
-  let lineColor = 'cyan';
-
   // function countdown() {
   //   let seconds = 10,
   //     countdownSeconds = document.getElementById('#countdown');
@@ -148,10 +150,10 @@ export function Model() {
         lineColor = 'green';
         drawPose(pose, lineColor);
         // border.border = lineColor;
-
         repCount = repCount + 1;
         playAudio(positiveFeedback);
         counterStatus = 'pending';
+        reps = reps - 1;
       }
 
       if (counterStatus === 'middle' && startingPosition > 0.9) {
@@ -161,15 +163,30 @@ export function Model() {
         lineColor = 'red';
         // border.color = lineColor;
         drawPose(pose, lineColor);
-
+        successfulReps = successfulReps - 1;
         playAudio(negativeFeedback);
         counterStatus = 'pending';
+        reps = reps - 1;
+      }
+
+      let accuracy = (successfulReps / totalReps) * 100;
+
+      if (reps <= 0) {
+        togglePredict();
+        console.log('DONE');
+        // return;
       }
 
       // console.log(counterStatus);
 
       let repContainer = document.getElementById('rep-container');
       repContainer.innerHTML = `Total Reps: ${repCount}`;
+
+      let accContainer = document.getElementById('acc-container');
+      accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+
+      let remContainer = document.getElementById('rem-container');
+      remContainer.innerHTML = `Remaining Reps: ${reps}`;
 
       // console.log('counterStatus ---->', counterStatus);
       // console.log('In func repCount ---->', repCount);
@@ -249,6 +266,8 @@ export function Model() {
         </Canvas> */}
         <WebcamToolbar>
           <Label id="rep-container"></Label>
+          <Label id="acc-container"></Label>
+          <Label id="rem-container"></Label>
           <Button
             id="togglePredict"
             onClick={() => {
