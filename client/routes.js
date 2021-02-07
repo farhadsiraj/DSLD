@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { withRouter, Route, Switch } from 'react-router-dom';
-import { FormCheck } from './components/FormCheck';
-import { Home } from './components/Home';
-import { Login } from './components/LoginForm';
+import React, { Component } from 'react'
+import { Route, Switch } from 'react-router-dom'
+import { FormCheck } from './components/FormCheck'
+import { Home } from './components/Home'
+import { Login } from './components/LoginForm'
 
 class Routes extends Component {
   render() {
@@ -12,8 +12,8 @@ class Routes extends Component {
         <Route exact path="/formcheck" component={FormCheck} />
         <Route path="/login" component={Login} />
       </Switch>
-    );
+    )
   }
 }
 
-export default Routes;
+export default Routes
