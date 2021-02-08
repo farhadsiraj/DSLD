@@ -64,7 +64,7 @@ const WorkoutType = styled.div`
   width: 10rem;
 `
 
-export function FormCheck() {
+export default function FormCheck() {
   return (
     <GradientContainer>
       <GlobalStyles />
