@@ -13,22 +13,17 @@ import ForgotPassword from './components/ForgotPassword'
 class Routes extends Component {
   render() {
     return (
-      <Router>
-        <AuthProvider>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/signup" component={Signup} />
-            <Route exact path="/formcheck" component={FormCheck} />
-            <Route exact path="/login" component={LoginForm} />
-            <Route exact path="/forgot-password" component={ForgotPassword} />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <PrivateRoute
-              exactpath="/update-profile"
-              component={UpdateProfile}
-            />
-          </Switch>
-        </AuthProvider>
-      </Router>
+      <AuthProvider>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/login" component={LoginForm} />
+          <Route exact path="/formcheck" component={FormCheck} />
+          <Route exact path="/forgot-password" component={ForgotPassword} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/update-profile" component={UpdateProfile} />
+        </Switch>
+      </AuthProvider>
     )
   }
 }
