@@ -5,6 +5,8 @@ import * as tmPose from '@teachablemachine/pose';
 import positiveFeedback from '../../public/audio/positiveFeedback_v1.mp3';
 import negativeFeedback from '../../public/audio/negativeFeedback_v1.mp3';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faForward } from '@fortawesome/free-solid-svg-icons';
 
 // needs to be outside of Model function scope to toggle Start/Stop
 // Initialize vars for repCount
@@ -73,7 +75,7 @@ export function Model() {
     // setTimeout(window.requestAnimationFrame, 10000, loop);
   }
 
-  async function loop(timestamp) {
+  async function loop() {
     webcam.update(); // update the webcam frame
 
     // app starts with prediction active and drawPose using poseNet
@@ -88,16 +90,6 @@ export function Model() {
     }
     window.requestAnimationFrame(loop);
   }
-
-  // function countdown() {
-  //   let seconds = 10,
-  //     countdownSeconds = document.getElementById('#countdown');
-  //   (function countdown() {
-  //     countdownSeconds.textContent =
-  //       seconds + ' second' + (seconds == 1 ? '' : 's');
-  //     if (seconds-- > 0) setTimeout(countdown, 1000);
-  //   })();
-  // }
 
   async function predict(bool) {
     if (bool === true) {
@@ -125,9 +117,7 @@ export function Model() {
       middlePosition = prediction[2].probability;
       setupPosition = prediction[0].probability;
 
-      // let border = document.getElementById('border');
-
-      // console.log('border----->', border.border);
+      let border = document.getElementById('border');
 
       if (counterStatus === 'pending' && startingPosition > 0.9) {
         console.log('Step 1');
@@ -149,7 +139,7 @@ export function Model() {
         console.log('success');
         lineColor = 'green';
         drawPose(pose, lineColor);
-        // border.border = lineColor;
+        border.style.border = `20px solid ${lineColor}`;
         repCount = repCount + 1;
         playAudio(positiveFeedback);
         counterStatus = 'pending';
@@ -161,7 +151,7 @@ export function Model() {
         console.log('fail');
 
         lineColor = 'red';
-        // border.color = lineColor;
+        border.style.border = `20px solid ${lineColor}`;
         drawPose(pose, lineColor);
         successfulReps = successfulReps - 1;
         playAudio(negativeFeedback);
@@ -251,37 +241,115 @@ export function Model() {
     return () => console.log('Model cleaned up.');
   }, []);
 
+  function countdown(callback) {
+    // let modal = document.getElementById('modal');
+    // modal.style.display = 'flex';
+    // modal.style.flexDirection = 'column';
+    // modal.style.justifyContent = 'center';
+    // modal.style.alignItems = 'center';
+    let seconds = 5;
+    let countdownSeconds = document.getElementById('timer');
+    console.log(document.getElementById('timer'));
+    countdownSeconds.innerHTML = seconds;
+    let counter = setInterval(() => {
+      seconds--;
+      countdownSeconds.innerHTML = seconds;
+      if (seconds === 0) {
+        countdownSeconds.innerHTML = '00:00';
+        clearInterval(counter);
+        callback();
+      }
+    }, 1000);
+  }
+
   return (
-    <Container>
-      <Webcam>
-        <canvas width="640" height="640" id="canvas"></canvas>
-        {/* <Canvas id="border">
+    <ContentContainer>
+      <TopToolbar>
+        <WorkoutType>Squat</WorkoutType>
+        <WorkoutType id="timer">00:00</WorkoutType>
+        <FontAwesomeIcon
+          icon={faForward}
+          style={{ fontSize: '2.5rem', color: '#355C7D' }}
+        />
+      </TopToolbar>
+      <ModelContainer>
+        <Webcam>
           <canvas width="640" height="640" id="canvas"></canvas>
-        </Canvas> */}
-        <WebcamToolbar>
-          <Label id="rep-container"></Label>
-          <Label id="acc-container"></Label>
-          <Label id="rem-container"></Label>
-          <Button
-            id="togglePredict"
-            onClick={() => {
-              togglePredict();
-              setToggle(!toggleStart);
-            }}
-          >
-            {toggleStart ? 'Stop' : 'Start'}
-          </Button>
-        </WebcamToolbar>
-      </Webcam>
-      <LabelContainer>
-        <Label id="label-container"></Label>
-        <Label id="countdown"></Label>
-      </LabelContainer>
-    </Container>
+          <WebcamToolbar>
+            <Label id="rep-container"></Label>
+            <Label id="acc-container"></Label>
+            <Label id="rem-container"></Label>
+            <Button
+              id="togglePredict"
+              onClick={() => {
+                if (predictStatus === 'pending') {
+                  countdown(togglePredict);
+                } else {
+                  togglePredict();
+                }
+                setToggle(!toggleStart);
+              }}
+            >
+              {toggleStart ? 'Stop' : 'Start'}
+            </Button>
+          </WebcamToolbar>
+        </Webcam>
+        <LabelContainer>
+          <Label id="label-container"></Label>
+          {/* <Label id="countdown"></Label> */}
+        </LabelContainer>
+      </ModelContainer>
+    </ContentContainer>
   );
 }
 
-const Container = styled.div`
+// const Modal = styled.div`
+//   display: none;
+//   background-color: #000;
+//   border-radius: 100%;
+//   color: #fff;
+//   margin: 1rem 0 0 1rem;
+//   width: 4rem;
+//   height: 4rem;
+//   position: absolute;
+//   z-index: 20;
+//   text-align: center;
+// `;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin-top: 65px;
+  z-index: 1;
+  @media only screen and (max-width: 1200px) {
+    width: 90%;
+  }
+`;
+
+const TopToolbar = styled.div`
+  display: flex;
+  margin-top: 1rem;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const WorkoutType = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  text-decoration: none;
+  color: white;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  background-color: #355c7d;
+  border: 0px;
+  width: 10rem;
+`;
+
+const ModelContainer = styled.div`
   display: flex;
   width: 100%;
   margin: 2rem;
