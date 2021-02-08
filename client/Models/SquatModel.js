@@ -117,29 +117,29 @@ export function Model() {
       middlePosition = prediction[2].probability;
       setupPosition = prediction[0].probability;
 
-      let border = document.getElementById('border');
+      let canvasBorder = document.getElementById('canvas');
 
       if (counterStatus === 'pending' && startingPosition > 0.9) {
-        console.log('Step 1');
+        // console.log('Step 1');
         counterStatus = 'starting';
       }
 
       if (counterStatus === 'starting' && middlePosition > 0.5) {
-        console.log('Step 2');
+        // console.log('Step 2');
         counterStatus = 'middle';
       }
 
       if (counterStatus === 'middle' && squattingPosition > 0.9) {
-        console.log('Step 3');
+        // console.log('Step 3');
         counterStatus = 'squatting';
       }
 
       if (counterStatus === 'squatting' && startingPosition > 0.9) {
-        console.log('Step 4');
-        console.log('success');
+        // console.log('Step 4');
+        // console.log('success');
         lineColor = 'green';
         drawPose(pose, lineColor);
-        border.style.border = `20px solid ${lineColor}`;
+        canvasBorder.style.border = `20px solid ${lineColor}`;
         repCount = repCount + 1;
         playAudio(positiveFeedback);
         counterStatus = 'pending';
@@ -147,11 +147,11 @@ export function Model() {
       }
 
       if (counterStatus === 'middle' && startingPosition > 0.9) {
-        console.log('Step 5');
-        console.log('fail');
+        // console.log('Step 5');
+        // console.log('fail');
 
         lineColor = 'red';
-        border.style.border = `20px solid ${lineColor}`;
+        canvasBorder.style.border = `20px solid ${lineColor}`;
         drawPose(pose, lineColor);
         successfulReps = successfulReps - 1;
         playAudio(negativeFeedback);
@@ -202,7 +202,7 @@ export function Model() {
         );
         tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx, 5, color);
         // console.log(tmPose.drawKeypoints);
-        console.log(tmPose.drawSkeleton);
+        // console.log(tmPose.drawSkeleton);
       }
     }
   }
@@ -249,7 +249,7 @@ export function Model() {
     // modal.style.alignItems = 'center';
     let seconds = 5;
     let countdownSeconds = document.getElementById('timer');
-    console.log(document.getElementById('timer'));
+    // console.log(document.getElementById('timer'));
     countdownSeconds.innerHTML = seconds;
     let counter = setInterval(() => {
       seconds--;
