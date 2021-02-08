@@ -192,7 +192,7 @@ const HeaderBox = styled.div`
   }
 `
 
-export function Home() {
+export default function Home() {
   return (
     <GradientContainer>
       <GlobalStyles />
