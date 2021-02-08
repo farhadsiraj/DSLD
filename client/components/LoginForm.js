@@ -91,6 +91,7 @@ import React, { useRef, useState } from 'react';
 import { Button, Card, Form, Alert } from 'react-bootstrap';
 import { useAuth } from '../components/contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 
