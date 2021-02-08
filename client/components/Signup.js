@@ -4,6 +4,7 @@ import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import app from '../../firebase';
 
 const GradientContainer = styled.div`
   /* display: flex;
@@ -63,9 +64,28 @@ export default function Signup() {
       // set error to an empty string so we have no error
       setError('');
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await signup(emailRef.current.value, passwordRef.current.value).then(
+        () => {
+          //Once the user creation has happened successfully, we can add the currentUser into firestore
+          //with the appropriate details.
+          app
+            .firestore()
+            .collection('users')
+            .doc(app.auth().currentUser.uid)
+            .set({
+              email: emailRef.current.value,
+            })
+            .catch((error) => {
+              console.log(
+                'Something went wrong with adding user to firestore: ',
+                error
+              );
+            });
+        }
+      );
       history.push('/dashboard');
     } catch (error) {
+      console.log(error);
       setError('Failed to create an account');
     }
     setLoading(false);
@@ -85,8 +105,10 @@ export default function Signup() {
                   <Form.Control type="email" ref={emailRef} required />
                 </Form.Group>
                 <Form.Group id="password">
-                  <Form.Label>Password</Form.Label>
-                  <p>Password must be at least 6 characters long</p>
+                  <Form.Label>
+                    Password (Must be at least 6 characters)
+                  </Form.Label>
+
                   <Form.Control type="password" ref={passwordRef} required />
                 </Form.Group>
                 <Form.Group id="password-confirm">
