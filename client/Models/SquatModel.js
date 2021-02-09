@@ -58,11 +58,14 @@ export function Model() {
     webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
     await webcam.setup({ facingMode: 'environment' }); // request access to the webcam
 
-    let wc = document.getElementsByTagName('canvas')[0];
+    document.getElementById('webcam-container').appendChild(webcam.canvas);
+    document.getElementById('webcam-container').appendChild(webcam.webcam);
+
+    let wc = document.getElementsByTagName('video')[0];
     console.log(wc);
     wc.setAttribute('playsinline', true);
     wc.muted = 'true';
-    // wc.id = 'webcamVideo';
+    wc.id = 'webcamVideo';
 
     await webcam.play();
 
@@ -281,6 +284,7 @@ export function Model() {
       </TopToolbar>
       <ModelContainer>
         <Webcam>
+          <div id="webcam-container"></div>
           <canvas width="640" height="640" id="canvas"></canvas>
           <WebcamToolbar>
             <Label id="rep-container"></Label>
