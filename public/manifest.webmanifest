@@ -1,5 +1,5 @@
 {
-  "name": "Don't Skip Leg Day",
+  "name": "DSLD: Don't Skip Leg Day",
   "short_name": "DSLD",
   "start_url": "/",
   "icons": [
@@ -9,7 +9,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#000000",
+  "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF",
   "display": "fullscreen",
   "orientation": "portrait"
