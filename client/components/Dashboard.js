@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import GlobalStyles from '../GlobalStyles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
+import app from '../../firebase';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -114,9 +115,9 @@ const AnalyticsContainer = styled.div`
 `;
 const WorkoutContainer = styled.div`
   display: flex;
-  height: 30%;
   width: 100%;
   border: 1px solid red;
+  justify-content: center;
 `;
 
 const Workouts = styled.div`
@@ -124,7 +125,8 @@ const Workouts = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  width: 80%;
+  height: 600px;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     width: 92%;
@@ -134,7 +136,7 @@ const Workouts = styled.div`
 const WorkoutBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   height: 100%;
   background-color: #355c7d;
   margin: 1rem;
