@@ -26,14 +26,6 @@ export default function ExerciseForm() {
       setError('');
       setLoading(true);
 
-      const test = app
-        .firestore()
-        .collection('users')
-        .doc('test1')
-        .collection('newCollection2')
-        .doc('anotherNewDoc2')
-        .set({ hello: 'world' });
-
       let newCollection = app
         .firestore()
         .collection('users')
@@ -41,53 +33,17 @@ export default function ExerciseForm() {
         .collection('setupWorkout')
         .doc()
         .set({
-          Exercise: exerciseRef.current.value,
-          Sets: setRef.current.value,
-          Reps: repRef.current.value,
+          exercise: exerciseRef.current.value,
+          sets: setRef.current.value,
+          reps: repRef.current.value,
+        })
+        .then(history.push('/formcheck'))
+        .catch((error) => {
+          console.log(
+            'Something went wrong with adding setup exercise data to firestore: ',
+            error
+          );
         });
-
-      // newCollection.document('test').set({
-      //   Exercise: exerciseRef.current.value,
-      //   Sets: setRef.current.value,
-      //   Reps: repRef.current.value,
-      // });
-
-      // .set({ new: 'test' }, { merge: true });
-
-      // currentUser
-      //   .create({
-      //     collection: 'setupWorkout',
-      //   })
-
-      //   .then((res) => {
-      //     console.log(`Document created at ${res.updateTime}`);
-      //   })
-      //   .catch((err) => {
-      //     console.log(`Failed to create document: ${err}`);
-      //   });
-
-      // let snapshot = await currentUser.where().get();
-
-      // snapshot.forEach((doc) => {
-      //   workout.push(doc.data());
-      // });
-
-      // console.log(currentUser);
-
-      // currentUser
-      //   .collection('setupWorkout')
-      // .set({
-      //   Exercise: exerciseRef.current.value,
-      //   Sets: setRef.current.value,
-      //   Reps: repRef.current.value,
-      // })
-      // .then(history.push('/formcheck'))
-      // .catch((error) => {
-      //   console.log(
-      //     'Something went wrong with adding setup exercise data to firestore: ',
-      //     error
-      //   );
-      // });
     } catch (error) {
       console.log(error);
       if (error === '') {
@@ -107,14 +63,14 @@ export default function ExerciseForm() {
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="exercises">
-                  {/* <Form.Label>Choose Exercise:</Form.Label> */}
-                  {/* <Form.Control type="string" ref={exerciseRef} /> */}
                   <select>
                     <option value="default">Choose Exercise</option>
                     <option value="squat" ref={exerciseRef}>
                       Squat
                     </option>
-                    <option value="pullup">Pullup</option>
+                    <option value="pullup" ref={exerciseRef}>
+                      Pullup
+                    </option>
                   </select>
                 </Form.Group>
                 <Form.Group id="sets">
