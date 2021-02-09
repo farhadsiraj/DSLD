@@ -16,6 +16,12 @@ const GlobalStyle = createGlobalStyle`
     border-bottom-width: 3px;
   }
 
+  a:visited {
+    color: #9BD7D1;
+    text-decoration: none;
+
+  }
+
   p {
     margin: 0;
   }

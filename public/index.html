@@ -8,10 +8,28 @@
       href="https://fonts.googleapis.com/css2?family=Sansita:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="manifest" href="manifest.webmanifest" />
     <script defer src="../client/index.js"></script>
     <title>Get DSLD</title>
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('serviceWorker.js').then(
+            function (registration) {
+              console.log(
+                'ServiceWorker is getting DSLD at: ',
+                registration.scope
+              );
+            },
+            function (err) {
+              console.log('ServiceWorker is not in the gym: ', err);
+            }
+          );
+        });
+      }
+    </script>
   </body>
 </html>
