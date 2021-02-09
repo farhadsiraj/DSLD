@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
-import { Card, Button, Alert } from 'react-bootstrap';
-import { useAuth } from './contexts/AuthContext';
-import { Link, useHistory } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react'
+import { Card, Button, Alert } from 'react-bootstrap'
+import { useAuth } from './contexts/AuthContext'
+import { Link, useHistory } from 'react-router-dom'
+import GlobalStyles from '../GlobalStyles'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export default function Dashboard() {
-  const [error, setError] = useState('');
-  const { currentUser, logout } = useAuth();
-  const history = useHistory();
+  const [error, setError] = useState('')
+  const { currentUser, logout } = useAuth()
+  const history = useHistory()
 
   async function handleLogout() {
-    setError('');
+    setError('')
 
     try {
-      await logout();
-      history.push('/login');
+      await logout()
+      history.push('/login')
     } catch (error) {
-      setError('Failed to log out');
+      setError('Failed to log out')
     }
   }
 
   return (
     <>
+      <GlobalStyles />
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>
@@ -39,5 +41,5 @@ export default function Dashboard() {
         </Button>
       </div>
     </>
-  );
+  )
 }
