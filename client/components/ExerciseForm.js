@@ -18,43 +18,80 @@ export default function ExerciseForm() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+    let logedin = app.auth().currentUser.uid;
+    console.log(logedin);
+
     try {
       // set error to an empty string so we have no error
       setError('');
       setLoading(true);
 
-      let usersRef = app.firestore().collection('users');
-      let snapshot = await usersRef
-        .where('username', '==', usernameRef.current.value)
-        .get();
-      snapshot.forEach((doc) => {
-        if (doc.data()) {
-          setError('Username not available');
-          throw new Error('Username not available');
-        }
-      });
-      app
+      const test = app
         .firestore()
         .collection('users')
-        .doc(app.auth().currentUser.uid)
+        .doc('test1')
+        .collection('newCollection2')
+        .doc('anotherNewDoc2')
+        .set({ hello: 'world' });
+
+      let newCollection = app
+        .firestore()
+        .collection('users')
+        .doc(logedin)
+        .collection('setupWorkout')
+        .doc()
         .set({
-          username: usernameRef.current.value,
-          age: ageRef.current.value,
-          height: heightRef.current.value,
-          weight: weightRef.current.value,
-          sex: sexRef.current.value,
-        })
-        .then(history.push('/formcheck'))
-        .catch((error) => {
-          console.log(
-            'Something went wrong with adding user data to firestore: ',
-            error
-          );
+          Exercise: exerciseRef.current.value,
+          Sets: setRef.current.value,
+          Reps: repRef.current.value,
         });
+
+      // newCollection.document('test').set({
+      //   Exercise: exerciseRef.current.value,
+      //   Sets: setRef.current.value,
+      //   Reps: repRef.current.value,
+      // });
+
+      // .set({ new: 'test' }, { merge: true });
+
+      // currentUser
+      //   .create({
+      //     collection: 'setupWorkout',
+      //   })
+
+      //   .then((res) => {
+      //     console.log(`Document created at ${res.updateTime}`);
+      //   })
+      //   .catch((err) => {
+      //     console.log(`Failed to create document: ${err}`);
+      //   });
+
+      // let snapshot = await currentUser.where().get();
+
+      // snapshot.forEach((doc) => {
+      //   workout.push(doc.data());
+      // });
+
+      // console.log(currentUser);
+
+      // currentUser
+      //   .collection('setupWorkout')
+      // .set({
+      //   Exercise: exerciseRef.current.value,
+      //   Sets: setRef.current.value,
+      //   Reps: repRef.current.value,
+      // })
+      // .then(history.push('/formcheck'))
+      // .catch((error) => {
+      //   console.log(
+      //     'Something went wrong with adding setup exercise data to firestore: ',
+      //     error
+      //   );
+      // });
     } catch (error) {
       console.log(error);
       if (error === '') {
-        setError('Failed to update user profile');
+        setError('Failed to update setup exercise profile');
       }
     }
     setLoading(false);
@@ -69,6 +106,17 @@ export default function ExerciseForm() {
               <h2 className="text-center mb-4">Exercise Form</h2>
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
+                <Form.Group id="exercises">
+                  {/* <Form.Label>Choose Exercise:</Form.Label> */}
+                  {/* <Form.Control type="string" ref={exerciseRef} /> */}
+                  <select>
+                    <option value="default">Choose Exercise</option>
+                    <option value="squat" ref={exerciseRef}>
+                      Squat
+                    </option>
+                    <option value="pullup">Pullup</option>
+                  </select>
+                </Form.Group>
                 <Form.Group id="sets">
                   <Form.Label>Sets:</Form.Label>
                   <Form.Control type="integer" ref={setRef} />
