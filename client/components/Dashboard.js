@@ -25,9 +25,28 @@ export default function Dashboard() {
   return (
     <Container>
       <GlobalStyles />
-      <UserDataContainer></UserDataContainer>
-      <AnalyticsContainer></AnalyticsContainer>
-      <WorkoutContainer></WorkoutContainer>
+      <UserDataContainer>
+        <ProfilePicture />
+        <UserInfo>
+          <div>Active Streak</div>
+          <div>Lifetime Reps</div>
+          <div>Weight</div>
+        </UserInfo>
+      </UserDataContainer>
+      <AnalyticsContainer>
+        <PlaceholderCircle />
+        <PlaceholderCircle />
+        <PlaceholderCircle />
+        <PlaceholderCircle />
+        <PlaceholderCircle />
+      </AnalyticsContainer>
+      <WorkoutContainer>
+        <Workouts>
+          <WorkoutBox />
+          <WorkoutBox />
+          <WorkoutBox />
+        </Workouts>
+      </WorkoutContainer>
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>
@@ -58,19 +77,75 @@ const Container = styled.div`
 
 const UserDataContainer = styled.div`
   display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
   height: 30%;
   width: 100%;
   border: 1px solid blue;
 `;
 
+const ProfilePicture = styled.div`
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background-color: #355c7d;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+  height: 10rem;
+  background-color: #355c7d;
+  border-radius: 2rem;
+  color: white;
+  justify-content: center;
+`;
+
 const AnalyticsContainer = styled.div`
   display: flex;
-  border: #355c7d;
-  border-width: 5px;
+  border: 5px solid #355c7d;
+  height: 10vh;
+  width: 100%;
+  border-radius: 5px;
+  justify-content: space-around;
+  align-items: center;
 `;
 const WorkoutContainer = styled.div`
   display: flex;
   height: 30%;
   width: 100%;
   border: 1px solid red;
+`;
+
+const Workouts = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media only screen and (min-width: 960px) {
+    flex-direction: row;
+    width: 92%;
+  }
+`;
+
+const WorkoutBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: 100%;
+  background-color: #355c7d;
+  margin: 1rem;
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+`;
+
+const PlaceholderCircle = styled.div`
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: black;
+  border-radius: 50%;
 `;

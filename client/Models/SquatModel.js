@@ -16,7 +16,7 @@ let squattingPosition;
 let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
-let lineColor = 'cyan';
+let lineColor = '#9BD7D1';
 let totalReps = 5;
 let successfulReps = totalReps;
 let reps = totalReps;
@@ -26,7 +26,6 @@ export function Model() {
   // Hooks
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
-  const [borderColor, setBorderColor] = useState('cyan');
 
   // More API functions here:
   // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
@@ -45,18 +44,15 @@ export function Model() {
     const modelURL = URL + 'model.json';
     const metadataURL = URL + 'metadata.json';
 
-    // load the model and metadata
-    // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
     // Note: the pose library adds a tmPose object to your window (window.tmPose)
     model = await tmPose.load(modelURL, metadataURL);
 
     maxPredictions = model.getTotalClasses();
 
-    // Convenience function to setup a webcam
     const size = 640;
-    const flip = true; // whether to flip the webcam
+    const flip = true;
     webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
-    await webcam.setup(); // request access to the webcam
+    await webcam.setup();
     await webcam.play();
 
     window.requestAnimationFrame(loop);
@@ -71,12 +67,10 @@ export function Model() {
       // and class labels
       labelContainer.appendChild(document.createElement('div'));
     }
-    // drawPose();
-    // setTimeout(window.requestAnimationFrame, 10000, loop);
   }
 
   async function loop() {
-    webcam.update(); // update the webcam frame
+    webcam.update();
 
     // app starts with prediction active and drawPose using poseNet
     if (predictStatus === 'active') {
@@ -103,12 +97,8 @@ export function Model() {
         const classPrediction = `${prediction[i].className}: ${Math.ceil(
           prediction[i].probability.toFixed(2) * 100
         )}%`;
-        // console.log(classPrediction);
         labelContainer.childNodes[i].innerHTML = classPrediction;
       }
-      // console.log('prediction---->', prediction);
-
-      // finally draw the poses
 
       drawPose(pose, lineColor);
 
@@ -120,24 +110,19 @@ export function Model() {
       let canvasBorder = document.getElementById('canvas');
 
       if (counterStatus === 'pending' && startingPosition > 0.9) {
-        // console.log('Step 1');
         counterStatus = 'starting';
       }
 
       if (counterStatus === 'starting' && middlePosition > 0.5) {
-        // console.log('Step 2');
         counterStatus = 'middle';
       }
 
       if (counterStatus === 'middle' && squattingPosition > 0.9) {
-        // console.log('Step 3');
         counterStatus = 'squatting';
       }
 
       if (counterStatus === 'squatting' && startingPosition > 0.9) {
-        // console.log('Step 4');
-        // console.log('success');
-        lineColor = 'green';
+        lineColor = '#39E47E';
         drawPose(pose, lineColor);
         canvasBorder.style.border = `20px solid ${lineColor}`;
         repCount = repCount + 1;
@@ -147,10 +132,7 @@ export function Model() {
       }
 
       if (counterStatus === 'middle' && startingPosition > 0.9) {
-        // console.log('Step 5');
-        // console.log('fail');
-
-        lineColor = 'red';
+        lineColor = '#EE4A40';
         canvasBorder.style.border = `20px solid ${lineColor}`;
         drawPose(pose, lineColor);
         successfulReps = successfulReps - 1;
@@ -164,10 +146,7 @@ export function Model() {
       if (reps <= 0) {
         togglePredict();
         console.log('DONE');
-        // return;
       }
-
-      // console.log(counterStatus);
 
       let repContainer = document.getElementById('rep-container');
       repContainer.innerHTML = `Total Reps: ${repCount}`;
@@ -188,7 +167,6 @@ export function Model() {
   function drawPose(pose, color) {
     if (webcam.canvas) {
       ctx.drawImage(webcam.canvas, 0, 0);
-      // draw the keypoints and skeleton
       if (pose) {
         const minPartConfidence = 0.5;
 
@@ -201,13 +179,10 @@ export function Model() {
           color
         );
         tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx, 5, color);
-        // console.log(tmPose.drawKeypoints);
-        // console.log(tmPose.drawSkeleton);
       }
     }
   }
 
-  // toggles predictStatus
   async function togglePredict() {
     console.log('predictStatus', predictStatus);
     if (predictStatus === 'pending') {
@@ -249,7 +224,6 @@ export function Model() {
     // modal.style.alignItems = 'center';
     let seconds = 5;
     let countdownSeconds = document.getElementById('timer');
-    // console.log(document.getElementById('timer'));
     countdownSeconds.innerHTML = seconds;
     let counter = setInterval(() => {
       seconds--;
@@ -303,19 +277,6 @@ export function Model() {
   );
 }
 
-// const Modal = styled.div`
-//   display: none;
-//   background-color: #000;
-//   border-radius: 100%;
-//   color: #fff;
-//   margin: 1rem 0 0 1rem;
-//   width: 4rem;
-//   height: 4rem;
-//   position: absolute;
-//   z-index: 20;
-//   text-align: center;
-// `;
-
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -359,12 +320,6 @@ const ModelContainer = styled.div`
   }
 `;
 
-const Canvas = styled.div`
-  width: 640;
-  height: 640;
-  border: 10px solid cyan;
-`;
-
 const Webcam = styled.div`
   display: flex;
   flex: 1;
@@ -399,9 +354,4 @@ const Button = styled.button`
   background-color: #f67280;
   border: 0px;
   width: 10rem;
-`;
-const Placeholder = styled.div`
-  height: 640px;
-  width: 640px;
-  background-color: pink;
 `;
