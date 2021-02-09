@@ -8,6 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Sansita:wght@400;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="manifest" href="manifest.json" />
     <script defer src="../client/index.js"></script>
     <title>Get DSLD</title>
   </head>
@@ -21,13 +22,13 @@
               console.log(
                 'ServiceWorker is getting DSLD at: ',
                 registration.scope
-              )
+              );
             },
             function (err) {
-              console.log('ServiceWorker is not in the gym: ', err)
+              console.log('ServiceWorker is not in the gym: ', err);
             }
-          )
-        })
+          );
+        });
       }
     </script>
   </body>
