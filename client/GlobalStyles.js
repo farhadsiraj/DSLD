@@ -19,7 +19,6 @@ const GlobalStyle = createGlobalStyle`
   a:visited {
     color: #9BD7D1;
     text-decoration: none;
-
   }
 
   p {
