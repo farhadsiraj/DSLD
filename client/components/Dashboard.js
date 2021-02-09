@@ -25,45 +25,47 @@ export default function Dashboard() {
 
   return (
     <Container>
-      <GlobalStyles />
-      <UserDataContainer>
-        <ProfilePicture />
-        <UserInfo>
-          <div>Active Streak</div>
-          <div>Lifetime Reps</div>
-          <div>Weight</div>
-        </UserInfo>
-      </UserDataContainer>
-      <AnalyticsContainer>
-        <PlaceholderCircle />
-        <PlaceholderCircle />
-        <PlaceholderCircle />
-        <PlaceholderCircle />
-        <PlaceholderCircle />
-      </AnalyticsContainer>
-      <WorkoutContainer>
-        <Workouts>
-          <WorkoutBox />
-          <WorkoutBox />
-          <WorkoutBox />
-        </Workouts>
-      </WorkoutContainer>
-      <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Profile</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <strong>Email:</strong>
-          {currentUser.email}
-          <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-            Update Profile
-          </Link>
-        </Card.Body>
-      </Card>
-      <div className="w-100 text=center mt-3">
-        <Button variant="link" onClick={handleLogout}>
-          Log Out
-        </Button>
-      </div>
+      <GradientContainer>
+        <GlobalStyles />
+        <UserDataContainer>
+          <ProfilePicture />
+          <UserInfo>
+            <div>Active Streak</div>
+            <div>Lifetime Reps</div>
+            <div>Weight</div>
+          </UserInfo>
+        </UserDataContainer>
+        <AnalyticsContainer>
+          <PlaceholderCircle />
+          <PlaceholderCircle />
+          <PlaceholderCircle />
+          <PlaceholderCircle />
+          <PlaceholderCircle />
+        </AnalyticsContainer>
+        <WorkoutContainer>
+          <Workouts>
+            <WorkoutBox />
+            <WorkoutBox />
+            <WorkoutBox />
+          </Workouts>
+        </WorkoutContainer>
+        <Card>
+          <Card.Body>
+            <h2 className="text-center mb-4">Profile</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+            <strong>Email:</strong>
+            {currentUser.email}
+            <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
+              Update Profile
+            </Link>
+          </Card.Body>
+        </Card>
+        <div className="w-100 text=center mt-3">
+          <Button variant="link" onClick={handleLogout}>
+            Log Out
+          </Button>
+        </div>
+      </GradientContainer>
     </Container>
   );
 }
@@ -74,6 +76,26 @@ const Container = styled.div`
   height: 100vh;
   width: 100vw;
   margin-top: 65px;
+`;
+
+const GradientContainer = styled.div`
+  &:after {
+    background: rgb(242, 102, 39);
+    background: linear-gradient(
+      -190deg,
+      rgba(242, 102, 39, 1) 0%,
+      rgba(255, 255, 255, 1) 75%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
 `;
 
 const UserDataContainer = styled.div`
