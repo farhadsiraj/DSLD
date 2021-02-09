@@ -56,16 +56,20 @@ export function Model() {
     const size = 640;
     const flip = true; // whether to flip the webcam
     webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
-    await webcam.setup({ facingMode: 'environment' }); // request access to the webcam
+    await webcam.setup({ facingMode: 'user' }); // request access to the webcam
 
-    document.getElementById('webcam-container').appendChild(webcam.canvas);
-    document.getElementById('webcam-container').appendChild(webcam.webcam);
+    // document.getElementById('webcam-container').appendChild(webcam.canvas);
+    let iosVid = document.createElement('div');
+    iosVid.setAttribute('id', 'webcam-container');
+    console.log(iosVid);
 
-    let wc = document.getElementsByTagName('video')[0];
-    console.log(wc);
-    wc.setAttribute('playsinline', true);
-    wc.muted = 'true';
-    wc.id = 'webcamVideo';
+    iosVid.appendChild(webcam.webcam);
+    document.body.appendChild(iosVid);
+    let videoElement = document.getElementsByTagName('video')[0];
+    videoElement.setAttribute('playsinline', true);
+    videoElement.muted = 'true';
+    videoElement.id = 'webcamVideo';
+    videoElement.hidden = 'true';
 
     await webcam.play();
 
@@ -284,7 +288,7 @@ export function Model() {
       </TopToolbar>
       <ModelContainer>
         <Webcam>
-          <div id="webcam-container"></div>
+          {/* <div id="webcam-container"></div> */}
           <canvas width="640" height="640" id="canvas"></canvas>
           <WebcamToolbar>
             <Label id="rep-container"></Label>
