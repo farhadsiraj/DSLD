@@ -1,8 +1,7 @@
 const users = {
-  id: int,
+  id: string,
   username: string,
   email: email,
-  password: string,
   height: number,
   weight: float,
   age: number,
@@ -42,4 +41,4 @@ const users = {
   },
   longestStreak: 9,
   activeStreak: 3,
-}
+};
