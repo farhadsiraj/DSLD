@@ -56,7 +56,7 @@ export function Model() {
     const size = 640;
     const flip = true; // whether to flip the webcam
     webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
-    await webcam.setup({ facingMode: 'user' }); // request access to the webcam
+    await webcam.setup({ facingMode: 'user', aspectRatio: 1 }); // request access to the webcam
 
     // document.getElementById('webcam-container').appendChild(webcam.canvas);
     let iosVid = document.createElement('div');
@@ -72,6 +72,7 @@ export function Model() {
     videoElement.hidden = 'true';
 
     await webcam.play();
+    console.log(webcam.setup);
 
     window.requestAnimationFrame(loop);
 
