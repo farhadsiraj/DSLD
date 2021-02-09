@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   html, body {
@@ -11,19 +11,20 @@ const GlobalStyle = createGlobalStyle`
   a, Link {
     color: #325D79;
     text-decoration: none;
+
+  }
+
+  a:hover{
+    color: #325D79;
+    text-decoration: none;
     border-bottom: #F9A26C;
     border-bottom-style: solid;
     border-bottom-width: 3px;
   }
 
-  a:visited {
-    color: #9BD7D1;
-    text-decoration: none;
-  }
-
   p {
     margin: 0;
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;

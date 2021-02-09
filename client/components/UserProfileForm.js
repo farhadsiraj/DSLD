@@ -6,12 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import app from '../../firebase';
 
 const GradientContainer = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%; */
-
   &:after {
     background: rgb(242, 102, 39);
     background: linear-gradient(
@@ -61,16 +55,16 @@ export default function UserProfileForm() {
       setError('');
       setLoading(true);
 
-      let userRef = app.firestore().collection('users');
-      let userName = userRef.where('username', '==', usernameRef.current.value);
-
-      console.log(userName.data());
-
-      // ensures username is not taken
-      if (userName !== null) {
-        return setError('Username not available');
-      }
-
+      let usersRef = app.firestore().collection('users');
+      let snapshot = await usersRef
+        .where('username', '==', usernameRef.current.value)
+        .get();
+      snapshot.forEach((doc) => {
+        if (doc.data()) {
+          setError('Username not available');
+          throw new Error('Username not available');
+        }
+      });
       app
         .firestore()
         .collection('users')
@@ -82,16 +76,18 @@ export default function UserProfileForm() {
           weight: weightRef.current.value,
           sex: sexRef.current.value,
         })
+        .then(history.push('/dashboard'))
         .catch((error) => {
           console.log(
             'Something went wrong with adding user data to firestore: ',
             error
           );
         });
-      history.push('/dashboard');
     } catch (error) {
       console.log(error);
-      setError('Failed to update user profile');
+      if (error === '') {
+        setError('Failed to update user profile');
+      }
     }
     setLoading(false);
   }
