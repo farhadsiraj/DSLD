@@ -38,14 +38,22 @@ export default function Dashboard() {
             <div>Weight</div>
           </UserInfo>
         </UserDataContainer>
+        <AnalyticsContainer>
+          <FALargeIcon>
+            <FontAwesomeIcon
+              icon={faPlus}
+              style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+            />
+          </FALargeIcon>
+        </AnalyticsContainer>
         <WorkoutContainer>
           <Workouts>
-            <div style={{ width: '100%', border: '1px solid red' }}>
+            <FAMobileIcon style={{ width: '100%' }}>
               <FontAwesomeIcon
                 icon={faPlus}
-                style={{ fontSize: '1.8rem', color: '#F26627' }}
+                style={{ fontSize: '1.8rem', color: '#EE4A40' }}
               />
-            </div>
+            </FAMobileIcon>
             <WorkoutBox>
               <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
               <CustomWorkoutType>Squats</CustomWorkoutType>
@@ -156,7 +164,8 @@ const ProfilePicture = styled.img`
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center
   width: 11rem;
   height: 10rem;
   background-color: #355c7d;
@@ -167,13 +176,16 @@ const UserInfo = styled.div`
 `;
 
 const AnalyticsContainer = styled.div`
-  display: flex;
-  border: 5px solid #355c7d;
-  height: 10vh;
-  width: 100%;
-  border-radius: 5px;
-  justify-content: space-around;
-  align-items: center;
+  display: none;
+  @media only screen and (min-width: 960px) {
+    display: flex;
+    height: 10vh;
+    width: 100%;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1.6rem;
+  }
 `;
 
 const WorkoutContainer = styled.div`
@@ -263,4 +275,14 @@ const Row = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+`;
+
+const FAMobileIcon = styled.div`
+  width: 100%;
+  @media only screen and (min-width: 960px) {
+    display: none;
+  }
+`;
+const FALargeIcon = styled.div`
+  width: 90%;
 `;
