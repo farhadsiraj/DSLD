@@ -62,12 +62,6 @@ export default function Home() {
 }
 
 const GradientContainer = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%; */
-
   &:after {
     background: rgb(242, 102, 39);
     background: linear-gradient(
