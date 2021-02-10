@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Card, Button, Alert } from 'react-bootstrap';
 import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
+import app from '../../firebase';
+import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import styled from 'styled-components';
-import app from '../../firebase';
+import { Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import gym from '../../public/assets/images/gym.jpg';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import gym from '../../public/assets/images/gym.jpg';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
