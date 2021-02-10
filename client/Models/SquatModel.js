@@ -33,22 +33,23 @@ export function Model() {
   loggedIn = app.auth().currentUser.uid;
   console.log('loggedin----->', loggedIn);
 
-  let result = [];
-
-  // async function getSetupData() {
-  //   let usersRef = app.firestore().collection('users');
-  //   let currentUser = await usersRef.doc(loggedIn);
-  //   let setupForm = await currentUser.collection('setupWorkout').get();
-  //   setupForm.forEach((doc) => {
-  //     console.log(doc.id, ' => ', doc.data());
-  //     await result.push(doc.data());
-  //   });
-  //   return result;
-  // }
-
-  // console.log('result', result);
-  // let setupData = getSetupData();
-  // console.log('setupdata----->', setupData);
+  async function setRepPrefs() {
+    const usersRef = app
+      .firestore()
+      .collection('users')
+      .doc(loggedIn)
+      .collection('setupWorkout')
+      .doc('setup');
+    const doc = await usersRef.get();
+    if (!doc.exists) {
+      console.log('No default workout preferences set.');
+    } else {
+      const user = doc.data();
+      // console.table(user.reps);
+      totalReps = user.reps;
+      console.log('Total Reps from Firestore', totalReps);
+    }
+  }
 
   // More API functions here:
   // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
