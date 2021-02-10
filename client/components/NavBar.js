@@ -62,7 +62,13 @@ export default function NavBar() {
           ''
         )}
       </NavItem>
-      <Logo style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Logo
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '.3rem',
+        }}
+      >
         DSLD
       </Logo>
       <NavItem style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
