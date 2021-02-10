@@ -146,6 +146,8 @@ const Box = styled.div`
   border-radius: 2rem;
   justify-content: center;
   align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 `;
 
 const HeaderTitle = styled.h1`
