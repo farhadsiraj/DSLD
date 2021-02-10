@@ -60,22 +60,37 @@ export default function Dashboard() {
             </WorkoutBox>
           </Workouts>
         </WorkoutContainer>
-        <Card>
-          <Card.Body>
-            <h2 className="text-center mb-4">Account Settings</h2>
+        <AccountSettingsContainer>
+          <CurrentSettings>
+            <h2 style={{ color: 'white' }}>Account Settings</h2>
             {error && <Alert variant="danger">{error}</Alert>}
-            <strong>Email:</strong>
-            {currentUser.email}
-            <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-              Update Profile
-            </Link>
-          </Card.Body>
-        </Card>
-        <div className="w-100 text=center mt-3">
-          <Button variant="link" onClick={handleLogout}>
+            <Row>
+              <SettingsTitle>Email: </SettingsTitle>
+              <SettingsText> {currentUser.email}</SettingsText>
+            </Row>
+            <Row>
+              <SettingsTitle>Email: </SettingsTitle>
+              <SettingsText>{currentUser.email}</SettingsText>
+            </Row>
+            <Row>
+              <SettingsTitle>Email: </SettingsTitle>
+              <SettingsText>{currentUser.email}</SettingsText>
+            </Row>
+            <Row>
+              <SettingsTitle>Email: </SettingsTitle>
+              <SettingsText>{currentUser.email}</SettingsText>
+            </Row>
+          </CurrentSettings>
+          <Link to="/update-profile">
+            <StyledButton>Update Profile</StyledButton>
+          </Link>
+          <StyledButton
+            style={{ backgroundColor: 'seagreen' }}
+            onClick={handleLogout}
+          >
             Log Out
-          </Button>
-        </div>
+          </StyledButton>
+        </AccountSettingsContainer>
       </GradientContainer>
     </Container>
   );
@@ -117,7 +132,6 @@ const UserDataContainer = styled.div`
   height: 35vh;
   width: 100%;
   padding: 1rem;
-  border: 1px solid blue;
 `;
 
 const ProfilePicture = styled.div`
@@ -126,7 +140,6 @@ const ProfilePicture = styled.div`
   border-radius: 50%;
   padding: 1rem;
   background-color: #355c7d;
-  border: 1px solid blue;
 `;
 
 const UserInfo = styled.div`
@@ -139,7 +152,6 @@ const UserInfo = styled.div`
   border-radius: 2rem;
   color: white;
   justify-content: center;
-  border: 1px solid blue;
 `;
 
 const AnalyticsContainer = styled.div`
@@ -155,7 +167,6 @@ const AnalyticsContainer = styled.div`
 const WorkoutContainer = styled.div`
   display: flex;
   width: 100%;
-  border: 1px solid red;
   justify-content: center;
 `;
 
@@ -204,4 +215,38 @@ const StyledButton = styled.button`
   width: 10rem;
   border-radius: 0.8rem;
   border-style: none;
+  margin: 0.5rem;
+`;
+
+const AccountSettingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  background-color: #f9a26c;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+`;
+
+const CurrentSettings = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const SettingsTitle = styled.h3`
+  color: white;
+  font-size: 1.2rem;
+`;
+const SettingsText = styled.h3`
+  color: white;
+  font-size: 1rem;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 `;
