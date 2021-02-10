@@ -6,6 +6,142 @@ import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
 
+export default function NavBar() {
+  const [hamburgerDropdown, setHamburgerDropdown] = useState(false);
+  const [userDropdown, setUserDropdown] = useState(false);
+  const [error, setError] = useState('');
+  const { currentUser, logout } = useAuth();
+
+  async function handleLogout() {
+    setError('');
+
+    try {
+      await logout();
+    } catch (error) {
+      setError('Failed to log out');
+    }
+  }
+
+  return (
+    <Container>
+      <GlobalStyles />
+      <NavItem style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+        <FontAwesomeIcon
+          icon={hamburgerDropdown ? faTimes : faBars}
+          onClick={function () {
+            setHamburgerDropdown(!hamburgerDropdown);
+            setUserDropdown(false);
+          }}
+          style={{ fontSize: '1.7rem' }}
+        />
+        {hamburgerDropdown ? (
+          <Dropdown>
+            <DropdownItem>
+              {' '}
+              <Link
+                to="/"
+                onClick={function () {
+                  setHamburgerDropdown(false);
+                }}
+              >
+                Home
+              </Link>
+            </DropdownItem>
+            <DropdownItem>
+              <Link
+                to="/formcheck"
+                onClick={function () {
+                  setHamburgerDropdown(false);
+                }}
+              >
+                Workout
+              </Link>
+            </DropdownItem>
+          </Dropdown>
+        ) : (
+          ''
+        )}
+      </NavItem>
+
+      <Logo
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '.3rem',
+        }}
+      >
+        <Link to="/" className="link-reset hover-reset">
+          DSLD
+        </Link>
+      </Logo>
+      <NavItem style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
+        <FontAwesomeIcon
+          onClick={function () {
+            setUserDropdown(!userDropdown);
+            setHamburgerDropdown(false);
+          }}
+          icon={userDropdown ? faTimes : faUser}
+          style={{ fontSize: '1.5rem' }}
+        />
+        {userDropdown ? (
+          <DropdownRight>
+            {!currentUser ? (
+              <>
+                <DropdownItem>
+                  <Link
+                    to="/login"
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                  >
+                    Login
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link
+                    to="/signup"
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                  >
+                    Sign Up
+                  </Link>
+                </DropdownItem>
+              </>
+            ) : (
+              <>
+                <DropdownItem>
+                  <Link
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                    to="/dashboard"
+                  >
+                    Dashboard
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                      handleLogout();
+                    }}
+                    to="/"
+                  >
+                    Logout
+                  </Link>
+                </DropdownItem>
+              </>
+            )}
+          </DropdownRight>
+        ) : (
+          ''
+        )}
+      </NavItem>
+    </Container>
+  );
+}
+
 const Container = styled.nav`
   display: flex;
   position: fixed;
@@ -87,114 +223,3 @@ const Logo = styled.div`
   font-family: 'Sansita', sans-serif;
   font-size: 3rem;
 `;
-
-export default function NavBar() {
-  const [hamburgerDropdown, setHamburgerDropdown] = useState(false);
-  const [userDropdown, setUserDropdown] = useState(false);
-  const [error, setError] = useState('');
-  const { currentUser, logout } = useAuth();
-
-  async function handleLogout() {
-    setError('');
-
-    try {
-      await logout();
-    } catch (error) {
-      setError('Failed to log out');
-    }
-  }
-
-  return (
-    <Container>
-      <GlobalStyles />
-      <NavItem style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-        <FontAwesomeIcon
-          icon={hamburgerDropdown ? faTimes : faBars}
-          onClick={function () {
-            setHamburgerDropdown(!hamburgerDropdown);
-            setUserDropdown(false);
-          }}
-          style={{ fontSize: '1.7rem' }}
-        />
-        {hamburgerDropdown ? (
-          <Dropdown>
-            <DropdownItem>
-              {' '}
-              <Link
-                to="/"
-                onClick={function () {
-                  setHamburgerDropdown(false);
-                }}
-              >
-                Home
-              </Link>
-            </DropdownItem>
-            <DropdownItem>
-              <Link
-                to="/formcheck"
-                onClick={function () {
-                  setHamburgerDropdown(false);
-                }}
-              >
-                Workout
-              </Link>
-            </DropdownItem>
-          </Dropdown>
-        ) : (
-          ''
-        )}
-      </NavItem>
-      <Logo style={{ justifyContent: 'center', alignItems: 'center' }}>
-        DSLD
-      </Logo>
-      <NavItem style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
-        <FontAwesomeIcon
-          onClick={function () {
-            setUserDropdown(!userDropdown);
-            setHamburgerDropdown(false);
-          }}
-          icon={userDropdown ? faTimes : faUser}
-          style={{ fontSize: '1.5rem' }}
-        />
-        {userDropdown ? (
-          <DropdownRight>
-            <DropdownItem>
-              {!currentUser ? (
-                <Link
-                  to="/login"
-                  onClick={function () {
-                    setUserDropdown(!userDropdown);
-                  }}
-                >
-                  Login
-                </Link>
-              ) : (
-                <Link
-                  onClick={function () {
-                    setUserDropdown(!userDropdown);
-                    handleLogout();
-                  }}
-                  to="/"
-                >
-                  Logout
-                </Link>
-              )}
-            </DropdownItem>
-            <DropdownItem>
-              <Link
-                to="/signup"
-                onClick={function () {
-                  setUserDropdown(!userDropdown);
-                }}
-              >
-                Create an Account
-              </Link>
-            </DropdownItem>
-          </DropdownRight>
-        ) : (
-          ''
-        )}
-      </NavItem>
-    </Container>
-  );
-}

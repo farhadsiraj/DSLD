@@ -6,42 +6,6 @@ import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from '../../firebase';
 
-const GradientContainer = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%; */
-
-  &:after {
-    background: rgb(242, 102, 39);
-    background: linear-gradient(
-      -190deg,
-      rgba(242, 102, 39, 1) 0%,
-      rgba(255, 255, 255, 1) 75%,
-      rgba(255, 255, 255, 1) 100%
-    );
-    content: ' ';
-    display: block;
-    position: absolute;
-    top: -20px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
-`;
-
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 65px;
-  z-index: 1;
-`;
-
 export default function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -137,3 +101,33 @@ export default function Signup() {
     </>
   );
 }
+
+const GradientContainer = styled.div`
+  &:after {
+    background: rgb(242, 102, 39);
+    background: linear-gradient(
+      -190deg,
+      rgba(242, 102, 39, 1) 0%,
+      rgba(255, 255, 255, 1) 75%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 65px;
+  z-index: 1;
+`;
