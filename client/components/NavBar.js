@@ -76,38 +76,54 @@ export default function NavBar() {
         />
         {userDropdown ? (
           <DropdownRight>
-            <DropdownItem>
-              {!currentUser ? (
-                <Link
-                  to="/login"
-                  onClick={function () {
-                    setUserDropdown(!userDropdown);
-                  }}
-                >
-                  Login
-                </Link>
-              ) : (
-                <Link
-                  onClick={function () {
-                    setUserDropdown(!userDropdown);
-                    handleLogout();
-                  }}
-                  to="/"
-                >
-                  Logout
-                </Link>
-              )}
-            </DropdownItem>
-            <DropdownItem>
-              <Link
-                to="/signup"
-                onClick={function () {
-                  setUserDropdown(!userDropdown);
-                }}
-              >
-                Sign Up
-              </Link>
-            </DropdownItem>
+            {!currentUser ? (
+              <>
+                <DropdownItem>
+                  <Link
+                    to="/login"
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                  >
+                    Login
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link
+                    to="/signup"
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                  >
+                    Sign Up
+                  </Link>
+                </DropdownItem>
+              </>
+            ) : (
+              <>
+                <DropdownItem>
+                  <Link
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                    to="/dashboard"
+                  >
+                    Dashboard
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                      handleLogout();
+                    }}
+                    to="/"
+                  >
+                    Logout
+                  </Link>
+                </DropdownItem>
+              </>
+            )}
           </DropdownRight>
         ) : (
           ''
