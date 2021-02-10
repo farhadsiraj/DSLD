@@ -6,8 +6,8 @@ import GlobalStyles from '../GlobalStyles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import app from '../../firebase';
-import gym from '../../public/assets/images/gym.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import gym from '../../public/assets/images/gym.jpg';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function Dashboard() {
@@ -149,30 +149,44 @@ const UserDataContainer = styled.div`
   height: 35vh;
   width: 100%;
   padding: 1rem;
+  border: 2px solid red;
+  @media only screen and (mind-width: 960px) {
+    justify-content: center;
+  }
 `;
 
 const ProfilePicture = styled.img`
-  width: 8rem;
-  height: 8rem;
+  width: 10rem;
+  height: 10rem;
   border-radius: 50%;
-  padding: 0rem;
   border: 3px;
-  background-color: #355c7d;
-  border: 3px dotted #355c7d;
+  border: 5px solid #f8b195;
+  position: relative;
+  overflow: hidden;
+  margin: 1rem;
+  @media only screen and (min-width: 960px) {
+    width: 15rem;
+    height: 15rem;
+    margin-left: 6rem;
+  }
 `;
 
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center
-  width: 11rem;
-  height: 10rem;
+  align-items: center;
+  width: 90%;
+  height: 90%;
   background-color: #355c7d;
   border-radius: 2rem;
   color: white;
   justify-content: center;
-  padding-left: 1rem;
+  @media only screen and (min-width: 960px) {
+    width: 70%;
+    height: 100%;
+    margin-right: 5rem;
+  }
 `;
 
 const AnalyticsContainer = styled.div`
