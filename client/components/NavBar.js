@@ -65,7 +65,7 @@ export default function NavBar() {
                 </DropdownItem>
                 <DropdownItem>
                   <Link
-                    to="/formcheck"
+                    to="/exercise-form"
                     onClick={function () {
                       setHamburgerDropdown(false);
                     }}

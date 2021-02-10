@@ -104,7 +104,7 @@ export default function Dashboard() {
               <SettingsText> {currentUser.email}</SettingsText>
             </Row>
             <Row>
-              <SettingsTitle>Name: </SettingsTitle>
+              <SettingsTitle>Username: </SettingsTitle>
               <SettingsText>{currentUser.email}</SettingsText>
             </Row>
             <Row>
@@ -121,7 +121,10 @@ export default function Dashboard() {
             </Row>
           </CurrentSettings>
           <Link to="/update-profile">
-            <StyledButton>Update Profile</StyledButton>
+            <StyledButton>Update Account Info</StyledButton>
+          </Link>
+          <Link to="/user-profile-form">
+            <StyledButton>Update User Profile</StyledButton>
           </Link>
           <StyledButton
             style={{ backgroundColor: 'seagreen' }}
