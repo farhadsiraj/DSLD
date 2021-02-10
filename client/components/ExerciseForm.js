@@ -68,9 +68,6 @@ export default function ExerciseForm() {
                     <option value="squat" ref={exerciseRef}>
                       Squat
                     </option>
-                    <option value="pullup" ref={exerciseRef}>
-                      Pullup
-                    </option>
                   </select>
                 </Form.Group>
                 <Form.Group id="sets">

@@ -40,10 +40,3 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
 `;
-
-const TopToolbar = styled.div`
-  display: flex;
-  margin-top: 1rem;
-  justify-content: space-between;
-  width: 100%;
-`;

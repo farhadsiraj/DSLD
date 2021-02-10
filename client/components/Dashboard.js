@@ -4,7 +4,6 @@ import { Link, useHistory } from 'react-router-dom';
 import app from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -60,6 +59,7 @@ export default function Dashboard() {
             <FontAwesomeIcon
               icon={faPlus}
               style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+              onClick={() => history.push('/exercise-form')}
             />
           </FALargeIcon>
         </AnalyticsContainer>
@@ -69,6 +69,7 @@ export default function Dashboard() {
               <FontAwesomeIcon
                 icon={faPlus}
                 style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+                onClick={() => history.push('/exercise-form')}
               />
             </FAMobileIcon>
             <WorkoutBox>
