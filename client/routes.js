@@ -10,6 +10,7 @@ import PrivateRoute from './components/PrivateRoute';
 import UpdateProfile from './components/UpdateProfile';
 import ForgotPassword from './components/ForgotPassword';
 import UserProfileForm from './components/UserProfileForm';
+import ExerciseForm from './components/ExerciseForm';
 
 class Routes extends Component {
   render() {
@@ -24,6 +25,7 @@ class Routes extends Component {
           <PrivateRoute path="/dashboard" component={Dashboard} />
           <PrivateRoute path="/update-profile" component={UpdateProfile} />
           <PrivateRoute path="/user-profile-form" component={UserProfileForm} />
+          <PrivateRoute path="/exercise-form" component={ExerciseForm} />
         </Switch>
       </AuthProvider>
     );
