@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import app from '../../firebase';
 import gym from '../../public/assets/images/gym.jpg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -38,6 +40,12 @@ export default function Dashboard() {
         </UserDataContainer>
         <WorkoutContainer>
           <Workouts>
+            <div style={{ width: '100%', border: '1px solid red' }}>
+              <FontAwesomeIcon
+                icon={faPlus}
+                style={{ fontSize: '1.8rem', color: '#F26627' }}
+              />
+            </div>
             <WorkoutBox>
               <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
               <CustomWorkoutType>Squats</CustomWorkoutType>
@@ -59,7 +67,6 @@ export default function Dashboard() {
               <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
               <StyledButton>Start</StyledButton>
             </WorkoutBox>
-            <StyledButton>Create a Workout</StyledButton>
           </Workouts>
         </WorkoutContainer>
         <AccountSettingsContainer>
@@ -183,8 +190,8 @@ const Workouts = styled.div`
   width: 90%;
   height: 50rem;
   @media only screen and (min-width: 960px) {
+    height: 20rem;
     flex-direction: row;
-    width: 92%;
   }
 `;
 
