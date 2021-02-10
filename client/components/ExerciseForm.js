@@ -19,7 +19,7 @@ export default function ExerciseForm() {
     event.preventDefault();
 
     let logedin = app.auth().currentUser.uid;
-    console.log(logedin);
+    console.log('loggedin----->', logedin);
 
     try {
       // set error to an empty string so we have no error
@@ -37,7 +37,7 @@ export default function ExerciseForm() {
           sets: setRef.current.value,
           reps: repRef.current.value,
         })
-        .then(history.push('/formcheck'))
+        // .then(history.push('/formcheck'))
         .catch((error) => {
           console.log(
             'Something went wrong with adding setup exercise data to firestore: ',

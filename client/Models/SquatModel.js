@@ -7,6 +7,9 @@ import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
+import app from '../../firebase';
+
+let loggedIn;
 
 // needs to be outside of Model function scope to toggle Start/Stop
 // Initialize vars for repCount
@@ -18,14 +21,36 @@ let setupPosition;
 let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
 let totalReps = 5;
+
 let successfulReps = totalReps;
 let reps = totalReps;
 let predictStatus = 'pending';
+let accuracy;
 
 export function Model() {
   // Hooks
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
+
+  loggedIn = app.auth().currentUser.uid;
+  console.log('loggedin----->', loggedIn);
+
+  let result = [];
+
+  // async function getSetupData() {
+  //   let usersRef = app.firestore().collection('users');
+  //   let currentUser = await usersRef.doc(loggedIn);
+  //   let setupForm = await currentUser.collection('setupWorkout').get();
+  //   setupForm.forEach((doc) => {
+  //     console.log(doc.id, ' => ', doc.data());
+  //     await result.push(doc.data());
+  //   });
+  //   return result;
+  // }
+
+  // console.log('result', result);
+  // let setupData = getSetupData();
+  // console.log('setupdata----->', setupData);
 
   // More API functions here:
   // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
@@ -57,7 +82,7 @@ export function Model() {
     // document.getElementById('webcam-container').appendChild(webcam.canvas);
     let iosVid = document.createElement('div');
     iosVid.setAttribute('id', 'webcam-container');
-    console.log(iosVid);
+    // console.log(iosVid);
 
     iosVid.appendChild(webcam.webcam);
     document.body.appendChild(iosVid);
@@ -68,7 +93,7 @@ export function Model() {
     videoElement.hidden = 'true';
 
     await webcam.play();
-    console.log(webcam.setup);
+    // console.log(webcam.setup);
 
     window.requestAnimationFrame(loop);
 
@@ -156,7 +181,7 @@ export function Model() {
         reps = reps - 1;
       }
 
-      let accuracy = (successfulReps / totalReps) * 100;
+      accuracy = (successfulReps / totalReps) * 100;
 
       if (reps <= 0) {
         togglePredict();
@@ -224,9 +249,32 @@ export function Model() {
     source.connect(context.destination);
     source.start();
   }
+  const [items, setItems] = useState([]);
+
+  async function getSetupData() {
+    let usersRef = app.firestore().collection('users');
+    let currentUser = await usersRef.doc(loggedIn);
+    let setupForm = await currentUser.collection('setupWorkout').get();
+    setupForm.forEach((doc) => {
+      console.log(doc.id, ' => ', doc.data());
+      result.push(doc.data());
+    });
+    return result;
+  }
 
   useEffect(() => {
     init();
+
+    (async () => {
+      const firestoreItems = [];
+      const itemsRef = app.firestore().collection('users');
+      const snapshot = await itemsRef.get();
+      snapshot.forEach((doc) => {
+        // console.log(doc.id, '=>', doc.data())
+        firestoreItems.push(doc.data());
+      });
+      setItems(firestoreItems);
+    })();
 
     return () => console.log('Model cleaned up.');
   }, []);
