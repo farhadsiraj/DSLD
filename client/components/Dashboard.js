@@ -6,6 +6,7 @@ import GlobalStyles from '../GlobalStyles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import app from '../../firebase';
+import gym from '../../public/assets/images/gym.jpg';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -28,7 +29,7 @@ export default function Dashboard() {
       <GradientContainer>
         <GlobalStyles />
         <UserDataContainer>
-          <ProfilePicture />
+          <ProfilePicture src={gym} />
           <UserInfo>
             <div>Active Streak</div>
             <div>Lifetime Reps</div>
@@ -58,6 +59,7 @@ export default function Dashboard() {
               <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
               <StyledButton>Start</StyledButton>
             </WorkoutBox>
+            <StyledButton>Create a Workout</StyledButton>
           </Workouts>
         </WorkoutContainer>
         <AccountSettingsContainer>
@@ -134,12 +136,14 @@ const UserDataContainer = styled.div`
   padding: 1rem;
 `;
 
-const ProfilePicture = styled.div`
-  width: 7rem;
-  height: 7rem;
+const ProfilePicture = styled.img`
+  width: 8rem;
+  height: 8rem;
   border-radius: 50%;
-  padding: 1rem;
+  padding: 0rem;
+  border: 3px;
   background-color: #355c7d;
+  border: 3px dotted #355c7d;
 `;
 
 const UserInfo = styled.div`
@@ -152,6 +156,7 @@ const UserInfo = styled.div`
   border-radius: 2rem;
   color: white;
   justify-content: center;
+  padding-left: 1rem;
 `;
 
 const AnalyticsContainer = styled.div`
@@ -193,6 +198,7 @@ const WorkoutBox = styled.div`
   border-radius: 2rem;
   justify-content: center;
   align-items: center;
+  padding: 1rem 0 1rem 0;
 `;
 
 const CustomWorkoutTitle = styled.h1`
@@ -226,6 +232,7 @@ const AccountSettingsContainer = styled.div`
   width: 100%;
   justify-content: center;
   background-color: #f9a26c;
+  margin-top: 3rem;
   padding-top: 2rem;
   padding-bottom: 2rem;
 `;
