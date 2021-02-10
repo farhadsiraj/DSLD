@@ -11,7 +11,18 @@ const GlobalStyle = createGlobalStyle`
   a, Link {
     color: #325D79;
     text-decoration: none;
+  }
 
+  .link-reset {
+    color: #F26627;
+    text-decoration: none;
+  }
+
+  .hover-reset:hover {
+    color: #F26627;
+    text-decoration: none;
+    border-bottom: #F9A26C;
+    border-bottom-width: 0px;
   }
 
   a:hover{

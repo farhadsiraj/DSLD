@@ -62,6 +62,7 @@ export default function NavBar() {
           ''
         )}
       </NavItem>
+
       <Logo
         style={{
           justifyContent: 'center',
@@ -69,7 +70,9 @@ export default function NavBar() {
           marginBottom: '.3rem',
         }}
       >
-        DSLD
+        <Link to="/" className="link-reset hover-reset">
+          DSLD
+        </Link>
       </Logo>
       <NavItem style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
         <FontAwesomeIcon
