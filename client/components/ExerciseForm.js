@@ -61,8 +61,10 @@ export default function ExerciseForm() {
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="exercises">
-                  <select>
-                    <option value="default">Choose Exercise</option>
+                  <select defaultValue="default">
+                    <option value="default" disabled>
+                      Choose Exercise
+                    </option>
                     <option value="squat" ref={exerciseRef}>
                       Squat
                     </option>
