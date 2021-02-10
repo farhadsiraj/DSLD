@@ -1,34 +1,30 @@
-import React, { useRef, useState } from 'react'
-import { Button, Card, Form, Alert } from 'react-bootstrap'
-import { useAuth } from './contexts/AuthContext'
-import { Link } from 'react-router-dom'
-import GlobalStyles from '../GlobalStyles'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import React, { useRef, useState } from 'react';
+import { Button, Card, Form, Alert } from 'react-bootstrap';
+import { useAuth } from './contexts/AuthContext';
+import { Link } from 'react-router-dom';
+import GlobalStyles from '../GlobalStyles';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function ForgotPassword() {
-  const emailRef = useRef()
-  const { resetPassword } = useAuth()
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-  // using this state to disable the login button
-  const [loading, setLoading] = useState(false)
+  const emailRef = useRef();
+  const { resetPassword } = useAuth();
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
-      // set error to an empty string so we have no error
-      // set message to an empty string so we have no success message
-      // to reset password, use tempmail website
-      setMessage('')
-      setError('')
-      setLoading(true)
-      await resetPassword(emailRef.current.value)
-      setMessage('check your inbox for further instructions')
+      setMessage('');
+      setError('');
+      setLoading(true);
+      await resetPassword(emailRef.current.value);
+      setMessage('check your inbox for further instructions');
     } catch (error) {
-      setError('Failed to reset password')
+      setError('Failed to reset password');
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -61,5 +57,5 @@ export default function ForgotPassword() {
         Need an account? <Link to="/signup">Sign Up</Link>
       </div>
     </>
-  )
+  );
 }

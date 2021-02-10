@@ -76,7 +76,7 @@ export default function NavBar() {
                 <DropdownItem>
                   <Link
                     onClick={function () {
-                      setUserDropdown(!userDropdown);
+                      setHamburgerDropdown(!hamburgerDropdown);
                     }}
                     to="/dashboard"
                   >

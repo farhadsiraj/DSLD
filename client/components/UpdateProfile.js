@@ -10,19 +10,16 @@ export default function UpdateProfile() {
   const passwordConfirmRef = useRef();
   const { currentUser, updateEmail, updatePassword } = useAuth();
   const [error, setError] = useState('');
-  // using this state to disable the signup button to keep the user from creating multiple accounts at the same time
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    // ensures password and confirm password are equal
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError('Passwords do not match');
     }
 
-    // create promises array so all of the promises can finish before we display any messages
     const promises = [];
     setError('');
     setLoading(true);
@@ -33,9 +30,6 @@ export default function UpdateProfile() {
       promises.push(updatePassword(passwordRef.current.value));
     }
 
-    // once all promises are fulfilled, take the user to the dashboard
-    // if there's an error, show error message that states the account was not updated
-    // finally sets loading back to false
     Promise.all(promises)
       .then(() => {
         history.push('/dashboard');

@@ -11,7 +11,6 @@ export default function LoginForm() {
   const passwordRef = useRef();
   const { login } = useAuth();
   const [error, setError] = useState('');
-  // using this state to disable the login button
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
@@ -19,7 +18,6 @@ export default function LoginForm() {
     event.preventDefault();
 
     try {
-      // set error to an empty string so we have no error
       setError('');
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
