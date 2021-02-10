@@ -29,72 +29,74 @@ export default function Dashboard() {
     <Container>
       <GradientContainer>
         <GlobalStyles />
-        <UserDataContainer>
-          <ProfilePicture src={gym} />
-          <UserInfo>
-            <Flex>
-              <DataBox>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-              </DataBox>
-              <DataBox>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-              </DataBox>
-              <DataBox>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-                <div>Total Reps</div>
-              </DataBox>
-            </Flex>
-          </UserInfo>
-        </UserDataContainer>
-        <AnalyticsContainer>
-          <FALargeIcon>
-            <FontAwesomeIcon
-              icon={faPlus}
-              style={{ fontSize: '1.8rem', color: '#EE4A40' }}
-              onClick={() => history.push('/exercise-form')}
-            />
-          </FALargeIcon>
-        </AnalyticsContainer>
-        <WorkoutContainer>
-          <Workouts>
-            <FAMobileIcon style={{ width: '100%' }}>
+        <ColumnContainer>
+          <UserDataContainer>
+            <ProfilePicture src={gym} />
+            <UserInfo>
+              <Flex>
+                <DataBox>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                </DataBox>
+                <DataBox>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                </DataBox>
+                <DataBox>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                  <div>Total Reps</div>
+                </DataBox>
+              </Flex>
+            </UserInfo>
+          </UserDataContainer>
+          <AnalyticsContainer>
+            <FALargeIcon>
               <FontAwesomeIcon
                 icon={faPlus}
                 style={{ fontSize: '1.8rem', color: '#EE4A40' }}
                 onClick={() => history.push('/exercise-form')}
               />
-            </FAMobileIcon>
-            <WorkoutBox>
-              <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-              <CustomWorkoutType>Squats</CustomWorkoutType>
-              <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-              <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-              <StyledButton>Start</StyledButton>
-            </WorkoutBox>
-            <WorkoutBox>
-              <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-              <CustomWorkoutType>Squats</CustomWorkoutType>
-              <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-              <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-              <StyledButton>Start</StyledButton>
-            </WorkoutBox>
-            <WorkoutBox>
-              <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-              <CustomWorkoutType>Squats</CustomWorkoutType>
-              <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-              <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-              <StyledButton>Start</StyledButton>
-            </WorkoutBox>
-          </Workouts>
-        </WorkoutContainer>
+            </FALargeIcon>
+          </AnalyticsContainer>
+          <WorkoutContainer>
+            <Workouts>
+              <FAMobileIcon style={{ width: '100%' }}>
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+                  onClick={() => history.push('/exercise-form')}
+                />
+              </FAMobileIcon>
+              <WorkoutBox>
+                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                <CustomWorkoutType>Squats</CustomWorkoutType>
+                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+                <StyledButton>Start</StyledButton>
+              </WorkoutBox>
+              <WorkoutBox>
+                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                <CustomWorkoutType>Squats</CustomWorkoutType>
+                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+                <StyledButton>Start</StyledButton>
+              </WorkoutBox>
+              <WorkoutBox>
+                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                <CustomWorkoutType>Squats</CustomWorkoutType>
+                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+                <StyledButton>Start</StyledButton>
+              </WorkoutBox>
+            </Workouts>
+          </WorkoutContainer>
+        </ColumnContainer>
         <AccountSettingsContainer>
           <CurrentSettings>
             <h2 style={{ color: 'white' }}>Account Settings</h2>
@@ -141,8 +143,8 @@ export default function Dashboard() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
+  height: 100%;
   margin-top: 65px;
 `;
 
@@ -166,6 +168,12 @@ const GradientContainer = styled.div`
   }
 `;
 
+const ColumnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem;
+`;
+
 const UserDataContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -175,7 +183,9 @@ const UserDataContainer = styled.div`
   width: 100%;
   padding: 1rem;
   @media only screen and (min-width: 960px) {
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 1.5rem;
   }
 `;
 
@@ -209,7 +219,6 @@ const UserInfo = styled.div`
   @media only screen and (min-width: 960px) {
     width: 70%;
     height: 100%;
-    margin-right: 5rem;
   }
 `;
 
@@ -222,14 +231,11 @@ const AnalyticsContainer = styled.div`
     border-radius: 5px;
     justify-content: center;
     align-items: center;
-    margin-left: 1.6rem;
   }
 `;
 
 const WorkoutContainer = styled.div`
-  display: flex;
   width: 100%;
-  justify-content: center;
 `;
 
 const Workouts = styled.div`
@@ -240,6 +246,9 @@ const Workouts = styled.div`
   width: 90%;
   height: 50rem;
   @media only screen and (min-width: 960px) {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
     height: 20rem;
     flex-direction: row;
   }
@@ -316,6 +325,7 @@ const Row = styled.div`
 `;
 
 const FAMobileIcon = styled.div`
+  margin: 0;
   width: 100%;
   @media only screen and (min-width: 960px) {
     display: none;
