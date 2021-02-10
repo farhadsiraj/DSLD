@@ -35,18 +35,18 @@ export default function Dashboard() {
             <div>Weight</div>
           </UserInfo>
         </UserDataContainer>
-        <AnalyticsContainer>
+        {/* <AnalyticsContainer>
           <PlaceholderCircle />
           <PlaceholderCircle />
           <PlaceholderCircle />
           <PlaceholderCircle />
           <PlaceholderCircle />
-        </AnalyticsContainer>
+        </AnalyticsContainer> */}
         <WorkoutContainer>
           <Workouts>
-            <WorkoutBox />
-            <WorkoutBox />
-            <WorkoutBox />
+            <WorkoutBox>Data</WorkoutBox>
+            <WorkoutBox>Data</WorkoutBox>
+            <WorkoutBox>Data</WorkoutBox>
           </Workouts>
         </WorkoutContainer>
         <Card>
@@ -103,27 +103,32 @@ const UserDataContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 30%;
+  height: 35vh;
   width: 100%;
+  padding: 1rem;
   border: 1px solid blue;
 `;
 
 const ProfilePicture = styled.div`
-  width: 8rem;
-  height: 8rem;
+  width: 7rem;
+  height: 7rem;
   border-radius: 50%;
+  padding: 1rem;
   background-color: #355c7d;
+  border: 1px solid blue;
 `;
 
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 10rem;
+  justify-content: space-around;
+  width: 11rem;
   height: 10rem;
   background-color: #355c7d;
   border-radius: 2rem;
   color: white;
   justify-content: center;
+  border: 1px solid blue;
 `;
 
 const AnalyticsContainer = styled.div`
@@ -135,6 +140,7 @@ const AnalyticsContainer = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
+
 const WorkoutContainer = styled.div`
   display: flex;
   width: 100%;
@@ -147,8 +153,8 @@ const Workouts = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
-  height: 600px;
+  width: 90%;
+  height: 50rem;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     width: 92%;
