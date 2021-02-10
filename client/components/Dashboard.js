@@ -58,7 +58,11 @@ export default function Dashboard() {
           <FALargeIcon>
             <FontAwesomeIcon
               icon={faPlus}
-              style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+              style={{
+                fontSize: '1.8rem',
+                color: '#EE4A40',
+                cursor: 'pointer',
+              }}
               onClick={() => history.push('/exercise-form')}
             />
           </FALargeIcon>
@@ -68,7 +72,11 @@ export default function Dashboard() {
             <FAMobileIcon style={{ width: '100%' }}>
               <FontAwesomeIcon
                 icon={faPlus}
-                style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+                style={{
+                  fontSize: '1.8rem',
+                  color: '#EE4A40',
+                  cursor: 'pointer',
+                }}
                 onClick={() => history.push('/exercise-form')}
               />
             </FAMobileIcon>
