@@ -65,6 +65,16 @@ export default function NavBar() {
           <DropdownRight>
             <DropdownItem>
               <Link
+                to="/dashboard"
+                onClick={function () {
+                  setUserDropdown(!userDropdown);
+                }}
+              >
+                Dashboard
+              </Link>
+            </DropdownItem>
+            <DropdownItem>
+              <Link
                 to="/login"
                 onClick={function () {
                   setUserDropdown(!userDropdown);
