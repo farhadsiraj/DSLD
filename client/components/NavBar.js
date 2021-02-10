@@ -80,7 +80,7 @@ export default function NavBar() {
                   setUserDropdown(!userDropdown);
                 }}
               >
-                Create an Account
+                Sign Up
               </Link>
             </DropdownItem>
           </DropdownRight>
