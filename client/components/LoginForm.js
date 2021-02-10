@@ -1,33 +1,33 @@
-import React, { useRef, useState } from 'react'
-import { Button, Card, Form, Alert } from 'react-bootstrap'
-import { useAuth } from '../components/contexts/AuthContext'
-import { Link, useHistory } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import styled from 'styled-components'
-import GlobalStyles from '../GlobalStyles'
+import React, { useRef, useState } from 'react';
+import { Button, Card, Form, Alert } from 'react-bootstrap';
+import { useAuth } from '../components/contexts/AuthContext';
+import { Link, useHistory } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import styled from 'styled-components';
+import GlobalStyles from '../GlobalStyles';
 
 export default function LoginForm() {
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const { login } = useAuth()
-  const [error, setError] = useState('')
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const { login } = useAuth();
+  const [error, setError] = useState('');
   // using this state to disable the login button
-  const [loading, setLoading] = useState(false)
-  const history = useHistory()
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   async function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     try {
       // set error to an empty string so we have no error
-      setError('')
-      setLoading(true)
-      await login(emailRef.current.value, passwordRef.current.value)
-      history.push('/dashboard')
+      setError('');
+      setLoading(true);
+      await login(emailRef.current.value, passwordRef.current.value);
+      history.push('/dashboard');
     } catch (error) {
-      setError('Failed to sign in')
+      setError('Failed to sign in');
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return (
@@ -63,5 +63,5 @@ export default function LoginForm() {
         Need an account? <Link to="/signup">Sign Up</Link>
       </div>
     </>
-  )
+  );
 }

@@ -36,27 +36,55 @@ export default function NavBar() {
         />
         {hamburgerDropdown ? (
           <Dropdown>
-            <DropdownItem>
-              {' '}
-              <Link
-                to="/"
-                onClick={function () {
-                  setHamburgerDropdown(false);
-                }}
-              >
-                Home
-              </Link>
-            </DropdownItem>
-            <DropdownItem>
-              <Link
-                to="/formcheck"
-                onClick={function () {
-                  setHamburgerDropdown(false);
-                }}
-              >
-                Workout
-              </Link>
-            </DropdownItem>
+            {!currentUser ? (
+              <>
+                <DropdownItem>
+                  {' '}
+                  <Link
+                    to="/"
+                    onClick={function () {
+                      setHamburgerDropdown(false);
+                    }}
+                  >
+                    Home
+                  </Link>
+                </DropdownItem>
+              </>
+            ) : (
+              <>
+                <DropdownItem>
+                  {' '}
+                  <Link
+                    to="/"
+                    onClick={function () {
+                      setHamburgerDropdown(false);
+                    }}
+                  >
+                    Home
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link
+                    to="/formcheck"
+                    onClick={function () {
+                      setHamburgerDropdown(false);
+                    }}
+                  >
+                    Start Workout
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                    to="/dashboard"
+                  >
+                    Dashboard
+                  </Link>
+                </DropdownItem>
+              </>
+            )}
           </Dropdown>
         ) : (
           ''
@@ -110,7 +138,17 @@ export default function NavBar() {
               </>
             ) : (
               <>
-                <DropdownItem>
+                {/* <DropdownItem>
+                  <Link
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                    to="/exercise-form"
+                  >
+                    Start Workout
+                  </Link>
+                </DropdownItem> */}
+                {/* <DropdownItem>
                   <Link
                     onClick={function () {
                       setUserDropdown(!userDropdown);
@@ -119,7 +157,7 @@ export default function NavBar() {
                   >
                     Dashboard
                   </Link>
-                </DropdownItem>
+                </DropdownItem> */}
                 <DropdownItem>
                   <Link
                     onClick={function () {
