@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Button, Card, Form, Alert } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from '../../firebase';
@@ -11,7 +11,6 @@ export default function ExerciseForm() {
   const repRef = useRef();
 
   const [error, setError] = useState('');
-  // using this state to disable the signup button to keep the user from creating multiple accounts at the same time
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
@@ -22,7 +21,6 @@ export default function ExerciseForm() {
     console.log(logedin);
 
     try {
-      // set error to an empty string so we have no error
       setError('');
       setLoading(true);
 

@@ -13,7 +13,6 @@ export default function UserProfileForm() {
   const sexRef = useRef();
 
   const [error, setError] = useState('');
-  // using this state to disable the signup button to keep the user from creating multiple accounts at the same time
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
@@ -21,7 +20,6 @@ export default function UserProfileForm() {
     event.preventDefault();
 
     try {
-      // set error to an empty string so we have no error
       setError('');
       setLoading(true);
 

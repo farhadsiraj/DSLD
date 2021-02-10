@@ -12,26 +12,21 @@ export default function Signup() {
   const passwordConfirmRef = useRef();
   const { signup } = useAuth();
   const [error, setError] = useState('');
-  // using this state to disable the signup button to keep the user from creating multiple accounts at the same time
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    // ensures password and confirm password are equal
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError('Passwords do not match');
     }
 
     try {
-      // set error to an empty string so we have no error
       setError('');
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value).then(
         () => {
-          //Once the user creation has happened successfully, we can add the currentUser into firestore
-          //with the appropriate details.
           app
             .firestore()
             .collection('users')

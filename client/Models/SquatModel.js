@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import * as tf from '@tensorflow/tfjs-core';
 import * as tmPose from '@teachablemachine/pose';
 import positiveFeedback from '../../public/assets/audio/positiveFeedback_v1.mp3';
 import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3';
