@@ -4,6 +4,7 @@ import GlobalStyles from '../GlobalStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 
 const Container = styled.nav`
   display: flex;
@@ -90,6 +91,18 @@ const Logo = styled.div`
 export default function NavBar() {
   const [hamburgerDropdown, setHamburgerDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
+  const [error, setError] = useState('');
+  const { currentUser, logout } = useAuth();
+
+  async function handleLogout() {
+    setError('');
+
+    try {
+      await logout();
+    } catch (error) {
+      setError('Failed to log out');
+    }
+  }
 
   return (
     <Container>
@@ -146,14 +159,26 @@ export default function NavBar() {
         {userDropdown ? (
           <DropdownRight>
             <DropdownItem>
-              <Link
-                to="/login"
-                onClick={function () {
-                  setUserDropdown(!userDropdown);
-                }}
-              >
-                Login
-              </Link>
+              {!currentUser ? (
+                <Link
+                  to="/login"
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                >
+                  Login
+                </Link>
+              ) : (
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                    handleLogout();
+                  }}
+                  to="/"
+                >
+                  Logout
+                </Link>
+              )}
             </DropdownItem>
             <DropdownItem>
               <Link
