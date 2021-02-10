@@ -25,6 +25,8 @@ const GlobalStyle = createGlobalStyle`
   p {
     margin: 0;
   }
+
+
 `;
 
 export default GlobalStyle;

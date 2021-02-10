@@ -33,9 +33,26 @@ export default function Dashboard() {
         <UserDataContainer>
           <ProfilePicture src={gym} />
           <UserInfo>
-            <div>Active Streak</div>
-            <div>Lifetime Reps</div>
-            <div>Weight</div>
+            <Flex>
+              <DataBox>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+              </DataBox>
+              <DataBox>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+              </DataBox>
+              <DataBox>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+                <div>Total Reps</div>
+              </DataBox>
+            </Flex>
           </UserInfo>
         </UserDataContainer>
         <AnalyticsContainer>
@@ -86,15 +103,19 @@ export default function Dashboard() {
               <SettingsText> {currentUser.email}</SettingsText>
             </Row>
             <Row>
-              <SettingsTitle>Email: </SettingsTitle>
+              <SettingsTitle>Name: </SettingsTitle>
               <SettingsText>{currentUser.email}</SettingsText>
             </Row>
             <Row>
-              <SettingsTitle>Email: </SettingsTitle>
+              <SettingsTitle>Age: </SettingsTitle>
               <SettingsText>{currentUser.email}</SettingsText>
             </Row>
             <Row>
-              <SettingsTitle>Email: </SettingsTitle>
+              <SettingsTitle>Weight: </SettingsTitle>
+              <SettingsText>{currentUser.email}</SettingsText>
+            </Row>
+            <Row>
+              <SettingsTitle>Sex: </SettingsTitle>
               <SettingsText>{currentUser.email}</SettingsText>
             </Row>
           </CurrentSettings>
@@ -149,8 +170,7 @@ const UserDataContainer = styled.div`
   height: 35vh;
   width: 100%;
   padding: 1rem;
-  border: 2px solid red;
-  @media only screen and (mind-width: 960px) {
+  @media only screen and (min-width: 960px) {
     justify-content: center;
   }
 `;
@@ -299,4 +319,14 @@ const FAMobileIcon = styled.div`
 `;
 const FALargeIcon = styled.div`
   width: 90%;
+`;
+
+const DataBox = styled.div`
+  flex: 1;
+  margin: 1rem;
+  justify-content: center;
+`;
+
+const Flex = styled.div`
+  display: flex;
 `;
