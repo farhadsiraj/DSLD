@@ -31,7 +31,7 @@ export default function ExerciseForm() {
         .collection('users')
         .doc(logedin)
         .collection('setupWorkout')
-        .doc()
+        .doc('setup')
         .set({
           exercise: exerciseRef.current.value,
           sets: setRef.current.value,
@@ -67,9 +67,6 @@ export default function ExerciseForm() {
                     <option value="default">Choose Exercise</option>
                     <option value="squat" ref={exerciseRef}>
                       Squat
-                    </option>
-                    <option value="pullup" ref={exerciseRef}>
-                      Pullup
                     </option>
                   </select>
                 </Form.Group>
