@@ -35,23 +35,34 @@ export default function Dashboard() {
             <div>Weight</div>
           </UserInfo>
         </UserDataContainer>
-        {/* <AnalyticsContainer>
-          <PlaceholderCircle />
-          <PlaceholderCircle />
-          <PlaceholderCircle />
-          <PlaceholderCircle />
-          <PlaceholderCircle />
-        </AnalyticsContainer> */}
         <WorkoutContainer>
           <Workouts>
-            <WorkoutBox>Data</WorkoutBox>
-            <WorkoutBox>Data</WorkoutBox>
-            <WorkoutBox>Data</WorkoutBox>
+            <WorkoutBox>
+              <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+              <CustomWorkoutType>Squats</CustomWorkoutType>
+              <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+              <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+              <StyledButton>Start</StyledButton>
+            </WorkoutBox>
+            <WorkoutBox>
+              <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+              <CustomWorkoutType>Squats</CustomWorkoutType>
+              <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+              <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+              <StyledButton>Start</StyledButton>
+            </WorkoutBox>
+            <WorkoutBox>
+              <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+              <CustomWorkoutType>Squats</CustomWorkoutType>
+              <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+              <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+              <StyledButton>Start</StyledButton>
+            </WorkoutBox>
           </Workouts>
         </WorkoutContainer>
         <Card>
           <Card.Body>
-            <h2 className="text-center mb-4">Profile</h2>
+            <h2 className="text-center mb-4">Account Settings</h2>
             {error && <Alert variant="danger">{error}</Alert>}
             <strong>Email:</strong>
             {currentUser.email}
@@ -173,9 +184,24 @@ const WorkoutBox = styled.div`
   align-items: center;
 `;
 
-const PlaceholderCircle = styled.div`
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: black;
-  border-radius: 50%;
+const CustomWorkoutTitle = styled.h1`
+  color: white;
+  font-size: 2rem;
+`;
+const CustomWorkoutType = styled.h2`
+  color: white;
+  font-size: 1.2rem;
+`;
+const CustomWorkoutDetail = styled.h3`
+  color: white;
+  font-size: 1rem;
+`;
+
+const StyledButton = styled.button`
+  background-color: #f67280;
+  color: white;
+  padding: 1rem;
+  width: 10rem;
+  border-radius: 0.8rem;
+  border-style: none;
 `;
