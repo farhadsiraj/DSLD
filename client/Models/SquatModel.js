@@ -18,10 +18,10 @@ let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
-let totalReps = 5;
+let totalReps;
 
-let successfulReps = totalReps;
-let reps = totalReps;
+let successfulReps;
+let reps;
 let predictStatus = 'pending';
 let accuracy;
 
@@ -47,9 +47,12 @@ export function Model() {
       const user = doc.data();
       // console.table(user.reps);
       totalReps = user.reps;
+      successfulReps = user.reps;
+      reps = user.reps;
       console.log('Total Reps from Firestore', totalReps);
     }
   }
+  setRepPrefs();
 
   // More API functions here:
   // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
@@ -97,7 +100,6 @@ export function Model() {
     ctx = canvas.getContext('2d');
     labelContainer = document.getElementById('label-container');
     for (let i = 0; i < maxPredictions; i++) {
-      // and class labels
       labelContainer.appendChild(document.createElement('div'));
     }
   }
@@ -174,7 +176,7 @@ export function Model() {
         reps = reps - 1;
       }
 
-      accuracy = (successfulReps / totalReps) * 100;
+      accuracy = Math.ceil((successfulReps / totalReps) * 100);
 
       if (reps <= 0) {
         togglePredict();
@@ -189,9 +191,6 @@ export function Model() {
 
       let remContainer = document.getElementById('rem-container');
       remContainer.innerHTML = `Remaining Reps: ${reps}`;
-
-      // console.log('counterStatus ---->', counterStatus);
-      // console.log('In func repCount ---->', repCount);
     } else {
       return;
     }
@@ -242,42 +241,14 @@ export function Model() {
     source.connect(context.destination);
     source.start();
   }
-  const [items, setItems] = useState([]);
-
-  async function getSetupData() {
-    let usersRef = app.firestore().collection('users');
-    let currentUser = await usersRef.doc(loggedIn);
-    let setupForm = await currentUser.collection('setupWorkout').get();
-    setupForm.forEach((doc) => {
-      console.log(doc.id, ' => ', doc.data());
-      result.push(doc.data());
-    });
-    return result;
-  }
 
   useEffect(() => {
     init();
-
-    (async () => {
-      const firestoreItems = [];
-      const itemsRef = app.firestore().collection('users');
-      const snapshot = await itemsRef.get();
-      snapshot.forEach((doc) => {
-        // console.log(doc.id, '=>', doc.data())
-        firestoreItems.push(doc.data());
-      });
-      setItems(firestoreItems);
-    })();
 
     return () => console.log('Model cleaned up.');
   }, []);
 
   function countdown(callback) {
-    // let modal = document.getElementById('modal');
-    // modal.style.display = 'flex';
-    // modal.style.flexDirection = 'column';
-    // modal.style.justifyContent = 'center';
-    // modal.style.alignItems = 'center';
     let seconds = 5;
     let countdownSeconds = document.getElementById('timer');
     countdownSeconds.innerHTML = seconds;

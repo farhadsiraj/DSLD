@@ -35,7 +35,7 @@ export default function ExerciseForm() {
           sets: setRef.current.value,
           reps: repRef.current.value,
         })
-        // .then(history.push('/formcheck'))
+        .then(history.push('/formcheck'))
         .catch((error) => {
           console.log(
             'Something went wrong with adding setup exercise data to firestore: ',
