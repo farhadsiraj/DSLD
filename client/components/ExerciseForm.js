@@ -11,6 +11,7 @@ export default function ExerciseForm() {
   const exerciseRef = useRef();
   const setRef = useRef();
   const repRef = useRef();
+  const restTimerRef = useRef();
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,11 +30,15 @@ export default function ExerciseForm() {
         .doc(loggedIn)
         .collection('setupWorkout')
         .doc('setup')
-        .set({
-          exercise: exerciseRef.current.value,
-          sets: setRef.current.value,
-          reps: repRef.current.value,
-        })
+        .set(
+          {
+            exercise: exerciseRef.current.value,
+            sets: setRef.current.value,
+            reps: repRef.current.value,
+            restTimer: restTimerRef.current.value,
+          },
+          { merge: true }
+        )
         .then(history.push('/formcheck'))
         .catch((error) => {
           console.log(
@@ -71,11 +76,15 @@ export default function ExerciseForm() {
                 </Form.Group>
                 <Form.Group id="sets">
                   <Form.Label>Sets:</Form.Label>
-                  <Form.Control type="integer" ref={setRef} />
+                  <Form.Control type="integer" ref={setRef} value="3" />
                 </Form.Group>
                 <Form.Group id="reps">
                   <Form.Label>Reps:</Form.Label>
-                  <Form.Control type="integer" ref={repRef} />
+                  <Form.Control type="integer" ref={repRef} value="10" />
+                </Form.Group>
+                <Form.Group id="rest">
+                  <Form.Label>Rest Timer:</Form.Label>
+                  <Form.Control type="integer" ref={restTimerRef} value="60" />
                 </Form.Group>
                 <Button
                   style={buttonStyle}
@@ -113,7 +122,7 @@ const cardStyle = {
   paddingBottom: '4rem',
   paddingLeft: '4rem',
   paddingRight: '4rem',
-  height: '30rem',
+  height: '35rem',
   width: '30rem',
 };
 
@@ -161,7 +170,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   width: 33rem;
-  height: 30rem;
+  height: 35rem;
   background-color: #355c7d;
   margin: 1rem;
   margin-top: 10rem;

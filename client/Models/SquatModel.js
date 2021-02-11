@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 
 // TODO
 // 'NO MORE SETS' is being spammed after history.push, did useeffect cleanup work?
+// Add rest timer to exercise form
 
 let loggedIn;
 
@@ -22,7 +23,8 @@ let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
-
+let exercise;
+let restTimer;
 let totalSets;
 let setCount;
 let totalReps; // Number of reps user specifies
@@ -54,11 +56,13 @@ export function Model() {
     } else {
       const user = doc.data();
       // console.table(user.reps);
+      exercise = user.exercise;
       totalReps = user.reps;
       successfulReps = user.reps * user.sets;
       reps = user.reps;
       totalSets = user.sets;
       setCount = totalSets;
+      restTimer = user.restTimer;
       console.log('Total Reps from Firestore', totalReps);
     }
   }
@@ -196,10 +200,24 @@ export function Model() {
           setCount--;
           if (setCount === 0) {
             console.log('TESTTESTTEST');
+            db.collection('users')
+              .doc(loggedIn)
+              .collection('workoutHistory')
+              .doc()
+              .set(
+                {
+                  type: exercise,
+                  sets: totalSets,
+                  reps: totalReps,
+                  accuracy: accuracy,
+                  successfulReps: successfulReps,
+                },
+                { merge: true }
+              );
             history.push('/exercise-form');
           } else {
             togglePredict();
-            countdown(10, togglePredict);
+            countdown(restTimer, togglePredict);
             reps = totalReps;
           }
         }
