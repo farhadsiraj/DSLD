@@ -3,7 +3,6 @@ import { Button, Card, Form, Alert } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import app from '../../firebase';
 import press from '../../public/assets/images/press.png';
 import { Link } from 'react-router-dom';
 import { db, auth } from '../../firebase';
@@ -20,16 +19,14 @@ export default function ExerciseForm() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    let logedin = auth.currentUser.uid;
-    console.log('loggedin----->', logedin);
+    let loggedIn = auth.currentUser.uid;
 
     try {
       setError('');
       setLoading(true);
 
-      let newCollection = db
-        .collection('users')
-        .doc(logedin)
+      db.collection('users')
+        .doc(loggedIn)
         .collection('setupWorkout')
         .doc('setup')
         .set({

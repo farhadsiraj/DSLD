@@ -5,7 +5,7 @@ import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
-import app from '../../firebase';
+import { db, auth } from '../../firebase';
 
 let loggedIn;
 
@@ -30,12 +30,11 @@ export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
 
-  loggedIn = app.auth().currentUser.uid;
+  loggedIn = auth.currentUser.uid;
   console.log('loggedin----->', loggedIn);
 
   async function setRepPrefs() {
-    const usersRef = app
-      .firestore()
+    const usersRef = db
       .collection('users')
       .doc(loggedIn)
       .collection('setupWorkout')

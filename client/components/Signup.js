@@ -4,7 +4,6 @@ import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import app from '../../firebase';
 import gym from '../../public/assets/images/gym.jpg';
 import { db, auth } from '../../firebase';
 

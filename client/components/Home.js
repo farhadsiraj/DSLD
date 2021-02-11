@@ -6,9 +6,6 @@ import gym from '../../public/assets/images/gym.jpg';
 import ball from '../../public/assets/images/ball.png';
 import ohp from '../../public/assets/images/ohp.png';
 import press from '../../public/assets/images/press.png';
-import { db, auth } from '../../firebase';
-import 'firebase/firestore';
-import 'firebase/auth';
 
 export default function Home() {
   return (

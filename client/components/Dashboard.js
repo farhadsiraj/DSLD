@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
-import { db, auth } from '../../firebase';
+import { db } from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import { Alert } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import gym from '../../public/assets/images/gym.jpg';
-import 'firebase/firestore';
-
-console.log(db);
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -21,7 +15,6 @@ export default function Dashboard() {
 
   async function handleLogout() {
     setError('');
-
     try {
       await logout();
       history.push('/login');
@@ -29,8 +22,6 @@ export default function Dashboard() {
       setError('Failed to log out');
     }
   }
-
-  console.log(db);
 
   useEffect(async () => {
     (async () => {
@@ -150,7 +141,7 @@ export default function Dashboard() {
                 </CustomWorkoutTitle>
               </AnalyticsContainer>
               <WorkoutContainer>
-                {/* <Workouts>
+                <Workouts>
                   {workoutHistory
                     .slice(0, Math.min(3, workoutHistory.length))
                     .map((ele, i) => {
@@ -180,7 +171,7 @@ export default function Dashboard() {
                         </WorkoutBox>
                       );
                     })}
-                </Workouts> */}
+                </Workouts>
               </WorkoutContainer>
             </ColumnContainer>
             <AccountSettingsContainer>
