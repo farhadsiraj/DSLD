@@ -24,6 +24,7 @@ let setupPosition;
 let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
 let exercise;
+let restTimer;
 let totalSets;
 let setCount;
 let totalReps; // Number of reps user specifies
@@ -61,6 +62,7 @@ export function Model() {
       reps = user.reps;
       totalSets = user.sets;
       setCount = totalSets;
+      restTimer = user.restTimer;
       console.log('Total Reps from Firestore', totalReps);
     }
   }
@@ -215,7 +217,7 @@ export function Model() {
             history.push('/exercise-form');
           } else {
             togglePredict();
-            countdown(10, togglePredict);
+            countdown(restTimer, togglePredict);
             reps = totalReps;
           }
         }

@@ -11,6 +11,7 @@ export default function ExerciseForm() {
   const exerciseRef = useRef();
   const setRef = useRef();
   const repRef = useRef();
+  const restTimerRef = useRef();
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,11 +30,15 @@ export default function ExerciseForm() {
         .doc(loggedIn)
         .collection('setupWorkout')
         .doc('setup')
-        .set({
-          exercise: exerciseRef.current.value,
-          sets: setRef.current.value,
-          reps: repRef.current.value,
-        })
+        .set(
+          {
+            exercise: exerciseRef.current.value,
+            sets: setRef.current.value,
+            reps: repRef.current.value,
+            restTimer: restTimerRef.current.value,
+          },
+          { merge: true }
+        )
         .then(history.push('/formcheck'))
         .catch((error) => {
           console.log(
@@ -76,6 +81,10 @@ export default function ExerciseForm() {
                 <Form.Group id="reps">
                   <Form.Label>Reps:</Form.Label>
                   <Form.Control type="integer" ref={repRef} />
+                </Form.Group>
+                <Form.Group id="rest">
+                  <Form.Label>Rest Timer:</Form.Label>
+                  <Form.Control type="integer" ref={restTimerRef} />
                 </Form.Group>
                 <Button
                   style={buttonStyle}
