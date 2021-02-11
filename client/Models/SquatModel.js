@@ -291,10 +291,6 @@ export function Model() {
             <Label id="rem-container"></Label>
           </WebcamToolbar>
         </Webcam>
-        {/* <LabelContainer> */}
-        {/* <Label id="label-container"></Label> */}
-        {/* <Label id="countdown"></Label> */}
-        {/* </LabelContainer> */}
       </ModelContainer>
     </ContentContainer>
   );
@@ -307,6 +303,7 @@ const ContentContainer = styled.div`
   align-items: center;
   width: 70%;
   margin-top: 65px;
+  height: 100%;
   z-index: 1;
   border: 3px solid orange;
   @media only screen and (max-width: 1200px) {
@@ -340,13 +337,11 @@ const WorkoutType = styled.div`
 const ModelContainer = styled.div`
   display: flex;
   width: 100%;
-  margin: 2rem;
+  margin-top: 1rem;
   border: 3px solid black;
 
-  @media only screen and (max-width: 1200px) {
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
+  @media only screen and (min-width: 960px) {
+    padding: 1rem;
   }
 `;
 
@@ -368,7 +363,7 @@ const LabelContainer = styled.div`
 `;
 const Label = styled.div`
   color: #325d79;
-  font-size: 2.2rem;
+  font-size: 1.2rem;
   @media only screen and (max-width: 1200px) {
     font-size: 1.3rem;
   }
@@ -378,7 +373,6 @@ const WebcamToolbar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-top: 0.7rem;
   border: 3px dotted grey;
 `;
 
