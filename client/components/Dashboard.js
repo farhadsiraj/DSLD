@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
-import app from '../../firebase';
+import { db } from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import { Alert } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import gym from '../../public/assets/images/gym.jpg';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -18,7 +15,6 @@ export default function Dashboard() {
 
   async function handleLogout() {
     setError('');
-
     try {
       await logout();
       history.push('/login');
@@ -29,7 +25,7 @@ export default function Dashboard() {
 
   useEffect(async () => {
     (async () => {
-      const userRef = app.firestore().collection('users').doc(currentUser.uid);
+      const userRef = db.collection('users').doc(currentUser.uid);
       const userDoc = await userRef.get();
       if (!userDoc.exists) {
         console.log('No user data is available.');
@@ -40,8 +36,7 @@ export default function Dashboard() {
       }
 
       let pastWorkouts = [];
-      const workoutHistoryRef = app
-        .firestore()
+      const workoutHistoryRef = db
         .collection('users')
         .doc(currentUser.uid)
         .collection('workoutHistory');
@@ -79,8 +74,13 @@ export default function Dashboard() {
                     alignItems: 'center',
                   }}
                 >
-                  <ProfilePicture src={user.imageUrl} />
-                  <UserName>{user.name}</UserName>
+                  <ProfilePicture
+                    src={
+                      user.imageUrl ||
+                      `https://media-exp1.licdn.com/dms/image/C5635AQGFPFNGkZF98Q/profile-framedphoto-shrink_800_800/0/1611853400540?e=1613149200&v=beta&t=2o5qxmUaPU_hkJI6tIpRCJ8Pof_gEINpccaCIVSaTBM`
+                    }
+                  />
+                  <UserName>{user.username}</UserName>
 
                   <Link to="/exercise-form" className="link-reset hover-reset">
                     <StyledButton
@@ -142,77 +142,35 @@ export default function Dashboard() {
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
-                  <WorkoutBox>
-                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
-                    <CustomWorkoutType className="lighter">
-                      {workoutHistory[0].date
-                        .toDate()
-                        .toString()
-                        .slice(
-                          0,
-                          workoutHistory[0].date
-                            .toDate()
-                            .toString()
-                            .indexOf(':') - 8
-                        )}
-                    </CustomWorkoutType>
-                    <CustomWorkoutDetail>
-                      <Title>Reps: </Title>
-                      <Text>{workoutHistory[2].squats.reps}</Text>
-                    </CustomWorkoutDetail>
-                    <CustomWorkoutDetail>
-                      <Title>Sets: </Title>
-                      <Text>{workoutHistory[2].squats.sets}</Text>
-                    </CustomWorkoutDetail>
-                  </WorkoutBox>
-                  <WorkoutBox>
-                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
-                    <CustomWorkoutType className="lighter">
-                      {' '}
-                      {workoutHistory[1].date
-                        .toDate()
-                        .toString()
-                        .slice(
-                          0,
-                          workoutHistory[1].date
-                            .toDate()
-                            .toString()
-                            .indexOf(':') - 8
-                        )}
-                    </CustomWorkoutType>
-                    <CustomWorkoutDetail>
-                      <Title>Reps: </Title>
-                      <Text>{workoutHistory[2].squats.reps}</Text>
-                    </CustomWorkoutDetail>
-                    <CustomWorkoutDetail>
-                      <Title>Sets: </Title>
-                      <Text>{workoutHistory[2].squats.sets}</Text>
-                    </CustomWorkoutDetail>
-                  </WorkoutBox>
-                  <WorkoutBox>
-                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
-                    <CustomWorkoutType className="lighter">
-                      {' '}
-                      {workoutHistory[2].date
-                        .toDate()
-                        .toString()
-                        .slice(
-                          0,
-                          workoutHistory[2].date
-                            .toDate()
-                            .toString()
-                            .indexOf(':') - 8
-                        )}
-                    </CustomWorkoutType>
-                    <CustomWorkoutDetail>
-                      <Title>Reps:</Title>
-                      <Text>{workoutHistory[2].squats.reps}</Text>
-                    </CustomWorkoutDetail>
-                    <CustomWorkoutDetail>
-                      <Title>Sets: </Title>
-                      <Text>{workoutHistory[2].squats.sets}</Text>
-                    </CustomWorkoutDetail>
-                  </WorkoutBox>
+                  {workoutHistory
+                    .slice(0, Math.min(3, workoutHistory.length))
+                    .map((ele, i) => {
+                      return (
+                        <WorkoutBox key={i}>
+                          <CustomWorkoutTitle>
+                            {ele.workout.type[0].toUpperCase() +
+                              ele.workout.type.slice(1)}
+                          </CustomWorkoutTitle>
+                          <CustomWorkoutType className="lighter">
+                            {ele.date
+                              .toDate()
+                              .toString()
+                              .slice(
+                                0,
+                                ele.date.toDate().toString().indexOf(':') - 8
+                              )}
+                          </CustomWorkoutType>
+                          <CustomWorkoutDetail>
+                            <Title>Reps: </Title>
+                            <Text>{ele.workout.reps}</Text>
+                          </CustomWorkoutDetail>
+                          <CustomWorkoutDetail>
+                            <Title>Sets: </Title>
+                            <Text>{ele.workout.sets}</Text>
+                          </CustomWorkoutDetail>
+                        </WorkoutBox>
+                      );
+                    })}
                 </Workouts>
               </WorkoutContainer>
             </ColumnContainer>
@@ -226,19 +184,19 @@ export default function Dashboard() {
                 </Row>
                 <Row>
                   <Title>Username: </Title>
-                  <Text>{currentUser.email}</Text>
+                  <Text>{user.username || 'n/a'}</Text>
                 </Row>
                 <Row>
                   <Title>Age: </Title>
-                  <Text>{currentUser.email}</Text>
+                  <Text>{user.age || 'n/a'}</Text>
                 </Row>
                 <Row>
                   <Title>Weight: </Title>
-                  <Text>{user.weight}</Text>
+                  <Text>{user.weight || 'n/a'}</Text>
                 </Row>
                 <Row>
                   <Title>Sex:{'  '}</Title>
-                  <Text>{currentUser.email}</Text>
+                  <Text>{user.sex || 'n/a'}</Text>
                 </Row>
               </CurrentSettings>
               <Link to="/update-profile" className="link-reset hover-reset">
@@ -329,15 +287,26 @@ const ProfilePicture = styled.img`
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
   height: 100%;
   background-color: #355c7d;
   border-radius: 2rem;
   color: white;
   justify-content: center;
+  align-items: center;
   @media only screen and (min-width: 960px) {
+    flex-direction: row;
+  }
+`;
+
+const Flex = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  @media only screen and (min-width: 960px) {
+    flex-direction: row;
     height: 100%;
     width: 70%;
   }
@@ -453,10 +422,6 @@ const DataBox = styled.div`
   width: 100%;
   margin: 1rem;
   justify-content: center;
-`;
-
-const Flex = styled.div`
-  display: flex;
 `;
 
 const UserName = styled.h1`

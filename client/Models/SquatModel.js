@@ -5,8 +5,11 @@ import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3'
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
-import app from '../../firebase';
+import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
+
+// Decrement totalSets without resetting
+// Pause prediction in between sets
 
 let loggedIn;
 
@@ -27,6 +30,8 @@ let successfulReps; // Used for accuracy, decremented with failed squat
 let reps; // Counter that decrements at each squat attempt
 let predictStatus = 'pending';
 let accuracy;
+let startAnimation;
+let startAnimation2;
 
 export function Model() {
   // Hooks
@@ -34,12 +39,11 @@ export function Model() {
   const [toggleStart, setToggle] = useState(false);
   const history = useHistory();
 
-  loggedIn = app.auth().currentUser.uid;
+  loggedIn = auth.currentUser.uid;
   console.log('loggedin----->', loggedIn);
 
   async function setRepPrefs() {
-    const usersRef = app
-      .firestore()
+    const usersRef = db
       .collection('users')
       .doc(loggedIn)
       .collection('setupWorkout')
@@ -97,7 +101,7 @@ export function Model() {
 
     await webcam.play();
 
-    window.requestAnimationFrame(loop);
+    startAnimation = window.requestAnimationFrame(loop);
 
     // append/get elements to the DOM
     const canvas = document.getElementById('canvas');
@@ -123,7 +127,8 @@ export function Model() {
       drawPose();
       await predict(false);
     }
-    window.requestAnimationFrame(loop);
+
+    startAnimation2 = window.requestAnimationFrame(loop);
   }
 
   async function predict(bool) {
@@ -185,28 +190,31 @@ export function Model() {
 
         accuracy = Math.ceil((successfulReps / totalReps) * 100);
 
-        if (reps === 0) {
+        if (reps <= 0) {
           setCount--;
-          await predict(false);
+          // await predict(false);
           // countdown(predict, true);
-          // reps = totalReps;
+          reps = totalReps;
 
           // togglePredict();
           // console.log('DONE');
         }
       } else {
         console.log('NO MORE SETS');
+        // setInterval(() => history.push('/exercise-form'))
+        // await predict(false);
         history.push('/exercise-form');
       }
+      if (setCount) {
+        let repContainer = document.getElementById('rep-container');
+        repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
 
-      let repContainer = document.getElementById('rep-container');
-      repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
+        let accContainer = document.getElementById('acc-container');
+        accContainer.innerHTML = `Accuracy: ${accuracy}%`;
 
-      let accContainer = document.getElementById('acc-container');
-      accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-
-      let remContainer = document.getElementById('rem-container');
-      remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
+        let remContainer = document.getElementById('rem-container');
+        remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
+      }
     } else {
       return;
     }
@@ -261,7 +269,11 @@ export function Model() {
   useEffect(() => {
     init();
 
-    return () => console.log('Model cleaned up.');
+    return function cleanup() {
+      console.log('useeffect', startAnimation);
+      window.cancelAnimationFrame(startAnimation);
+      window.cancelAnimationFrame(startAnimation2);
+    };
   }, []);
 
   function countdown(callback, val) {

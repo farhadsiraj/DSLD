@@ -24,7 +24,7 @@ export default function UserProfileForm() {
       setError('');
       setLoading(true);
 
-      let usersRef = app.firestore().collection('users');
+      let usersRef = db.collection('users');
       let snapshot = await usersRef
         .where('username', '==', usernameRef.current.value)
         .get();
@@ -34,10 +34,8 @@ export default function UserProfileForm() {
           throw new Error('Username not available');
         }
       });
-      app
-        .firestore()
-        .collection('users')
-        .doc(app.auth().currentUser.uid)
+      db.collection('users')
+        .doc(app.currentUser.uid)
         .set({
           username: usernameRef.current.value,
           age: ageRef.current.value,

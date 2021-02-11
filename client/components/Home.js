@@ -6,10 +6,6 @@ import gym from '../../public/assets/images/gym.jpg';
 import ball from '../../public/assets/images/ball.png';
 import ohp from '../../public/assets/images/ohp.png';
 import press from '../../public/assets/images/press.png';
-import firebase from '../../firebase';
-import 'firebase/firestore';
-
-const db = firebase.firestore();
 
 export default function Home() {
   return (
