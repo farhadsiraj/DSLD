@@ -61,37 +61,57 @@ export default function Dashboard() {
   }, []);
 
   console.log('currentUser', user);
-  console.log('James workoutHistory', workoutHistory);
+  console.log('workoutHistory', workoutHistory);
 
   return (
     <div>
-      {user ? (
+      {user && workoutHistory.length ? (
         <Container>
           <GradientContainer>
             <GlobalStyles />
             <ColumnContainer>
               <UserDataContainer>
-                <ProfilePicture src={gym} />
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ProfilePicture src={gym} />
+                  <UserName>{user.name}</UserName>
+                </div>
                 <UserInfo>
-                  <div>Welcome back, {user.name}</div>
-                  <Flex>
+                  <Flex style={{ width: '90%' }}>
                     <DataBox>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
+                      <div>Active Streak:</div>
+                      <div>{user.activeStreak}</div>
+                      <div>Weight:</div>
+                      <div>{user.weight}</div>
                     </DataBox>
                     <DataBox>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
+                      <div>Lifetime Reps:</div>
+                      <div>{user.lifetimeReps}</div>
                     </DataBox>
                     <DataBox>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
-                      <div>Total Reps</div>
+                      <div>Activities:</div>
+                      <div>{user.lifetimeWorkouts}</div>
+                    </DataBox>
+                    <DataBox>
+                      <div>Latest Activity:</div>
+                      <div>
+                        {workoutHistory[0].date
+                          .toDate()
+                          .toString()
+                          .slice(
+                            0,
+                            workoutHistory[0].date
+                              .toDate()
+                              .toString()
+                              .indexOf(':') - 3
+                          )}
+                      </div>
                     </DataBox>
                   </Flex>
                 </UserInfo>
@@ -104,6 +124,11 @@ export default function Dashboard() {
                     onClick={() => history.push('/exercise-form')}
                   />
                 </FALargeIcon>
+              </AnalyticsContainer>
+              <AnalyticsContainer>
+                <CustomWorkoutTitle style={{ color: '#F26627' }}>
+                  Previous Workouts
+                </CustomWorkoutTitle>
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
@@ -229,7 +254,7 @@ const UserDataContainer = styled.div`
   padding: 1rem;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding: 0 1.5rem;
   }
 `;
@@ -246,7 +271,6 @@ const ProfilePicture = styled.img`
   @media only screen and (min-width: 960px) {
     width: 15rem;
     height: 15rem;
-    margin-left: 6rem;
   }
 `;
 
@@ -255,15 +279,15 @@ const UserInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   background-color: #355c7d;
   border-radius: 2rem;
   color: white;
   justify-content: center;
   @media only screen and (min-width: 960px) {
-    width: 70%;
     height: 100%;
+    width: 70%;
   }
 `;
 
@@ -383,10 +407,17 @@ const FALargeIcon = styled.div`
 
 const DataBox = styled.div`
   flex: 1;
+  width: 100%;
   margin: 1rem;
   justify-content: center;
 `;
 
 const Flex = styled.div`
   display: flex;
+`;
+
+const UserName = styled.h1`
+  font-family: 'Josefin Sans';
+  font-size: 2rem;
+  color: white;
 `;
