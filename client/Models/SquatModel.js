@@ -242,13 +242,19 @@ export function Model() {
       }
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
-        repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
+        repContainer.innerHTML = `Total Reps: ${repCount}`;
+
+        let setContainer = document.getElementById('set-container');
+        setContainer.innerHTML = `Total Sets: ${totalSets}`;
 
         let accContainer = document.getElementById('acc-container');
         accContainer.innerHTML = `Accuracy: ${accuracy}%`;
 
-        let remContainer = document.getElementById('rem-container');
-        remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
+        let remRepsContainer = document.getElementById('rem-reps-container');
+        remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
+
+        let remSetsContainer = document.getElementById('rem-sets-container');
+        remSetsContainer.innerHTML = `Remaining Sets: ${setCount}`;
       }
     } else {
       return;
@@ -331,11 +337,11 @@ export function Model() {
 
   return (
     <ContentContainer>
-      <TopToolbar>
-        <WorkoutType>Squat</WorkoutType>
-        <WorkoutType id="timer">00:00</WorkoutType>
-      </TopToolbar>
       <ModelContainer>
+        <TopToolbar>
+          <WorkoutType>Squat</WorkoutType>
+          <WorkoutType id="timer">00:00</WorkoutType>
+        </TopToolbar>
         <Webcam>
           <div id="webcam-container" style={{ display: 'none' }}></div>
           <canvas width="640" height="480" id="canvas"></canvas>
@@ -356,7 +362,9 @@ export function Model() {
             <LabelContainer>
               <Label id="rep-container"></Label>
               <Label id="acc-container"></Label>
-              <Label id="rem-container"></Label>
+              <Label id="set-container"></Label>
+              <Label id="rem-reps-container"></Label>
+              <Label id="rem-sets-container"></Label>
             </LabelContainer>
           </WebcamToolbar>
         </Webcam>
@@ -370,7 +378,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 70%;
+  width: 100%;
   margin-top: 65px;
   height: 100%;
   z-index: 1;
@@ -405,12 +413,16 @@ const WorkoutType = styled.div`
 const ModelContainer = styled.div`
   display: flex;
   width: 100%;
-  margin-top: 1rem;
   border: 3px solid black;
   flex-direction: column;
   align-items: center;
 
   @media only screen and (min-width: 960px) {
+    padding: 1rem;
+    width: 60%;
+  }
+
+  @media only screen and (min-width: 1200px) {
     padding: 1rem;
     width: 50%;
   }
@@ -431,10 +443,11 @@ const LabelContainer = styled.div`
   align-items: center;
   flex-direction: column;
   border: 3px dotted orange;
-  border-radius: 2rem;
+  border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
 `;
+
 const Label = styled.div`
   color: white;
   font-size: 1.2rem;
