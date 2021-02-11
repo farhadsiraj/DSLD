@@ -65,7 +65,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      {user && workoutHistory.length ? (
+      {user && workoutHistory.length > 1 ? (
         <Container>
           <GradientContainer>
             <GlobalStyles />
@@ -79,7 +79,7 @@ export default function Dashboard() {
                     alignItems: 'center',
                   }}
                 >
-                  <ProfilePicture src={gym} />
+                  <ProfilePicture src={user.imageUrl} />
                   <UserName>{user.name}</UserName>
                 </div>
                 <UserInfo>
@@ -126,7 +126,14 @@ export default function Dashboard() {
                 </FALargeIcon>
               </AnalyticsContainer>
               <AnalyticsContainer>
-                <CustomWorkoutTitle style={{ color: '#F26627' }}>
+                <CustomWorkoutTitle
+                  style={{
+                    color: 'white',
+                    padding: '1rem',
+                    backgroundColor: '#F9A26C',
+                    borderRadius: '1rem',
+                  }}
+                >
                   Previous Workouts
                 </CustomWorkoutTitle>
               </AnalyticsContainer>
@@ -140,25 +147,67 @@ export default function Dashboard() {
                     />
                   </FAMobileIcon>
                   <WorkoutBox>
-                    <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                    <CustomWorkoutTitle>
+                      {workoutHistory[0].date
+                        .toDate()
+                        .toString()
+                        .slice(
+                          0,
+                          workoutHistory[0].date
+                            .toDate()
+                            .toString()
+                            .indexOf(':') - 8
+                        )}
+                    </CustomWorkoutTitle>
                     <CustomWorkoutType>Squats</CustomWorkoutType>
-                    <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                    <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                    <StyledButton>Start</StyledButton>
+                    <CustomWorkoutDetail>
+                      Reps: {workoutHistory[0].squats.reps}
+                    </CustomWorkoutDetail>
+                    <CustomWorkoutDetail>
+                      Sets: {workoutHistory[0].squats.sets}
+                    </CustomWorkoutDetail>
                   </WorkoutBox>
                   <WorkoutBox>
-                    <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                    <CustomWorkoutTitle>
+                      {workoutHistory[0].date
+                        .toDate()
+                        .toString()
+                        .slice(
+                          0,
+                          workoutHistory[0].date
+                            .toDate()
+                            .toString()
+                            .indexOf(':') - 8
+                        )}
+                    </CustomWorkoutTitle>
                     <CustomWorkoutType>Squats</CustomWorkoutType>
-                    <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                    <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                    <StyledButton>Start</StyledButton>
+                    <CustomWorkoutDetail>
+                      Reps: {workoutHistory[0].squats.reps}
+                    </CustomWorkoutDetail>
+                    <CustomWorkoutDetail>
+                      Sets: {workoutHistory[0].squats.sets}
+                    </CustomWorkoutDetail>
                   </WorkoutBox>
                   <WorkoutBox>
-                    <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                    <CustomWorkoutTitle>
+                      {workoutHistory[0].date
+                        .toDate()
+                        .toString()
+                        .slice(
+                          0,
+                          workoutHistory[0].date
+                            .toDate()
+                            .toString()
+                            .indexOf(':') - 8
+                        )}
+                    </CustomWorkoutTitle>
                     <CustomWorkoutType>Squats</CustomWorkoutType>
-                    <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                    <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                    <StyledButton>Start</StyledButton>
+                    <CustomWorkoutDetail>
+                      Reps: {workoutHistory[0].squats.reps}
+                    </CustomWorkoutDetail>
+                    <CustomWorkoutDetail>
+                      Sets: {workoutHistory[0].squats.sets}
+                    </CustomWorkoutDetail>
                   </WorkoutBox>
                 </Workouts>
               </WorkoutContainer>
@@ -181,7 +230,7 @@ export default function Dashboard() {
                 </Row>
                 <Row>
                   <SettingsTitle>Weight: </SettingsTitle>
-                  <SettingsText>{user ? user.weight : ''}</SettingsText>
+                  <SettingsText>{user.weight}</SettingsText>
                 </Row>
                 <Row>
                   <SettingsTitle>Sex: </SettingsTitle>
