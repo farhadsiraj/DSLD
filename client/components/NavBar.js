@@ -195,11 +195,17 @@ const Dropdown = styled.div`
   height: 100%;
   padding: 0 1rem 0 1rem;
 
-  @media only screen and (min-width: 540px) {
+  @media only screen and (min-width: 673px) {
+    padding: 0 2.5rem;
+    width: 40%;
+  }
+
+  @media only screen and (min-width: 960px) {
     padding: 0 2.5rem;
     width: 30%;
   }
-  @media only screen and (max-width: 540px) {
+
+  @media only screen and (max-width: 673px) {
     align-items: center;
     padding-top: 40%;
   }

@@ -281,6 +281,7 @@ const UserDataContainer = styled.div`
     flex-direction: row;
     justify-content: space-evenly;
     padding: 0 1.5rem;
+    margin-top: 2rem;
   }
 `;
 
