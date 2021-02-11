@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
-import app from '../../firebase';
+import { db, auth } from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import { Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import gym from '../../public/assets/images/gym.jpg';
+import 'firebase/firestore';
+
+console.log(db);
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -27,9 +30,11 @@ export default function Dashboard() {
     }
   }
 
+  console.log(db);
+
   useEffect(async () => {
     (async () => {
-      const userRef = app.firestore().collection('users').doc(currentUser.uid);
+      const userRef = db.collection('users').doc(currentUser.uid);
       const userDoc = await userRef.get();
       if (!userDoc.exists) {
         console.log('No user data is available.');
@@ -40,8 +45,7 @@ export default function Dashboard() {
       }
 
       let pastWorkouts = [];
-      const workoutHistoryRef = app
-        .firestore()
+      const workoutHistoryRef = db
         .collection('users')
         .doc(currentUser.uid)
         .collection('workoutHistory');

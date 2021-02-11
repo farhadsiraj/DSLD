@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from '../../firebase';
 import gym from '../../public/assets/images/gym.jpg';
+import { db, auth } from '../../firebase';
 
 export default function Signup() {
   const emailRef = useRef();
@@ -28,10 +29,8 @@ export default function Signup() {
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value).then(
         () => {
-          app
-            .firestore()
-            .collection('users')
-            .doc(app.auth().currentUser.uid)
+          db.collection('users')
+            .doc(auth.currentUser.uid)
             .set({
               email: emailRef.current.value,
             })

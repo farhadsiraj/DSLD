@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import app from '../../firebase';
 import press from '../../public/assets/images/press.png';
 import { Link } from 'react-router-dom';
+import { db, auth } from '../../firebase';
 
 export default function ExerciseForm() {
   const exerciseRef = useRef();
@@ -19,15 +20,14 @@ export default function ExerciseForm() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    let logedin = app.auth().currentUser.uid;
+    let logedin = auth.currentUser.uid;
     console.log('loggedin----->', logedin);
 
     try {
       setError('');
       setLoading(true);
 
-      let newCollection = app
-        .firestore()
+      let newCollection = db
         .collection('users')
         .doc(logedin)
         .collection('setupWorkout')
