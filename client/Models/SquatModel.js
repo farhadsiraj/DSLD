@@ -97,10 +97,10 @@ export function Model() {
     canvas.width = size;
     canvas.height = size;
     ctx = canvas.getContext('2d');
-    labelContainer = document.getElementById('label-container');
-    for (let i = 0; i < maxPredictions; i++) {
-      labelContainer.appendChild(document.createElement('div'));
-    }
+    // labelContainer = document.getElementById('label-container');
+    // for (let i = 0; i < maxPredictions; i++) {
+    //   labelContainer.appendChild(document.createElement('div'));
+    // }
   }
 
   async function loop() {
@@ -127,12 +127,12 @@ export function Model() {
       // Prediction 2: run input through teachable machine classification model
       const prediction = await model.predict(posenetOutput);
 
-      for (let i = 0; i < maxPredictions; i++) {
-        const classPrediction = `${prediction[i].className}: ${Math.ceil(
-          prediction[i].probability.toFixed(2) * 100
-        )}%`;
-        labelContainer.childNodes[i].innerHTML = classPrediction;
-      }
+      // for (let i = 0; i < maxPredictions; i++) {
+      //   const classPrediction = `${prediction[i].className}: ${Math.ceil(
+      //     prediction[i].probability.toFixed(2) * 100
+      //   )}%`;
+      //   labelContainer.childNodes[i].innerHTML = classPrediction;
+      // }
 
       drawPose(pose, lineColor);
 
@@ -267,19 +267,12 @@ export function Model() {
       <TopToolbar>
         <WorkoutType>Squat</WorkoutType>
         <WorkoutType id="timer">00:00</WorkoutType>
-        <FontAwesomeIcon
-          icon={faForward}
-          style={{ fontSize: '2.5rem', color: '#355C7D' }}
-        />
       </TopToolbar>
       <ModelContainer>
         <Webcam>
           <div id="webcam-container" style={{ display: 'none' }}></div>
           <canvas width="640" height="640" id="canvas"></canvas>
           <WebcamToolbar>
-            <Label id="rep-container"></Label>
-            <Label id="acc-container"></Label>
-            <Label id="rem-container"></Label>
             <Button
               id="togglePredict"
               onClick={() => {
@@ -293,12 +286,15 @@ export function Model() {
             >
               {toggleStart ? 'Stop' : 'Start'}
             </Button>
+            <Label id="rep-container"></Label>
+            <Label id="acc-container"></Label>
+            <Label id="rem-container"></Label>
           </WebcamToolbar>
         </Webcam>
-        <LabelContainer>
-          <Label id="label-container"></Label>
-          {/* <Label id="countdown"></Label> */}
-        </LabelContainer>
+        {/* <LabelContainer> */}
+        {/* <Label id="label-container"></Label> */}
+        {/* <Label id="countdown"></Label> */}
+        {/* </LabelContainer> */}
       </ModelContainer>
     </ContentContainer>
   );
@@ -312,6 +308,7 @@ const ContentContainer = styled.div`
   width: 70%;
   margin-top: 65px;
   z-index: 1;
+  border: 3px solid orange;
   @media only screen and (max-width: 1200px) {
     width: 90%;
   }
@@ -322,45 +319,56 @@ const TopToolbar = styled.div`
   margin-top: 1rem;
   justify-content: space-between;
   width: 100%;
+  border: 3px solid hotpink;
 `;
 
 const WorkoutType = styled.div`
   display: flex;
   justify-content: center;
-  padding: 1rem;
   text-decoration: none;
   color: white;
   font-size: 1.4rem;
   border-radius: 10px;
   background-color: #355c7d;
-  border: 0px;
-  width: 10rem;
+  width: 8rem;
+  border: 3px solid yellow;
+  @media only screen and (min-width: 960px) {
+    padding: 1rem;
+  }
 `;
 
 const ModelContainer = styled.div`
   display: flex;
   width: 100%;
   margin: 2rem;
+  border: 3px solid black;
 
   @media only screen and (max-width: 1200px) {
     flex-direction: column;
+    width: 100%;
+    height: 100%;
   }
 `;
 
 const Webcam = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
+  width: 100%;
+  max-width: 100rem;
+  border: 3px solid green;
+  @media only screen and (max-width: 1200px) {
+    font-size: 1.3rem;
+  }
 `;
 const LabelContainer = styled.div`
   display: flex;
-  flex: 1;
   justify-content: center;
   align-items: center;
+  border: 3px dotted papayawhip;
 `;
 const Label = styled.div`
   color: #325d79;
-  font-size: 3.2rem;
+  font-size: 2.2rem;
   @media only screen and (max-width: 1200px) {
     font-size: 1.3rem;
   }
@@ -368,17 +376,24 @@ const Label = styled.div`
 
 const WebcamToolbar = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   margin-top: 0.7rem;
+  border: 3px dotted grey;
 `;
 
 const Button = styled.button`
-  padding: 1rem;
   text-decoration: none;
   color: white;
   font-size: 1.4rem;
   border-radius: 10px;
   background-color: #f67280;
   border: 0px;
-  width: 10rem;
+  width: 7rem;
+  padding: 0.3rem 0 0.3rem 0;
+  align-self: flex-end;
+  width: 100%;
+  @media only screen and (max-width: 960px) {
+    font-size: 1.3rem;
+  }
 `;
