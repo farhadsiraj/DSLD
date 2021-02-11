@@ -62,8 +62,8 @@ export default function UserProfileForm() {
   return (
     <GradientContainer>
       <ContentContainer>
-        <div style={cards}>
-          <Card style={cardStyle}>
+        <div className="bootstrap-form-container">
+          <Card className="bootstrap-form">
             <Card.Body>
               <h2 className="text-center mb-4">User Profile</h2>
               {error && <Alert variant="danger">{error}</Alert>}
@@ -100,33 +100,16 @@ export default function UserProfileForm() {
             </Card.Body>
           </Card>
           <Box style={{ backgroundColor: '#F9A26C' }}>
-            <ImageBox src={ball} />
+            <NestedHeaderImage src={ball} />
           </Box>
         </div>
-        <div className="w-100 text-center mt-3">
-          <Link to="/dashboard">Cancel</Link>
-        </div>
       </ContentContainer>
+      <div className="w-100 text-center mt-3">
+        <Link to="/dashboard">Cancel</Link>
+      </div>
     </GradientContainer>
   );
 }
-
-const cards = {
-  display: 'flex',
-};
-
-const cardStyle = {
-  color: 'white',
-  backgroundColor: '#355c7d',
-  marginTop: '5rem',
-  borderRadius: '2rem',
-  paddingTop: '2rem',
-  paddingBottom: '4rem',
-  paddingLeft: '4rem',
-  paddingRight: '4rem',
-  height: '42rem',
-  width: '35rem',
-};
 
 const buttonStyle = {
   backgroundColor: '#F9A26C',
@@ -166,11 +149,10 @@ const ContentContainer = styled.div`
 const Box = styled.div`
   display: flex;
   flex-direction: column;
-  width: 37rem;
-  height: 42rem;
+  width: 32rem;
+  height: auto;
   background-color: #355c7d;
-  margin: 1rem;
-  margin-top: 5rem;
+  margin-top: 6rem;
   margin-left: -8rem;
   border-radius: 2rem;
   justify-content: center;
@@ -182,10 +164,16 @@ const Box = styled.div`
   }
 `;
 
-const ImageBox = styled.img`
-  width: 70%;
-  height: auto;
-  max-width: 100%;
-  padding: 1rem;
-  margin-left: 7rem;
+const NestedHeaderImage = styled.img`
+  display: none;
+  @media only screen and (min-width: 960px) {
+    display: flex;
+    object-fit: cover;
+    width: 30rem;
+    max-height: 100%;
+    max-width: 90%;
+    border-radius: 2rem;
+    margin-left: -10rem;
+    /* margin-top: 6rem; */
+  }
 `;
