@@ -38,6 +38,13 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
+  .lighter {
+    font-weight: 300;
+  }
+
+  .lightest {
+    font-weight: 200;
+  }
 
 `;
 

@@ -126,35 +126,7 @@ export default function Dashboard() {
                     </DataBox>
                   </Flex>
                 </UserInfo>
-                {/* <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                    height: '100%',
-                  }}
-                >
-                  <Link to="/exercise-form" className="link-reset hover-reset">
-                    <StyledButton
-                      style={{
-                        backgroundColor: 'seagreen',
-                        padding: '1.5rem',
-                      }}
-                    >
-                      Start workout
-                    </StyledButton>
-                  </Link>
-                </div> */}
               </UserDataContainer>
-              {/* <AnalyticsContainer>
-                <FALargeIcon>
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    style={{ fontSize: '1.8rem', color: '#EE4A40' }}
-                    onClick={() => history.push('/exercise-form')}
-                  />
-                </FALargeIcon>
-              </AnalyticsContainer> */}
               <AnalyticsContainer
                 style={{ marginTop: '2rem', justifyContent: 'flex-start' }}
               >
@@ -171,15 +143,9 @@ export default function Dashboard() {
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
-                  {/* <FAMobileIcon style={{ width: '100%' }}>
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      style={{ fontSize: '1.8rem', color: '#EE4A40' }}
-                      onClick={() => history.push('/exercise-form')}
-                    />
-                  </FAMobileIcon> */}
                   <WorkoutBox>
-                    <CustomWorkoutTitle>
+                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
+                    <CustomWorkoutType className="lighter">
                       {workoutHistory[0].date
                         .toDate()
                         .toString()
@@ -190,8 +156,7 @@ export default function Dashboard() {
                             .toString()
                             .indexOf(':') - 8
                         )}
-                    </CustomWorkoutTitle>
-                    <CustomWorkoutType>Squats</CustomWorkoutType>
+                    </CustomWorkoutType>
                     <CustomWorkoutDetail>
                       Reps: {workoutHistory[0].squats.reps}
                     </CustomWorkoutDetail>
@@ -200,7 +165,9 @@ export default function Dashboard() {
                     </CustomWorkoutDetail>
                   </WorkoutBox>
                   <WorkoutBox>
-                    <CustomWorkoutTitle>
+                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
+                    <CustomWorkoutType className="lighter">
+                      {' '}
                       {workoutHistory[1].date
                         .toDate()
                         .toString()
@@ -211,8 +178,7 @@ export default function Dashboard() {
                             .toString()
                             .indexOf(':') - 8
                         )}
-                    </CustomWorkoutTitle>
-                    <CustomWorkoutType>Squats</CustomWorkoutType>
+                    </CustomWorkoutType>
                     <CustomWorkoutDetail>
                       Reps: {workoutHistory[1].squats.reps}
                     </CustomWorkoutDetail>
@@ -221,7 +187,9 @@ export default function Dashboard() {
                     </CustomWorkoutDetail>
                   </WorkoutBox>
                   <WorkoutBox>
-                    <CustomWorkoutTitle>
+                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
+                    <CustomWorkoutType className="lighter">
+                      {' '}
                       {workoutHistory[2].date
                         .toDate()
                         .toString()
@@ -232,8 +200,7 @@ export default function Dashboard() {
                             .toString()
                             .indexOf(':') - 8
                         )}
-                    </CustomWorkoutTitle>
-                    <CustomWorkoutType>Squats</CustomWorkoutType>
+                    </CustomWorkoutType>
                     <CustomWorkoutDetail>
                       Reps: {workoutHistory[2].squats.reps}
                     </CustomWorkoutDetail>
