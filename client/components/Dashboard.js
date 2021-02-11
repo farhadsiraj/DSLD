@@ -85,7 +85,7 @@ export default function Dashboard() {
                   <Link to="/exercise-form" className="link-reset hover-reset">
                     <StyledButton
                       style={{
-                        backgroundColor: 'seagreen',
+                        backgroundColor: '#6BE19B',
                         padding: '1rem',
                       }}
                     >
@@ -132,9 +132,8 @@ export default function Dashboard() {
               >
                 <CustomWorkoutTitle
                   style={{
-                    color: 'white',
+                    color: '#355C7D',
                     paddingLeft: '1rem',
-                    // borderRadius: '1rem',
                     marginLeft: '1rem',
                   }}
                 >
@@ -158,10 +157,12 @@ export default function Dashboard() {
                         )}
                     </CustomWorkoutType>
                     <CustomWorkoutDetail>
-                      Reps: {workoutHistory[0].squats.reps}
+                      <Title>Reps: </Title>
+                      <Text>{workoutHistory[2].squats.reps}</Text>
                     </CustomWorkoutDetail>
                     <CustomWorkoutDetail>
-                      Sets: {workoutHistory[0].squats.sets}
+                      <Title>Sets: </Title>
+                      <Text>{workoutHistory[2].squats.sets}</Text>
                     </CustomWorkoutDetail>
                   </WorkoutBox>
                   <WorkoutBox>
@@ -180,10 +181,12 @@ export default function Dashboard() {
                         )}
                     </CustomWorkoutType>
                     <CustomWorkoutDetail>
-                      Reps: {workoutHistory[1].squats.reps}
+                      <Title>Reps: </Title>
+                      <Text>{workoutHistory[2].squats.reps}</Text>
                     </CustomWorkoutDetail>
                     <CustomWorkoutDetail>
-                      Sets: {workoutHistory[1].squats.sets}
+                      <Title>Sets: </Title>
+                      <Text>{workoutHistory[2].squats.sets}</Text>
                     </CustomWorkoutDetail>
                   </WorkoutBox>
                   <WorkoutBox>
@@ -202,10 +205,12 @@ export default function Dashboard() {
                         )}
                     </CustomWorkoutType>
                     <CustomWorkoutDetail>
-                      Reps: {workoutHistory[2].squats.reps}
+                      <Title>Reps:</Title>
+                      <Text>{workoutHistory[2].squats.reps}</Text>
                     </CustomWorkoutDetail>
                     <CustomWorkoutDetail>
-                      Sets: {workoutHistory[2].squats.sets}
+                      <Title>Sets: </Title>
+                      <Text>{workoutHistory[2].squats.sets}</Text>
                     </CustomWorkoutDetail>
                   </WorkoutBox>
                 </Workouts>
@@ -216,24 +221,24 @@ export default function Dashboard() {
                 <h2 style={{ color: 'white' }}>Account Settings</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Row>
-                  <SettingsTitle>Email: </SettingsTitle>
-                  <SettingsText> {currentUser.email}</SettingsText>
+                  <Title>Email: </Title>
+                  <Text> {currentUser.email}</Text>
                 </Row>
                 <Row>
-                  <SettingsTitle>Username: </SettingsTitle>
-                  <SettingsText>{currentUser.email}</SettingsText>
+                  <Title>Username: </Title>
+                  <Text>{currentUser.email}</Text>
                 </Row>
                 <Row>
-                  <SettingsTitle>Age: </SettingsTitle>
-                  <SettingsText>{currentUser.email}</SettingsText>
+                  <Title>Age: </Title>
+                  <Text>{currentUser.email}</Text>
                 </Row>
                 <Row>
-                  <SettingsTitle>Weight: </SettingsTitle>
-                  <SettingsText>{user.weight}</SettingsText>
+                  <Title>Weight: </Title>
+                  <Text>{user.weight}</Text>
                 </Row>
                 <Row>
-                  <SettingsTitle>Sex: </SettingsTitle>
-                  <SettingsText>{currentUser.email}</SettingsText>
+                  <Title>Sex:{'  '}</Title>
+                  <Text>{currentUser.email}</Text>
                 </Row>
               </CurrentSettings>
               <Link to="/update-profile" className="link-reset hover-reset">
@@ -376,10 +381,10 @@ const WorkoutBox = styled.div`
   width: 100%;
   height: 100%;
   background-color: #355c7d;
-  margin: 1rem;
+  margin: 0 1rem;
   border-radius: 2rem;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 1rem 0 1rem 0;
 `;
 
@@ -425,31 +430,22 @@ const CurrentSettings = styled.div`
   flex-direction: column;
 `;
 
-const SettingsTitle = styled.h3`
+const Title = styled.p`
   color: white;
   font-size: 1.2rem;
+  padding-right: 0.5rem;
 `;
-const SettingsText = styled.h3`
+const Text = styled.p`
   color: white;
   font-size: 1rem;
+  font-weight: 300;
 `;
 
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
-`;
-
-const FAMobileIcon = styled.div`
-  margin: 0;
-  width: 100%;
-  @media only screen and (min-width: 960px) {
-    display: none;
-  }
-`;
-const FALargeIcon = styled.div`
-  width: 90%;
 `;
 
 const DataBox = styled.div`
@@ -466,5 +462,5 @@ const Flex = styled.div`
 const UserName = styled.h1`
   font-family: 'Josefin Sans';
   font-size: 2rem;
-  color: white;
+  color: whitesmoke;
 `;
