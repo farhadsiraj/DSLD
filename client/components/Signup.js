@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from '../../firebase';
+import gym from '../../public/assets/images/gym.jpg';
 
 export default function Signup() {
   const emailRef = useRef();
@@ -54,41 +55,45 @@ export default function Signup() {
     <>
       <GradientContainer>
         <ContentContainer>
-          <Card>
-            <Card.Body>
-              <h2 className="text-center mb-4">Sign Up</h2>
-              {error && <Alert variant="danger">{error}</Alert>}
-              <Form onSubmit={handleSubmit}>
-                <Form.Group id="email">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" ref={emailRef} required />
-                </Form.Group>
-                <Form.Group id="password">
-                  <Form.Label>
-                    Password (Must be at least 6 characters)
-                  </Form.Label>
+          <div style={cards}>
+            <Card style={cardStyle}>
+              <Card.Body>
+                <h2 className="text-center mb-4">Sign Up</h2>
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Form onSubmit={handleSubmit}>
+                  <Form.Group id="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" ref={emailRef} required />
+                  </Form.Group>
+                  <Form.Group id="password">
+                    <Form.Label>
+                      Password (Must be at least 6 characters)
+                    </Form.Label>
 
-                  <Form.Control type="password" ref={passwordRef} required />
-                </Form.Group>
-                <Form.Group id="password-confirm">
-                  <Form.Label>Password Confirmation</Form.Label>
-                  <Form.Control
-                    type="password"
-                    ref={passwordConfirmRef}
-                    required
-                  />
-                </Form.Group>
-                <Button
-                  disable={loading.toString()}
-                  type="submit"
-                  className="w-100 text-center mt-2"
-                >
-                  Sign Up
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-          <div className="w-100 text=center mt-3">
+                    <Form.Control type="password" ref={passwordRef} required />
+                  </Form.Group>
+                  <Form.Group id="password-confirm">
+                    <Form.Label>Password Confirmation</Form.Label>
+                    <Form.Control
+                      type="password"
+                      ref={passwordConfirmRef}
+                      required
+                    />
+                  </Form.Group>
+                  <Button
+                    style={buttonStyle}
+                    disable={loading.toString()}
+                    type="submit"
+                    className="w-100 text-center mt-2"
+                  >
+                    Sign Up
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+            <NestedHeaderImage src={gym} />
+          </div>
+          <div className="w-100 text-center mt-3">
             Already have an account? <Link to="/login">Log In</Link>
           </div>
         </ContentContainer>
@@ -96,6 +101,27 @@ export default function Signup() {
     </>
   );
 }
+
+const cards = {
+  display: 'flex',
+};
+
+const cardStyle = {
+  width: '35rem',
+  color: 'white',
+  backgroundColor: '#355c7d',
+  marginTop: '10rem',
+  borderRadius: '2rem',
+  paddingTop: '2rem',
+  paddingBottom: '4rem',
+  paddingLeft: '4rem',
+  paddingRight: '4rem',
+};
+
+const buttonStyle = {
+  backgroundColor: '#F9A26C',
+  border: 'none',
+};
 
 const GradientContainer = styled.div`
   &:after {
@@ -125,4 +151,18 @@ const ContentContainer = styled.div`
   width: 100%;
   margin-top: 65px;
   z-index: 1;
+`;
+
+const NestedHeaderImage = styled.img`
+  display: none;
+  @media only screen and (min-width: 960px) {
+    display: flex;
+    width: 41rem;
+    height: 31.3rem;
+    max-height: 100%;
+    max-width: 90%;
+    border-radius: 2rem;
+    margin-left: -10rem;
+    margin-top: 10rem;
+  }
 `;

@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import app from '../../firebase';
+import press from '../../public/assets/images/press.png';
+import { Link } from 'react-router-dom';
 
 export default function ExerciseForm() {
   const exerciseRef = useRef();
@@ -52,10 +54,10 @@ export default function ExerciseForm() {
   }
 
   return (
-    <>
-      <GradientContainer>
-        <ContentContainer>
-          <Card>
+    <GradientContainer>
+      <ContentContainer>
+        <div style={cards}>
+          <Card style={cardStyle}>
             <Card.Body>
               <h2 className="text-center mb-4">Exercise Form</h2>
               {error && <Alert variant="danger">{error}</Alert>}
@@ -79,6 +81,7 @@ export default function ExerciseForm() {
                   <Form.Control type="integer" ref={repRef} />
                 </Form.Group>
                 <Button
+                  style={buttonStyle}
                   disable={loading.toString()}
                   type="submit"
                   className="w-100 text-center mt-2"
@@ -88,11 +91,39 @@ export default function ExerciseForm() {
               </Form>
             </Card.Body>
           </Card>
-        </ContentContainer>
-      </GradientContainer>
-    </>
+          <Box style={{ backgroundColor: '#9bd7d1' }}>
+            <ImageBox src={press} />
+          </Box>
+        </div>
+        <div className="w-100 text-center mt-3">
+          <Link to="/dashboard">Cancel</Link>
+        </div>
+      </ContentContainer>
+    </GradientContainer>
   );
 }
+
+const cards = {
+  display: 'flex',
+};
+
+const cardStyle = {
+  color: 'white',
+  backgroundColor: '#355c7d',
+  marginTop: '10rem',
+  borderRadius: '2rem',
+  paddingTop: '2rem',
+  paddingBottom: '4rem',
+  paddingLeft: '4rem',
+  paddingRight: '4rem',
+  height: '28rem',
+  width: '30rem',
+};
+
+const buttonStyle = {
+  backgroundColor: '#F9A26C',
+  border: 'none',
+};
 
 const GradientContainer = styled.div`
   &:after {
@@ -122,4 +153,31 @@ const ContentContainer = styled.div`
   width: 100%;
   margin-top: 65px;
   z-index: 1;
+`;
+
+const Box = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 33rem;
+  height: 28rem;
+  background-color: #355c7d;
+  margin: 1rem;
+  margin-top: 10rem;
+  margin-left: -8rem;
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  @media only screen and (max-width: 960px) {
+    display: none;
+  }
+`;
+
+const ImageBox = styled.img`
+  width: 80%;
+  height: auto;
+  max-width: 100%;
+  padding: 1rem;
+  margin-left: 7rem;
 `;
