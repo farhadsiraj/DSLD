@@ -77,7 +77,7 @@ export function Model() {
 
     const size = 640;
     const flip = true;
-    webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+    webcam = new tmPose.Webcam(size, 480, flip); // width, height, flip
     await webcam.setup({ facingMode: 'user' }); // request access to the webcam
 
     // document.getElementById('webcam-container').appendChild(webcam.canvas);
@@ -95,7 +95,7 @@ export function Model() {
     // append/get elements to the DOM
     const canvas = document.getElementById('canvas');
     canvas.width = size;
-    canvas.height = size;
+    canvas.height = 480;
     ctx = canvas.getContext('2d');
     // labelContainer = document.getElementById('label-container');
     // for (let i = 0; i < maxPredictions; i++) {
@@ -271,7 +271,7 @@ export function Model() {
       <ModelContainer>
         <Webcam>
           <div id="webcam-container" style={{ display: 'none' }}></div>
-          <canvas width="640" height="640" id="canvas"></canvas>
+          <canvas width="640" height="480" id="canvas"></canvas>
           <WebcamToolbar>
             <Button
               id="togglePredict"
@@ -286,9 +286,11 @@ export function Model() {
             >
               {toggleStart ? 'Stop' : 'Start'}
             </Button>
-            <Label id="rep-container"></Label>
-            <Label id="acc-container"></Label>
-            <Label id="rem-container"></Label>
+            <LabelContainer>
+              <Label id="rep-container"></Label>
+              <Label id="acc-container"></Label>
+              <Label id="rem-container"></Label>
+            </LabelContainer>
           </WebcamToolbar>
         </Webcam>
       </ModelContainer>
@@ -306,8 +308,7 @@ const ContentContainer = styled.div`
   height: 100%;
   z-index: 1;
   border: 3px solid orange;
-  @media only screen and (max-width: 1200px) {
-    width: 90%;
+  @media only screen and (min-width: 960px) {
   }
 `;
 
@@ -339,9 +340,12 @@ const ModelContainer = styled.div`
   width: 100%;
   margin-top: 1rem;
   border: 3px solid black;
+  flex-direction: column;
+  align-items: center;
 
   @media only screen and (min-width: 960px) {
     padding: 1rem;
+    width: 50%;
   }
 `;
 
@@ -351,21 +355,23 @@ const Webcam = styled.div`
   width: 100%;
   max-width: 100rem;
   border: 3px solid green;
-  @media only screen and (max-width: 1200px) {
-    font-size: 1.3rem;
+  @media only screen and (min-width: 960px) {
   }
 `;
 const LabelContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px dotted papayawhip;
+  flex-direction: column;
+  border: 3px dotted orange;
+  border-radius: 2rem;
+  background-color: #f9a26c;
+  margin-top: 1rem;
 `;
 const Label = styled.div`
-  color: #325d79;
+  color: white;
   font-size: 1.2rem;
-  @media only screen and (max-width: 1200px) {
-    font-size: 1.3rem;
+  @media only screen and (min-width: 960px) {
   }
 `;
 
