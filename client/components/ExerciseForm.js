@@ -60,7 +60,7 @@ export default function ExerciseForm() {
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="exercises">
-                  <select defaultValue="default">
+                  <select style={selectForm} defaultValue="default">
                     <option value="default" disabled>
                       Choose Exercise
                     </option>
@@ -81,7 +81,7 @@ export default function ExerciseForm() {
                   style={buttonStyle}
                   disable={loading.toString()}
                   type="submit"
-                  className="w-100 text-center mt-2"
+                  className="w-100 text-center mt-4"
                 >
                   Start Workout
                 </Button>
@@ -113,8 +113,13 @@ const cardStyle = {
   paddingBottom: '4rem',
   paddingLeft: '4rem',
   paddingRight: '4rem',
-  height: '28rem',
+  height: '30rem',
   width: '30rem',
+};
+
+const selectForm = {
+  height: '2.25rem',
+  borderRadius: '.25rem',
 };
 
 const buttonStyle = {
@@ -156,7 +161,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   width: 33rem;
-  height: 28rem;
+  height: 30rem;
   background-color: #355c7d;
   margin: 1rem;
   margin-top: 10rem;
