@@ -4,7 +4,6 @@ import { useAuth } from '../components/contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
-import GlobalStyles from '../GlobalStyles';
 
 export default function LoginForm() {
   const emailRef = useRef();
@@ -30,7 +29,6 @@ export default function LoginForm() {
 
   return (
     <>
-      <GlobalStyles />
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>
