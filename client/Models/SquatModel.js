@@ -195,18 +195,26 @@ export function Model() {
 
         if (reps <= 0) {
           setCount--;
-          togglePredict();
-          countdown(10, togglePredict);
-          reps = totalReps;
-
-          // togglePredict();
-          // console.log('DONE');
+          if (setCount === 0) {
+            console.log('TESTTESTTEST');
+            history.push('/exercise-form');
+          } else {
+            togglePredict();
+            countdown(10, togglePredict);
+            reps = totalReps;
+          }
         }
+        // let repContainer = document.getElementById('rep-container');
+        // repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
+
+        // let accContainer = document.getElementById('acc-container');
+        // accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+
+        // let remContainer = document.getElementById('rem-container');
+        // remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
       } else {
         console.log('NO MORE SETS');
-        // setInterval(() => history.push('/exercise-form'))
-        // await predict(false);
-        history.push('/exercise-form');
+        // history.push('/exercise-form');
       }
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
@@ -274,6 +282,7 @@ export function Model() {
 
     return function cleanup() {
       // console.log('useeffect', startAnimation);
+
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
