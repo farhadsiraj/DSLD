@@ -90,15 +90,7 @@ export default function Dashboard() {
                     height: '100%',
                   }}
                 >
-                  <StyledButton
-                    style={{
-                      backgroundColor: '#F67280',
-                      padding: '1rem',
-                    }}
-                  >
-                    Start workout
-                  </StyledButton>
-                  <Link to="/exercise-form" className="link-reset hover-reset">
+                  {/* <Link to="/exercise-form" className="link-reset hover-reset">
                     <StyledButton
                       style={{
                         backgroundColor: 'seagreen',
@@ -107,7 +99,7 @@ export default function Dashboard() {
                     >
                       Start workout
                     </StyledButton>
-                  </Link>
+                  </Link> */}
                 </div>
                 <UserInfo>
                   <Flex style={{ width: '90%' }}>
@@ -142,26 +134,25 @@ export default function Dashboard() {
                     </DataBox>
                   </Flex>
                 </UserInfo>
-                {/* <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <StyledButton
-                    style={{
-                      backgroundColor: 'seagreen',
-                      padding: '1rem',
-                      alignSelf: 'flex-start',
-                    }}
-                  >
-                    Start workout
-                  </StyledButton>
-                  <StyledButton
-                    style={{
-                      backgroundColor: 'seagreen',
-                      padding: '1rem',
-                      alignSelf: 'flex-start',
-                    }}
-                  >
-                    Start workout
-                  </StyledButton>
-                </div> */}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    height: '100%',
+                  }}
+                >
+                  <Link to="/exercise-form" className="link-reset hover-reset">
+                    <StyledButton
+                      style={{
+                        backgroundColor: 'seagreen',
+                        padding: '1.5rem',
+                      }}
+                    >
+                      Start workout
+                    </StyledButton>
+                  </Link>
+                </div>
               </UserDataContainer>
               {/* <AnalyticsContainer>
                 <FALargeIcon>
@@ -172,13 +163,16 @@ export default function Dashboard() {
                   />
                 </FALargeIcon>
               </AnalyticsContainer> */}
-              <AnalyticsContainer style={{ marginTop: '2rem' }}>
+              <AnalyticsContainer
+                style={{ marginTop: '2rem', justifyContent: 'flex-start' }}
+              >
                 <CustomWorkoutTitle
                   style={{
                     color: 'white',
                     padding: '1rem',
-                    backgroundColor: '#F9A26C',
+                    border: '3px solid #F9A26C',
                     borderRadius: '1rem',
+                    marginLeft: '1rem',
                   }}
                 >
                   Previous Workouts
@@ -433,14 +427,13 @@ const WorkoutBox = styled.div`
 `;
 
 const CustomWorkoutTitle = styled.h1`
-  font-family: 'Josefin Sans';
+  font-family: 'Inter';
   color: white;
   font-size: 2rem;
 `;
 const CustomWorkoutType = styled.p`
   color: white;
   font-size: 1.5rem;
-  font-weight: lighter;
 `;
 const CustomWorkoutDetail = styled.h3`
   color: white;
