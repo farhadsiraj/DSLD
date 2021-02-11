@@ -55,8 +55,8 @@ export default function Dashboard() {
         } else {
           pastWorkouts.push(doc.data());
         }
-        setWorkoutHistory(pastWorkouts);
       });
+      setWorkoutHistory(pastWorkouts);
     })();
   }, []);
 
@@ -65,7 +65,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      {user && workoutHistory.length > 1 ? (
+      {user && workoutHistory.length ? (
         <Container>
           <GradientContainer>
             <GlobalStyles />
@@ -113,10 +113,15 @@ export default function Dashboard() {
                           )}
                       </div>
                     </DataBox>
+                    <StyledButton
+                      style={{ backgroundColor: 'seagreen', padding: '.5rem' }}
+                    >
+                      Start workout
+                    </StyledButton>
                   </Flex>
                 </UserInfo>
               </UserDataContainer>
-              <AnalyticsContainer>
+              {/* <AnalyticsContainer>
                 <FALargeIcon>
                   <FontAwesomeIcon
                     icon={faPlus}
@@ -124,8 +129,8 @@ export default function Dashboard() {
                     onClick={() => history.push('/exercise-form')}
                   />
                 </FALargeIcon>
-              </AnalyticsContainer>
-              <AnalyticsContainer>
+              </AnalyticsContainer> */}
+              <AnalyticsContainer style={{ marginTop: '2rem' }}>
                 <CustomWorkoutTitle
                   style={{
                     color: 'white',
@@ -139,13 +144,13 @@ export default function Dashboard() {
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
-                  <FAMobileIcon style={{ width: '100%' }}>
+                  {/* <FAMobileIcon style={{ width: '100%' }}>
                     <FontAwesomeIcon
                       icon={faPlus}
                       style={{ fontSize: '1.8rem', color: '#EE4A40' }}
                       onClick={() => history.push('/exercise-form')}
                     />
-                  </FAMobileIcon>
+                  </FAMobileIcon> */}
                   <WorkoutBox>
                     <CustomWorkoutTitle>
                       {workoutHistory[0].date
@@ -169,12 +174,12 @@ export default function Dashboard() {
                   </WorkoutBox>
                   <WorkoutBox>
                     <CustomWorkoutTitle>
-                      {workoutHistory[0].date
+                      {workoutHistory[1].date
                         .toDate()
                         .toString()
                         .slice(
                           0,
-                          workoutHistory[0].date
+                          workoutHistory[1].date
                             .toDate()
                             .toString()
                             .indexOf(':') - 8
@@ -182,20 +187,20 @@ export default function Dashboard() {
                     </CustomWorkoutTitle>
                     <CustomWorkoutType>Squats</CustomWorkoutType>
                     <CustomWorkoutDetail>
-                      Reps: {workoutHistory[0].squats.reps}
+                      Reps: {workoutHistory[1].squats.reps}
                     </CustomWorkoutDetail>
                     <CustomWorkoutDetail>
-                      Sets: {workoutHistory[0].squats.sets}
+                      Sets: {workoutHistory[1].squats.sets}
                     </CustomWorkoutDetail>
                   </WorkoutBox>
                   <WorkoutBox>
                     <CustomWorkoutTitle>
-                      {workoutHistory[0].date
+                      {workoutHistory[2].date
                         .toDate()
                         .toString()
                         .slice(
                           0,
-                          workoutHistory[0].date
+                          workoutHistory[2].date
                             .toDate()
                             .toString()
                             .indexOf(':') - 8
@@ -203,10 +208,10 @@ export default function Dashboard() {
                     </CustomWorkoutTitle>
                     <CustomWorkoutType>Squats</CustomWorkoutType>
                     <CustomWorkoutDetail>
-                      Reps: {workoutHistory[0].squats.reps}
+                      Reps: {workoutHistory[2].squats.reps}
                     </CustomWorkoutDetail>
                     <CustomWorkoutDetail>
-                      Sets: {workoutHistory[0].squats.sets}
+                      Sets: {workoutHistory[2].squats.sets}
                     </CustomWorkoutDetail>
                   </WorkoutBox>
                 </Workouts>
@@ -390,9 +395,10 @@ const CustomWorkoutTitle = styled.h1`
   color: white;
   font-size: 2rem;
 `;
-const CustomWorkoutType = styled.h2`
+const CustomWorkoutType = styled.p`
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: lighter;
 `;
 const CustomWorkoutDetail = styled.h3`
   color: white;
