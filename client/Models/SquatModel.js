@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
 import app from '../../firebase';
+import { useHistory } from 'react-router-dom';
 
 let loggedIn;
 
@@ -18,10 +19,12 @@ let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
-let totalReps;
 
-let successfulReps;
-let reps;
+let totalSets;
+let setCount = 2;
+let totalReps; // Number of reps user specifies
+let successfulReps; // Used for accuracy, decremented with failed squat
+let reps; // Counter that decrements at each squat attempt
 let predictStatus = 'pending';
 let accuracy;
 
@@ -29,6 +32,7 @@ export function Model() {
   // Hooks
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
+  const history = useHistory();
 
   loggedIn = app.auth().currentUser.uid;
   console.log('loggedin----->', loggedIn);
@@ -49,6 +53,8 @@ export function Model() {
       totalReps = user.reps;
       successfulReps = user.reps;
       reps = user.reps;
+      totalSets = user.sets;
+      // setCount = totalSets;
       console.log('Total Reps from Firestore', totalReps);
     }
   }
@@ -144,53 +150,63 @@ export function Model() {
 
       let canvasBorder = document.getElementById('canvas');
 
-      if (counterStatus === 'pending' && startingPosition > 0.9) {
-        counterStatus = 'starting';
-      }
+      if (setCount > 0) {
+        if (counterStatus === 'pending' && startingPosition > 0.9) {
+          counterStatus = 'starting';
+        }
 
-      if (counterStatus === 'starting' && middlePosition > 0.5) {
-        counterStatus = 'middle';
-      }
+        if (counterStatus === 'starting' && middlePosition > 0.5) {
+          counterStatus = 'middle';
+        }
 
-      if (counterStatus === 'middle' && squattingPosition > 0.9) {
-        counterStatus = 'squatting';
-      }
+        if (counterStatus === 'middle' && squattingPosition > 0.9) {
+          counterStatus = 'squatting';
+        }
 
-      if (counterStatus === 'squatting' && startingPosition > 0.9) {
-        lineColor = '#39E47E';
-        drawPose(pose, lineColor);
-        canvasBorder.style.border = `20px solid ${lineColor}`;
-        repCount = repCount + 1;
-        playAudio(positiveFeedback);
-        counterStatus = 'pending';
-        reps = reps - 1;
-      }
+        if (counterStatus === 'squatting' && startingPosition > 0.9) {
+          lineColor = '#39E47E';
+          drawPose(pose, lineColor);
+          canvasBorder.style.border = `20px solid ${lineColor}`;
+          repCount = repCount + 1;
+          playAudio(positiveFeedback);
+          counterStatus = 'pending';
+          reps = reps - 1;
+        }
 
-      if (counterStatus === 'middle' && startingPosition > 0.9) {
-        lineColor = '#EE4A40';
-        canvasBorder.style.border = `20px solid ${lineColor}`;
-        drawPose(pose, lineColor);
-        successfulReps = successfulReps - 1;
-        playAudio(negativeFeedback);
-        counterStatus = 'pending';
-        reps = reps - 1;
-      }
+        if (counterStatus === 'middle' && startingPosition > 0.9) {
+          lineColor = '#EE4A40';
+          canvasBorder.style.border = `20px solid ${lineColor}`;
+          drawPose(pose, lineColor);
+          successfulReps = successfulReps - 1;
+          playAudio(negativeFeedback);
+          counterStatus = 'pending';
+          reps = reps - 1;
+        }
 
-      accuracy = Math.ceil((successfulReps / totalReps) * 100);
+        accuracy = Math.ceil((successfulReps / totalReps) * 100);
 
-      if (reps <= 0) {
-        togglePredict();
-        console.log('DONE');
+        if (reps === 0) {
+          setCount--;
+          await predict(false);
+          // countdown(predict, true);
+          // reps = totalReps;
+
+          // togglePredict();
+          // console.log('DONE');
+        }
+      } else {
+        console.log('NO MORE SETS');
+        history.push('/exercise-form');
       }
 
       let repContainer = document.getElementById('rep-container');
-      repContainer.innerHTML = `Total Reps: ${repCount}`;
+      repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
 
       let accContainer = document.getElementById('acc-container');
       accContainer.innerHTML = `Accuracy: ${accuracy}%`;
 
       let remContainer = document.getElementById('rem-container');
-      remContainer.innerHTML = `Remaining Reps: ${reps}`;
+      remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
     } else {
       return;
     }
@@ -248,7 +264,7 @@ export function Model() {
     return () => console.log('Model cleaned up.');
   }, []);
 
-  function countdown(callback) {
+  function countdown(callback, val) {
     let seconds = 5;
     let countdownSeconds = document.getElementById('timer');
     countdownSeconds.innerHTML = seconds;
@@ -258,7 +274,7 @@ export function Model() {
       if (seconds === 0) {
         countdownSeconds.innerHTML = '00:00';
         clearInterval(counter);
-        callback();
+        callback(val);
       }
     }, 1000);
   }
