@@ -9,9 +9,8 @@ import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
 
 // TODO
-// Decrement totalSets without resetting
-// Pause prediction in between sets
 // Refactor accuracy to account for multiple sets
+// Add rest timer to exercise form
 
 let loggedIn;
 
@@ -57,7 +56,7 @@ export function Model() {
       const user = doc.data();
       // console.table(user.reps);
       totalReps = user.reps;
-      successfulReps = user.reps;
+      successfulReps = user.reps * user.sets;
       reps = user.reps;
       totalSets = user.sets;
       setCount = totalSets;
@@ -190,12 +189,14 @@ export function Model() {
           reps = reps - 1;
         }
 
-        accuracy = Math.ceil((successfulReps / totalReps) * 100);
+        let denominator = totalReps * totalSets;
+
+        accuracy = Math.ceil((successfulReps / denominator) * 100);
 
         if (reps <= 0) {
           setCount--;
           togglePredict();
-          countdown(togglePredict);
+          countdown(10, togglePredict);
           reps = totalReps;
 
           // togglePredict();
@@ -278,8 +279,8 @@ export function Model() {
     };
   }, []);
 
-  function countdown(callback, val) {
-    let seconds = 5;
+  function countdown(time, callback, val) {
+    let seconds = time;
     let countdownSeconds = document.getElementById('timer');
     countdownSeconds.innerHTML = seconds;
     let counter = setInterval(() => {
@@ -315,7 +316,7 @@ export function Model() {
               id="togglePredict"
               onClick={() => {
                 if (predictStatus === 'pending') {
-                  countdown(togglePredict);
+                  countdown(5, togglePredict);
                 } else {
                   togglePredict();
                 }
