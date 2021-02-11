@@ -35,8 +35,7 @@ export default function UserProfileForm() {
         }
       });
 
-      await db
-        .collection('users')
+      db.collection('users')
         .doc(auth.currentUser.uid)
         .set({
           username: usernameRef.current.value,
@@ -45,14 +44,13 @@ export default function UserProfileForm() {
           weight: weightRef.current.value,
           sex: sexRef.current.value,
         })
+        .then(() => history.push('/dashboard'))
         .catch((error) => {
           console.log(
             'Something went wrong with adding user data to firestore: ',
             error
           );
         });
-
-      history.push('/dashboard');
     } catch (error) {
       console.log(error);
       if (error === '') {
