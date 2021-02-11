@@ -10,7 +10,6 @@ import { useHistory } from 'react-router-dom';
 
 // TODO
 // 'NO MORE SETS' is being spammed after history.push, did useeffect cleanup work?
-// Add rest timer to exercise form
 
 let loggedIn;
 
@@ -214,6 +213,10 @@ export function Model() {
                 },
                 { merge: true }
               );
+            // window.cancelAnimationFrame(startAnimation);
+            // window.cancelAnimationFrame(startAnimation2);
+            // predict(false);
+            // togglePredict();
             history.push('/exercise-form');
           } else {
             togglePredict();
@@ -231,6 +234,10 @@ export function Model() {
         // remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
       } else {
         console.log('NO MORE SETS');
+        // window.cancelAnimationFrame(startAnimation);
+        // window.cancelAnimationFrame(startAnimation2);
+        // predict(false);
+        // togglePredict();
         // history.push('/exercise-form');
       }
       if (setCount) {
@@ -300,6 +307,8 @@ export function Model() {
     return function cleanup() {
       // console.log('useeffect', startAnimation);
 
+      togglePredict();
+      predict(false);
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
