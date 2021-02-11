@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Button, Card, Form, Alert } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -15,7 +15,21 @@ export default function UserProfileForm() {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
   const history = useHistory();
+
+  useEffect(async () => {
+    console.log(auth.currentUser.uid);
+    const userRef = db.collection('users').doc(auth.currentUser.uid);
+    const userDoc = await userRef.get();
+    if (!userDoc.exists) {
+      console.log('No user data is available.');
+      setUser('N/A');
+    } else {
+      console.log(userDoc.data());
+      setUser(userDoc.data());
+    }
+  }, []);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -37,13 +51,16 @@ export default function UserProfileForm() {
 
       db.collection('users')
         .doc(auth.currentUser.uid)
-        .set({
-          username: usernameRef.current.value,
-          age: ageRef.current.value,
-          height: heightRef.current.value,
-          weight: weightRef.current.value,
-          sex: sexRef.current.value,
-        })
+        .set(
+          {
+            username: usernameRef.current.value,
+            age: ageRef.current.value,
+            height: heightRef.current.value,
+            weight: weightRef.current.value,
+            sex: sexRef.current.value,
+          },
+          { merge: true }
+        )
         .then(() => history.push('/dashboard'))
         .catch((error) => {
           console.log(
@@ -59,7 +76,6 @@ export default function UserProfileForm() {
     }
     setLoading(false);
   }
-
   return (
     <GradientContainer>
       <ContentContainer>
