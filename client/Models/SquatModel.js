@@ -9,8 +9,7 @@ import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
 
 // TODO
-// Refactor accuracy to account for multiple sets
-// Add rest timer to exercise form
+// 'NO MORE SETS' is being spammed after history.push, did useeffect cleanup work?
 
 let loggedIn;
 
