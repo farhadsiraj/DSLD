@@ -28,151 +28,160 @@ export default function Dashboard() {
   }
 
   useEffect(async () => {
-    const userRef = app.firestore().collection('users').doc(currentUser.uid);
-    const userDoc = await userRef.get();
-    if (!userDoc.exists) {
-      console.log('No user data is available.');
-      setUser('N/A');
-    } else {
-      userDoc.data();
-      setUser(userDoc.data());
-    }
-
-    let pastWorkouts = [];
-    const workoutHistoryRef = app
-      .firestore()
-      .collection('users')
-      .doc(currentUser.uid)
-      .collection('workoutHistory');
-
-    const historySnapshot = await workoutHistoryRef.get();
-
-    historySnapshot.forEach((doc) => {
-      if (!doc.data()) {
-        setError('Username not available');
-        throw new Error('Username not available');
+    (async () => {
+      const userRef = app.firestore().collection('users').doc(currentUser.uid);
+      const userDoc = await userRef.get();
+      if (!userDoc.exists) {
+        console.log('No user data is available.');
+        setUser('N/A');
       } else {
-        pastWorkouts.push(doc.data());
+        userDoc.data();
+        setUser(userDoc.data());
       }
-      setWorkoutHistory(pastWorkouts);
-    });
+
+      let pastWorkouts = [];
+      const workoutHistoryRef = app
+        .firestore()
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('workoutHistory');
+
+      const historySnapshot = await workoutHistoryRef.get();
+
+      historySnapshot.forEach((doc) => {
+        if (!doc.data()) {
+          setError('Username not available');
+          throw new Error('Username not available');
+        } else {
+          pastWorkouts.push(doc.data());
+        }
+        setWorkoutHistory(pastWorkouts);
+      });
+    })();
   }, []);
 
   console.log('currentUser', user);
   console.log('James workoutHistory', workoutHistory);
 
   return (
-    <Container>
-      <GradientContainer>
-        <GlobalStyles />
-        <ColumnContainer>
-          <UserDataContainer>
-            <ProfilePicture src={gym} />
-            <UserInfo>
-              <Flex>
-                <DataBox>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                </DataBox>
-                <DataBox>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                </DataBox>
-                <DataBox>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                </DataBox>
-              </Flex>
-            </UserInfo>
-          </UserDataContainer>
-          <AnalyticsContainer>
-            <FALargeIcon>
-              <FontAwesomeIcon
-                icon={faPlus}
-                style={{ fontSize: '1.8rem', color: '#EE4A40' }}
-                onClick={() => history.push('/exercise-form')}
-              />
-            </FALargeIcon>
-          </AnalyticsContainer>
-          <WorkoutContainer>
-            <Workouts>
-              <FAMobileIcon style={{ width: '100%' }}>
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  style={{ fontSize: '1.8rem', color: '#EE4A40' }}
-                  onClick={() => history.push('/exercise-form')}
-                />
-              </FAMobileIcon>
-              <WorkoutBox>
-                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-                <CustomWorkoutType>Squats</CustomWorkoutType>
-                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                <StyledButton>Start</StyledButton>
-              </WorkoutBox>
-              <WorkoutBox>
-                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-                <CustomWorkoutType>Squats</CustomWorkoutType>
-                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                <StyledButton>Start</StyledButton>
-              </WorkoutBox>
-              <WorkoutBox>
-                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-                <CustomWorkoutType>Squats</CustomWorkoutType>
-                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                <StyledButton>Start</StyledButton>
-              </WorkoutBox>
-            </Workouts>
-          </WorkoutContainer>
-        </ColumnContainer>
-        <AccountSettingsContainer>
-          <CurrentSettings>
-            <h2 style={{ color: 'white' }}>Account Settings</h2>
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Row>
-              <SettingsTitle>Email: </SettingsTitle>
-              <SettingsText> {currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Username: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Age: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Weight: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Sex: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-          </CurrentSettings>
-          <Link to="/update-profile">
-            <StyledButton>Update Account Info</StyledButton>
-          </Link>
-          <Link to="/user-profile-form">
-            <StyledButton>Update User Profile</StyledButton>
-          </Link>
-          <StyledButton
-            style={{ backgroundColor: 'seagreen' }}
-            onClick={handleLogout}
-          >
-            Log Out
-          </StyledButton>
-        </AccountSettingsContainer>
-      </GradientContainer>
-    </Container>
+    <div>
+      {user ? (
+        <Container>
+          <GradientContainer>
+            <GlobalStyles />
+            <ColumnContainer>
+              <UserDataContainer>
+                <ProfilePicture src={gym} />
+                <UserInfo>
+                  <div>Welcome back, {user.name}</div>
+                  <Flex>
+                    <DataBox>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                    </DataBox>
+                    <DataBox>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                    </DataBox>
+                    <DataBox>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                      <div>Total Reps</div>
+                    </DataBox>
+                  </Flex>
+                </UserInfo>
+              </UserDataContainer>
+              <AnalyticsContainer>
+                <FALargeIcon>
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+                    onClick={() => history.push('/exercise-form')}
+                  />
+                </FALargeIcon>
+              </AnalyticsContainer>
+              <WorkoutContainer>
+                <Workouts>
+                  <FAMobileIcon style={{ width: '100%' }}>
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      style={{ fontSize: '1.8rem', color: '#EE4A40' }}
+                      onClick={() => history.push('/exercise-form')}
+                    />
+                  </FAMobileIcon>
+                  <WorkoutBox>
+                    <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                    <CustomWorkoutType>Squats</CustomWorkoutType>
+                    <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+                    <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+                    <StyledButton>Start</StyledButton>
+                  </WorkoutBox>
+                  <WorkoutBox>
+                    <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                    <CustomWorkoutType>Squats</CustomWorkoutType>
+                    <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+                    <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+                    <StyledButton>Start</StyledButton>
+                  </WorkoutBox>
+                  <WorkoutBox>
+                    <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
+                    <CustomWorkoutType>Squats</CustomWorkoutType>
+                    <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
+                    <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
+                    <StyledButton>Start</StyledButton>
+                  </WorkoutBox>
+                </Workouts>
+              </WorkoutContainer>
+            </ColumnContainer>
+            <AccountSettingsContainer>
+              <CurrentSettings>
+                <h2 style={{ color: 'white' }}>Account Settings</h2>
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Row>
+                  <SettingsTitle>Email: </SettingsTitle>
+                  <SettingsText> {currentUser.email}</SettingsText>
+                </Row>
+                <Row>
+                  <SettingsTitle>Username: </SettingsTitle>
+                  <SettingsText>{currentUser.email}</SettingsText>
+                </Row>
+                <Row>
+                  <SettingsTitle>Age: </SettingsTitle>
+                  <SettingsText>{currentUser.email}</SettingsText>
+                </Row>
+                <Row>
+                  <SettingsTitle>Weight: </SettingsTitle>
+                  <SettingsText>{user ? user.weight : ''}</SettingsText>
+                </Row>
+                <Row>
+                  <SettingsTitle>Sex: </SettingsTitle>
+                  <SettingsText>{currentUser.email}</SettingsText>
+                </Row>
+              </CurrentSettings>
+              <Link to="/update-profile">
+                <StyledButton>Update Account Info</StyledButton>
+              </Link>
+              <Link to="/user-profile-form">
+                <StyledButton>Update User Profile</StyledButton>
+              </Link>
+              <StyledButton
+                style={{ backgroundColor: 'seagreen' }}
+                onClick={handleLogout}
+              >
+                Log Out
+              </StyledButton>
+            </AccountSettingsContainer>
+          </GradientContainer>
+        </Container>
+      ) : (
+        ''
+      )}
+    </div>
   );
 }
 
