@@ -4,7 +4,7 @@ const GlobalStyle = createGlobalStyle`
   html, body {
     margin: 0;
     padding: 0;
-    font-family: Helvetica, sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 16px;
   }
 
