@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
 import app from '../../firebase';
@@ -13,6 +13,8 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const { currentUser, logout } = useAuth();
   const history = useHistory();
+  const [user, setUser] = useState(null);
+  const [workoutHistory, setWorkoutHistory] = useState([]);
 
   async function handleLogout() {
     setError('');
@@ -25,118 +27,239 @@ export default function Dashboard() {
     }
   }
 
+  useEffect(async () => {
+    (async () => {
+      const userRef = app.firestore().collection('users').doc(currentUser.uid);
+      const userDoc = await userRef.get();
+      if (!userDoc.exists) {
+        console.log('No user data is available.');
+        setUser('N/A');
+      } else {
+        userDoc.data();
+        setUser(userDoc.data());
+      }
+
+      let pastWorkouts = [];
+      const workoutHistoryRef = app
+        .firestore()
+        .collection('users')
+        .doc(currentUser.uid)
+        .collection('workoutHistory');
+
+      const historySnapshot = await workoutHistoryRef.get();
+
+      historySnapshot.forEach((doc) => {
+        if (!doc.data()) {
+          setError('Username not available');
+          throw new Error('Username not available');
+        } else {
+          pastWorkouts.push(doc.data());
+        }
+      });
+      setWorkoutHistory(pastWorkouts);
+    })();
+  }, []);
+
+  console.log('currentUser', user);
+  console.log('workoutHistory', workoutHistory);
+
   return (
-    <Container>
-      <GradientContainer>
-        <GlobalStyles />
-        <ColumnContainer>
-          <UserDataContainer>
-            <ProfilePicture src={gym} />
-            <UserInfo>
-              <Flex>
-                <DataBox>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                </DataBox>
-                <DataBox>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                </DataBox>
-                <DataBox>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                  <div>Total Reps</div>
-                </DataBox>
-              </Flex>
-            </UserInfo>
-          </UserDataContainer>
-          <AnalyticsContainer>
-            <FALargeIcon>
-              <FontAwesomeIcon
-                icon={faPlus}
-                style={{ fontSize: '1.8rem', color: '#EE4A40' }}
-                onClick={() => history.push('/exercise-form')}
-              />
-            </FALargeIcon>
-          </AnalyticsContainer>
-          <WorkoutContainer>
-            <Workouts>
-              <FAMobileIcon style={{ width: '100%' }}>
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  style={{ fontSize: '1.8rem', color: '#EE4A40' }}
-                  onClick={() => history.push('/exercise-form')}
-                />
-              </FAMobileIcon>
-              <WorkoutBox>
-                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-                <CustomWorkoutType>Squats</CustomWorkoutType>
-                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                <StyledButton>Start</StyledButton>
-              </WorkoutBox>
-              <WorkoutBox>
-                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-                <CustomWorkoutType>Squats</CustomWorkoutType>
-                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                <StyledButton>Start</StyledButton>
-              </WorkoutBox>
-              <WorkoutBox>
-                <CustomWorkoutTitle>Workout One</CustomWorkoutTitle>
-                <CustomWorkoutType>Squats</CustomWorkoutType>
-                <CustomWorkoutDetail>Reps: 10</CustomWorkoutDetail>
-                <CustomWorkoutDetail>Sets: 3</CustomWorkoutDetail>
-                <StyledButton>Start</StyledButton>
-              </WorkoutBox>
-            </Workouts>
-          </WorkoutContainer>
-        </ColumnContainer>
-        <AccountSettingsContainer>
-          <CurrentSettings>
-            <h2 style={{ color: 'white' }}>Account Settings</h2>
-            {error && <Alert variant="danger">{error}</Alert>}
-            <Row>
-              <SettingsTitle>Email: </SettingsTitle>
-              <SettingsText> {currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Username: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Age: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Weight: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-            <Row>
-              <SettingsTitle>Sex: </SettingsTitle>
-              <SettingsText>{currentUser.email}</SettingsText>
-            </Row>
-          </CurrentSettings>
-          <Link to="/update-profile">
-            <StyledButton>Update Account Info</StyledButton>
-          </Link>
-          <Link to="/user-profile-form">
-            <StyledButton>Update User Profile</StyledButton>
-          </Link>
-          <StyledButton
-            style={{ backgroundColor: 'seagreen' }}
-            onClick={handleLogout}
-          >
-            Log Out
-          </StyledButton>
-        </AccountSettingsContainer>
-      </GradientContainer>
-    </Container>
+    <div>
+      {user && workoutHistory.length ? (
+        <Container>
+          <GradientContainer>
+            <GlobalStyles />
+            <ColumnContainer>
+              <UserDataContainer>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <ProfilePicture src={user.imageUrl} />
+                  <UserName>{user.name}</UserName>
+
+                  <Link to="/exercise-form" className="link-reset hover-reset">
+                    <StyledButton
+                      style={{
+                        backgroundColor: '#6BE19B',
+                        padding: '1rem',
+                      }}
+                    >
+                      Start workout
+                    </StyledButton>
+                  </Link>
+                </div>
+                <UserInfo>
+                  <Flex style={{ width: '90%' }}>
+                    <DataBox>
+                      <div>Active Streak:</div>
+                      <div>{user.activeStreak}</div>
+                      <div>Weight:</div>
+                      <div>{user.weight}</div>
+                    </DataBox>
+                    <DataBox>
+                      <div>Lifetime Reps:</div>
+                      <div>{user.lifetimeReps}</div>
+                    </DataBox>
+                    <DataBox>
+                      <div>Activities:</div>
+                      <div>{user.lifetimeWorkouts}</div>
+                    </DataBox>
+                    <DataBox>
+                      <div>Latest Activity:</div>
+                      <div>
+                        {workoutHistory[0].date
+                          .toDate()
+                          .toString()
+                          .slice(
+                            0,
+                            workoutHistory[0].date
+                              .toDate()
+                              .toString()
+                              .indexOf(':') - 3
+                          )}
+                      </div>
+                    </DataBox>
+                  </Flex>
+                </UserInfo>
+              </UserDataContainer>
+              <AnalyticsContainer
+                style={{ marginTop: '2rem', justifyContent: 'flex-start' }}
+              >
+                <CustomWorkoutTitle
+                  style={{
+                    color: '#355C7D',
+                    paddingLeft: '1rem',
+                    marginLeft: '1rem',
+                  }}
+                >
+                  Previous Workouts
+                </CustomWorkoutTitle>
+              </AnalyticsContainer>
+              <WorkoutContainer>
+                <Workouts>
+                  <WorkoutBox>
+                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
+                    <CustomWorkoutType className="lighter">
+                      {workoutHistory[0].date
+                        .toDate()
+                        .toString()
+                        .slice(
+                          0,
+                          workoutHistory[0].date
+                            .toDate()
+                            .toString()
+                            .indexOf(':') - 8
+                        )}
+                    </CustomWorkoutType>
+                    <CustomWorkoutDetail>
+                      <Title>Reps: </Title>
+                      <Text>{workoutHistory[2].squats.reps}</Text>
+                    </CustomWorkoutDetail>
+                    <CustomWorkoutDetail>
+                      <Title>Sets: </Title>
+                      <Text>{workoutHistory[2].squats.sets}</Text>
+                    </CustomWorkoutDetail>
+                  </WorkoutBox>
+                  <WorkoutBox>
+                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
+                    <CustomWorkoutType className="lighter">
+                      {' '}
+                      {workoutHistory[1].date
+                        .toDate()
+                        .toString()
+                        .slice(
+                          0,
+                          workoutHistory[1].date
+                            .toDate()
+                            .toString()
+                            .indexOf(':') - 8
+                        )}
+                    </CustomWorkoutType>
+                    <CustomWorkoutDetail>
+                      <Title>Reps: </Title>
+                      <Text>{workoutHistory[2].squats.reps}</Text>
+                    </CustomWorkoutDetail>
+                    <CustomWorkoutDetail>
+                      <Title>Sets: </Title>
+                      <Text>{workoutHistory[2].squats.sets}</Text>
+                    </CustomWorkoutDetail>
+                  </WorkoutBox>
+                  <WorkoutBox>
+                    <CustomWorkoutTitle>Squats</CustomWorkoutTitle>
+                    <CustomWorkoutType className="lighter">
+                      {' '}
+                      {workoutHistory[2].date
+                        .toDate()
+                        .toString()
+                        .slice(
+                          0,
+                          workoutHistory[2].date
+                            .toDate()
+                            .toString()
+                            .indexOf(':') - 8
+                        )}
+                    </CustomWorkoutType>
+                    <CustomWorkoutDetail>
+                      <Title>Reps:</Title>
+                      <Text>{workoutHistory[2].squats.reps}</Text>
+                    </CustomWorkoutDetail>
+                    <CustomWorkoutDetail>
+                      <Title>Sets: </Title>
+                      <Text>{workoutHistory[2].squats.sets}</Text>
+                    </CustomWorkoutDetail>
+                  </WorkoutBox>
+                </Workouts>
+              </WorkoutContainer>
+            </ColumnContainer>
+            <AccountSettingsContainer>
+              <CurrentSettings>
+                <h2 style={{ color: 'white' }}>Account Settings</h2>
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Row>
+                  <Title>Email: </Title>
+                  <Text> {currentUser.email}</Text>
+                </Row>
+                <Row>
+                  <Title>Username: </Title>
+                  <Text>{currentUser.email}</Text>
+                </Row>
+                <Row>
+                  <Title>Age: </Title>
+                  <Text>{currentUser.email}</Text>
+                </Row>
+                <Row>
+                  <Title>Weight: </Title>
+                  <Text>{user.weight}</Text>
+                </Row>
+                <Row>
+                  <Title>Sex:{'  '}</Title>
+                  <Text>{currentUser.email}</Text>
+                </Row>
+              </CurrentSettings>
+              <Link to="/update-profile" className="link-reset hover-reset">
+                <StyledButton>Update Account Info</StyledButton>
+              </Link>
+              <Link to="/user-profile-form" className="link-reset hover-reset">
+                <StyledButton>Update User Profile</StyledButton>
+              </Link>
+              <StyledButton
+                style={{ backgroundColor: 'seagreen' }}
+                onClick={handleLogout}
+              >
+                Log Out
+              </StyledButton>
+            </AccountSettingsContainer>
+          </GradientContainer>
+        </Container>
+      ) : (
+        ''
+      )}
+    </div>
   );
 }
 
@@ -176,7 +299,7 @@ const ColumnContainer = styled.div`
 
 const UserDataContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   height: 35vh;
@@ -184,7 +307,7 @@ const UserDataContainer = styled.div`
   padding: 1rem;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding: 0 1.5rem;
   }
 `;
@@ -197,11 +320,9 @@ const ProfilePicture = styled.img`
   border: 5px solid #f8b195;
   position: relative;
   overflow: hidden;
-  margin: 1rem;
   @media only screen and (min-width: 960px) {
-    width: 15rem;
-    height: 15rem;
-    margin-left: 6rem;
+    width: 12rem;
+    height: 12rem;
   }
 `;
 
@@ -210,15 +331,15 @@ const UserInfo = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   background-color: #355c7d;
   border-radius: 2rem;
   color: white;
   justify-content: center;
   @media only screen and (min-width: 960px) {
-    width: 70%;
     height: 100%;
+    width: 70%;
   }
 `;
 
@@ -260,20 +381,21 @@ const WorkoutBox = styled.div`
   width: 100%;
   height: 100%;
   background-color: #355c7d;
-  margin: 1rem;
+  margin: 0 1rem;
   border-radius: 2rem;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 1rem 0 1rem 0;
 `;
 
 const CustomWorkoutTitle = styled.h1`
+  font-family: 'Inter';
   color: white;
   font-size: 2rem;
 `;
-const CustomWorkoutType = styled.h2`
+const CustomWorkoutType = styled.p`
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 `;
 const CustomWorkoutDetail = styled.h3`
   color: white;
@@ -308,39 +430,37 @@ const CurrentSettings = styled.div`
   flex-direction: column;
 `;
 
-const SettingsTitle = styled.h3`
+const Title = styled.p`
   color: white;
   font-size: 1.2rem;
+  padding-right: 0.5rem;
 `;
-const SettingsText = styled.h3`
+const Text = styled.p`
   color: white;
   font-size: 1rem;
+  font-weight: 300;
 `;
 
 const Row = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
-`;
-
-const FAMobileIcon = styled.div`
-  margin: 0;
-  width: 100%;
-  @media only screen and (min-width: 960px) {
-    display: none;
-  }
-`;
-const FALargeIcon = styled.div`
-  width: 90%;
 `;
 
 const DataBox = styled.div`
   flex: 1;
+  width: 100%;
   margin: 1rem;
   justify-content: center;
 `;
 
 const Flex = styled.div`
   display: flex;
+`;
+
+const UserName = styled.h1`
+  font-family: 'Josefin Sans';
+  font-size: 2rem;
+  color: whitesmoke;
 `;

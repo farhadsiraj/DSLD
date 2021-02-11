@@ -4,7 +4,8 @@ const GlobalStyle = createGlobalStyle`
   html, body {
     margin: 0;
     padding: 0;
-    font-family: Helvetica, sans-serif;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
     font-size: 16px;
   }
 
@@ -37,6 +38,13 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
+  .lighter {
+    font-weight: 300;
+  }
+
+  .lightest {
+    font-weight: 200;
+  }
 
 `;
 

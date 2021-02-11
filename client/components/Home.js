@@ -151,6 +151,7 @@ const Box = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
+  font-family: 'Josefin Sans';
   margin-top: 0;
   font-size: 1.4rem;
   color: white;
