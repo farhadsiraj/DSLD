@@ -174,6 +174,5 @@ const NestedHeaderImage = styled.img`
     max-width: 90%;
     border-radius: 2rem;
     margin-left: -10rem;
-    /* margin-top: 6rem; */
   }
 `;
