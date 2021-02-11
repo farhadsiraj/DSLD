@@ -60,12 +60,9 @@ export default function Dashboard() {
     })();
   }, []);
 
-  console.log('currentUser', user);
-  console.log('workoutHistory', workoutHistory);
-
   return (
     <div>
-      {user && workoutHistory.length ? (
+      {user ? (
         <Container>
           <GradientContainer>
             <GlobalStyles />
@@ -94,39 +91,54 @@ export default function Dashboard() {
                         padding: '1rem',
                       }}
                     >
-                      Start workout
+                      Start Workout
                     </StyledButton>
                   </Link>
                 </div>
                 <UserInfo>
                   <Flex style={{ width: '90%' }}>
                     <DataBox>
-                      <div>Active Streak:</div>
-                      <div>{user.activeStreak}</div>
-                      <div>Weight:</div>
-                      <div>{user.weight}</div>
-                    </DataBox>
-                    <DataBox>
-                      <div>Lifetime Reps:</div>
-                      <div>{user.lifetimeReps}</div>
-                    </DataBox>
-                    <DataBox>
-                      <div>Activities:</div>
-                      <div>{user.lifetimeWorkouts}</div>
-                    </DataBox>
-                    <DataBox>
-                      <div>Latest Activity:</div>
                       <div>
-                        {workoutHistory[0].date
-                          .toDate()
-                          .toString()
-                          .slice(
-                            0,
+                        <Title>Active Streak:</Title>
+                      </div>
+                      <div>
+                        <Text>{user.activeStreak || 0}</Text>
+                      </div>
+                    </DataBox>
+                    <DataBox>
+                      <div>
+                        <Title>Lifetime Reps:</Title>
+                      </div>
+                      <div>
+                        <Text>{user.lifetimeReps || 0}</Text>
+                      </div>
+                    </DataBox>
+                    <DataBox>
+                      <div>
+                        <Title>Activities:</Title>
+                      </div>
+                      <div>
+                        <Text>{user.lifetimeWorkouts || 'n/a'}</Text>
+                      </div>
+                    </DataBox>
+                    <DataBox>
+                      <div>
+                        <Title>Latest Activity:</Title>
+                      </div>
+                      <div>
+                        <Text>
+                          {workoutHistory.length &&
                             workoutHistory[0].date
                               .toDate()
                               .toString()
-                              .indexOf(':') - 3
-                          )}
+                              .slice(
+                                0,
+                                workoutHistory[0].date
+                                  .toDate()
+                                  .toString()
+                                  .indexOf(':') - 3
+                              )}
+                        </Text>
                       </div>
                     </DataBox>
                   </Flex>
@@ -146,7 +158,7 @@ export default function Dashboard() {
                 </CustomWorkoutTitle>
               </AnalyticsContainer>
               <WorkoutContainer>
-                {/* <Workouts>
+                <Workouts>
                   {workoutHistory
                     .slice(0, Math.min(3, workoutHistory.length))
                     .map((ele, i) => {
@@ -176,7 +188,7 @@ export default function Dashboard() {
                         </WorkoutBox>
                       );
                     })}
-                </Workouts> */}
+                </Workouts>
               </WorkoutContainer>
             </ColumnContainer>
             <AccountSettingsContainer>
@@ -210,12 +222,14 @@ export default function Dashboard() {
               <Link to="/user-profile-form" className="link-reset hover-reset">
                 <StyledButton>Update User Profile</StyledButton>
               </Link>
-              <StyledButton
-                style={{ backgroundColor: 'seagreen' }}
-                onClick={handleLogout}
-              >
-                Log Out
-              </StyledButton>
+              <div>
+                <StyledButton
+                  style={{ backgroundColor: 'seagreen' }}
+                  onClick={handleLogout}
+                >
+                  Log Out
+                </StyledButton>
+              </div>
             </AccountSettingsContainer>
           </GradientContainer>
         </Container>
@@ -231,7 +245,6 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin-top: 65px;
 `;
 
 const GradientContainer = styled.div`
@@ -258,6 +271,7 @@ const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1.5rem;
+  margin-top: 65px;
 `;
 
 const UserDataContainer = styled.div`
@@ -265,10 +279,10 @@ const UserDataContainer = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 35vh;
   width: 100%;
   padding: 1rem;
   @media only screen and (min-width: 960px) {
+    height: 35vh;
     flex-direction: row;
     justify-content: space-evenly;
     padding: 0 1.5rem;
@@ -301,6 +315,7 @@ const UserInfo = styled.div`
   align-items: center;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
+    margin-left: 2rem;
   }
 `;
 
@@ -331,6 +346,7 @@ const AnalyticsContainer = styled.div`
 
 const WorkoutContainer = styled.div`
   width: 100%;
+  padding: 1rem;
 `;
 
 const Workouts = styled.div`
@@ -338,7 +354,7 @@ const Workouts = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  width: 100%;
   height: 50rem;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
@@ -354,12 +370,14 @@ const WorkoutBox = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+  margin: 0 0 1rem 0;
   background-color: #355c7d;
-  margin: 0 1rem;
   border-radius: 2rem;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0 1rem 0;
+  @media only screen and (min-width: 960px) {
+    margin: 0 1rem;
+  }
 `;
 
 const CustomWorkoutTitle = styled.h1`
@@ -370,6 +388,7 @@ const CustomWorkoutTitle = styled.h1`
 const CustomWorkoutType = styled.p`
   color: white;
   font-size: 1.5rem;
+  margin-bottom: 0.4rem;
 `;
 const CustomWorkoutDetail = styled.h3`
   color: white;
@@ -380,10 +399,13 @@ const StyledButton = styled.button`
   background-color: #f67280;
   color: white;
   padding: 1rem;
-  width: 10rem;
   border-radius: 0.8rem;
   border-style: none;
-  margin: 0.5rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  @media only screen and (min-width: 960px) {
+    width: 10rem;
+  }
 `;
 
 const AccountSettingsContainer = styled.div`
@@ -402,6 +424,7 @@ const AccountSettingsContainer = styled.div`
 const CurrentSettings = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
 `;
 
 const Title = styled.p`
@@ -425,7 +448,7 @@ const Row = styled.div`
 const DataBox = styled.div`
   flex: 1;
   width: 100%;
-  margin: 1rem;
+  padding: 1rem 0;
   justify-content: center;
 `;
 
