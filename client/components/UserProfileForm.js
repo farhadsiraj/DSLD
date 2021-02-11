@@ -3,8 +3,8 @@ import { Button, Card, Form, Alert } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import app from '../../firebase';
 import ball from '../../public/assets/images/ball.png';
+import { db, auth } from '../../firebase';
 
 export default function UserProfileForm() {
   const usernameRef = useRef();
@@ -34,8 +34,9 @@ export default function UserProfileForm() {
           throw new Error('Username not available');
         }
       });
+
       db.collection('users')
-        .doc(app.currentUser.uid)
+        .doc(auth.currentUser.uid)
         .set({
           username: usernameRef.current.value,
           age: ageRef.current.value,
@@ -43,7 +44,7 @@ export default function UserProfileForm() {
           weight: weightRef.current.value,
           sex: sexRef.current.value,
         })
-        .then(history.push('/dashboard'))
+        .then(() => history.push('/dashboard'))
         .catch((error) => {
           console.log(
             'Something went wrong with adding user data to firestore: ',
