@@ -14,7 +14,7 @@ export default function Dashboard() {
   const { currentUser, logout } = useAuth();
   const history = useHistory();
   const [user, setUser] = useState(null);
-  const [workoutHistory, setWorkoutHistory] = useState(null);
+  const [workoutHistory, setWorkoutHistory] = useState([]);
 
   async function handleLogout() {
     setError('');
@@ -28,19 +28,38 @@ export default function Dashboard() {
   }
 
   useEffect(async () => {
-    console.log('currentUser before query', currentUser);
     const userRef = app.firestore().collection('users').doc(currentUser.uid);
     const userDoc = await userRef.get();
     if (!userDoc.exists) {
       console.log('No user data is available.');
+      setUser('N/A');
     } else {
       userDoc.data();
-      // console.table(user.reps);
       setUser(userDoc.data());
     }
+
+    let pastWorkouts = [];
+    const workoutHistoryRef = app
+      .firestore()
+      .collection('users')
+      .doc(currentUser.uid)
+      .collection('workoutHistory');
+
+    const historySnapshot = await workoutHistoryRef.get();
+
+    historySnapshot.forEach((doc) => {
+      if (!doc.data()) {
+        setError('Username not available');
+        throw new Error('Username not available');
+      } else {
+        pastWorkouts.push(doc.data());
+      }
+      setWorkoutHistory(pastWorkouts);
+    });
   }, []);
 
   console.log('currentUser', user);
+  console.log('James workoutHistory', workoutHistory);
 
   return (
     <Container>
