@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import gym from '../../public/assets/images/gym.jpg';
+import { distSquared } from '@tensorflow/tfjs-core/dist/util';
 
 export default function UpdateProfile() {
   const emailRef = useRef();
@@ -47,8 +48,8 @@ export default function UpdateProfile() {
   return (
     <GradientContainer>
       <ContentContainer>
-        <div style={cards}>
-          <Card style={cardStyle}>
+        <div className="bootstrap-form-container">
+          <Card className="bootstrap-form">
             <Card.Body>
               <h2 className="text-center mb-4">Update Profile</h2>
               {error && <Alert variant="danger">{error}</Alert>}
@@ -99,22 +100,6 @@ export default function UpdateProfile() {
   );
 }
 
-const cards = {
-  display: 'flex',
-};
-
-const cardStyle = {
-  width: '31rem',
-  color: 'white',
-  backgroundColor: '#355c7d',
-  marginTop: '10rem',
-  borderRadius: '2rem',
-  paddingTop: '2rem',
-  paddingBottom: '4rem',
-  paddingLeft: '4rem',
-  paddingRight: '4rem',
-};
-
 const buttonStyle = {
   backgroundColor: '#F9A26C',
   border: 'none',
@@ -154,12 +139,13 @@ const NestedHeaderImage = styled.img`
   display: none;
   @media only screen and (min-width: 960px) {
     display: flex;
-    width: 37rem;
+    object-fit: cover;
+    width: 30rem;
     height: 31.3rem;
     max-height: 100%;
     max-width: 90%;
     border-radius: 2rem;
     margin-left: -10rem;
-    margin-top: 10rem;
+    margin-top: 6rem;
   }
 `;

@@ -46,6 +46,47 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 200;
   }
 
+
+  .bootstrap-form-container {
+  }
+
+  .bootstrap-form {
+  color: white;
+  background-color: #355c7d;
+  border-radius: 2rem;
+
+  }
+
+  @media only screen and (max-width: 959px){
+    .bootstrap-form-container {
+      width: 90%;
+      margin-top: 6rem;
+    }
+
+  }
+
+@media only screen and (min-width: 500px){
+  .bootstrap-form-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .bootstrap-form{
+  width: 28rem;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .bootstrap-form {
+  margin-top: 6rem;
+
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  }
+}
+
 `;
 
 export default GlobalStyle;
