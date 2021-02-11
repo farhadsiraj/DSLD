@@ -41,7 +41,7 @@ export default function Signup() {
             });
         }
       );
-      history.push('/dashboard');
+      history.push('/user-profile-form');
     } catch (error) {
       console.log(error);
       setError('Failed to create an account');

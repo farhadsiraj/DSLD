@@ -6,6 +6,11 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { db, auth } from '../../firebase';
+import { useHistory } from 'react-router-dom';
+
+// TODO
+// 'NO MORE SETS' is being spammed after history.push, did useeffect cleanup work?
+// Add rest timer to exercise form
 
 let loggedIn;
 
@@ -18,17 +23,23 @@ let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
-let totalReps;
-
-let successfulReps;
-let reps;
+let exercise;
+let restTimer;
+let totalSets;
+let setCount;
+let totalReps; // Number of reps user specifies
+let successfulReps; // Used for accuracy, decremented with failed squat
+let reps; // Counter that decrements at each squat attempt
 let predictStatus = 'pending';
 let accuracy;
+let startAnimation;
+let startAnimation2;
 
 export function Model() {
   // Hooks
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
+  const history = useHistory();
 
   loggedIn = auth.currentUser.uid;
   console.log('loggedin----->', loggedIn);
@@ -45,9 +56,13 @@ export function Model() {
     } else {
       const user = doc.data();
       // console.table(user.reps);
+      exercise = user.exercise;
       totalReps = user.reps;
-      successfulReps = user.reps;
+      successfulReps = user.reps * user.sets;
       reps = user.reps;
+      totalSets = user.sets;
+      setCount = totalSets;
+      restTimer = user.restTimer;
       console.log('Total Reps from Firestore', totalReps);
     }
   }
@@ -90,7 +105,7 @@ export function Model() {
 
     await webcam.play();
 
-    window.requestAnimationFrame(loop);
+    startAnimation = window.requestAnimationFrame(loop);
 
     // append/get elements to the DOM
     const canvas = document.getElementById('canvas');
@@ -116,7 +131,8 @@ export function Model() {
       drawPose();
       await predict(false);
     }
-    window.requestAnimationFrame(loop);
+
+    startAnimation2 = window.requestAnimationFrame(loop);
   }
 
   async function predict(bool) {
@@ -143,53 +159,90 @@ export function Model() {
 
       let canvasBorder = document.getElementById('canvas');
 
-      if (counterStatus === 'pending' && startingPosition > 0.9) {
-        counterStatus = 'starting';
+      if (setCount > 0) {
+        if (counterStatus === 'pending' && startingPosition > 0.9) {
+          counterStatus = 'starting';
+        }
+
+        if (counterStatus === 'starting' && middlePosition > 0.5) {
+          counterStatus = 'middle';
+        }
+
+        if (counterStatus === 'middle' && squattingPosition > 0.9) {
+          counterStatus = 'squatting';
+        }
+
+        if (counterStatus === 'squatting' && startingPosition > 0.9) {
+          lineColor = '#39E47E';
+          drawPose(pose, lineColor);
+          canvasBorder.style.border = `20px solid ${lineColor}`;
+          repCount = repCount + 1;
+          playAudio(positiveFeedback);
+          counterStatus = 'pending';
+          reps = reps - 1;
+        }
+
+        if (counterStatus === 'middle' && startingPosition > 0.9) {
+          lineColor = '#EE4A40';
+          canvasBorder.style.border = `20px solid ${lineColor}`;
+          drawPose(pose, lineColor);
+          successfulReps = successfulReps - 1;
+          playAudio(negativeFeedback);
+          counterStatus = 'pending';
+          reps = reps - 1;
+        }
+
+        let denominator = totalReps * totalSets;
+
+        accuracy = Math.ceil((successfulReps / denominator) * 100);
+
+        if (reps <= 0) {
+          setCount--;
+          if (setCount === 0) {
+            console.log('TESTTESTTEST');
+            db.collection('users')
+              .doc(loggedIn)
+              .collection('workoutHistory')
+              .doc()
+              .set(
+                {
+                  type: exercise,
+                  sets: totalSets,
+                  reps: totalReps,
+                  accuracy: accuracy,
+                  successfulReps: successfulReps,
+                },
+                { merge: true }
+              );
+            history.push('/exercise-form');
+          } else {
+            togglePredict();
+            countdown(restTimer, togglePredict);
+            reps = totalReps;
+          }
+        }
+        // let repContainer = document.getElementById('rep-container');
+        // repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
+
+        // let accContainer = document.getElementById('acc-container');
+        // accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+
+        // let remContainer = document.getElementById('rem-container');
+        // remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
+      } else {
+        console.log('NO MORE SETS');
+        // history.push('/exercise-form');
       }
+      if (setCount) {
+        let repContainer = document.getElementById('rep-container');
+        repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
 
-      if (counterStatus === 'starting' && middlePosition > 0.5) {
-        counterStatus = 'middle';
+        let accContainer = document.getElementById('acc-container');
+        accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+
+        let remContainer = document.getElementById('rem-container');
+        remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
       }
-
-      if (counterStatus === 'middle' && squattingPosition > 0.9) {
-        counterStatus = 'squatting';
-      }
-
-      if (counterStatus === 'squatting' && startingPosition > 0.9) {
-        lineColor = '#39E47E';
-        drawPose(pose, lineColor);
-        canvasBorder.style.border = `20px solid ${lineColor}`;
-        repCount = repCount + 1;
-        playAudio(positiveFeedback);
-        counterStatus = 'pending';
-        reps = reps - 1;
-      }
-
-      if (counterStatus === 'middle' && startingPosition > 0.9) {
-        lineColor = '#EE4A40';
-        canvasBorder.style.border = `20px solid ${lineColor}`;
-        drawPose(pose, lineColor);
-        successfulReps = successfulReps - 1;
-        playAudio(negativeFeedback);
-        counterStatus = 'pending';
-        reps = reps - 1;
-      }
-
-      accuracy = Math.ceil((successfulReps / totalReps) * 100);
-
-      if (reps <= 0) {
-        togglePredict();
-        console.log('DONE');
-      }
-
-      let repContainer = document.getElementById('rep-container');
-      repContainer.innerHTML = `Total Reps: ${repCount}`;
-
-      let accContainer = document.getElementById('acc-container');
-      accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-
-      let remContainer = document.getElementById('rem-container');
-      remContainer.innerHTML = `Remaining Reps: ${reps}`;
     } else {
       return;
     }
@@ -244,11 +297,16 @@ export function Model() {
   useEffect(() => {
     init();
 
-    return () => console.log('Model cleaned up.');
+    return function cleanup() {
+      // console.log('useeffect', startAnimation);
+
+      window.cancelAnimationFrame(startAnimation);
+      window.cancelAnimationFrame(startAnimation2);
+    };
   }, []);
 
-  function countdown(callback) {
-    let seconds = 5;
+  function countdown(time, callback, val) {
+    let seconds = time;
     let countdownSeconds = document.getElementById('timer');
     countdownSeconds.innerHTML = seconds;
     let counter = setInterval(() => {
@@ -257,7 +315,7 @@ export function Model() {
       if (seconds === 0) {
         countdownSeconds.innerHTML = '00:00';
         clearInterval(counter);
-        callback();
+        callback(val);
       }
     }, 1000);
   }
@@ -284,7 +342,7 @@ export function Model() {
               id="togglePredict"
               onClick={() => {
                 if (predictStatus === 'pending') {
-                  countdown(togglePredict);
+                  countdown(5, togglePredict);
                 } else {
                   togglePredict();
                 }
