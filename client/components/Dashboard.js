@@ -82,6 +82,33 @@ export default function Dashboard() {
                   <ProfilePicture src={user.imageUrl} />
                   <UserName>{user.name}</UserName>
                 </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    height: '100%',
+                  }}
+                >
+                  <StyledButton
+                    style={{
+                      backgroundColor: '#F67280',
+                      padding: '1rem',
+                    }}
+                  >
+                    Start workout
+                  </StyledButton>
+                  <Link to="/exercise-form" className="link-reset hover-reset">
+                    <StyledButton
+                      style={{
+                        backgroundColor: 'seagreen',
+                        padding: '1rem',
+                      }}
+                    >
+                      Start workout
+                    </StyledButton>
+                  </Link>
+                </div>
                 <UserInfo>
                   <Flex style={{ width: '90%' }}>
                     <DataBox>
@@ -113,13 +140,28 @@ export default function Dashboard() {
                           )}
                       </div>
                     </DataBox>
-                    <StyledButton
-                      style={{ backgroundColor: 'seagreen', padding: '.5rem' }}
-                    >
-                      Start workout
-                    </StyledButton>
                   </Flex>
                 </UserInfo>
+                {/* <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <StyledButton
+                    style={{
+                      backgroundColor: 'seagreen',
+                      padding: '1rem',
+                      alignSelf: 'flex-start',
+                    }}
+                  >
+                    Start workout
+                  </StyledButton>
+                  <StyledButton
+                    style={{
+                      backgroundColor: 'seagreen',
+                      padding: '1rem',
+                      alignSelf: 'flex-start',
+                    }}
+                  >
+                    Start workout
+                  </StyledButton>
+                </div> */}
               </UserDataContainer>
               {/* <AnalyticsContainer>
                 <FALargeIcon>
@@ -242,10 +284,10 @@ export default function Dashboard() {
                   <SettingsText>{currentUser.email}</SettingsText>
                 </Row>
               </CurrentSettings>
-              <Link to="/update-profile">
+              <Link to="/update-profile" className="link-reset hover-reset">
                 <StyledButton>Update Account Info</StyledButton>
               </Link>
-              <Link to="/user-profile-form">
+              <Link to="/user-profile-form" className="link-reset hover-reset">
                 <StyledButton>Update User Profile</StyledButton>
               </Link>
               <StyledButton
