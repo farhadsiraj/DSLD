@@ -8,8 +8,10 @@ import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
 
+// TODO
 // Decrement totalSets without resetting
 // Pause prediction in between sets
+// Refactor accuracy to account for multiple sets
 
 let loggedIn;
 
@@ -24,7 +26,7 @@ let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
 
 let totalSets;
-let setCount = 2;
+let setCount;
 let totalReps; // Number of reps user specifies
 let successfulReps; // Used for accuracy, decremented with failed squat
 let reps; // Counter that decrements at each squat attempt
@@ -58,7 +60,7 @@ export function Model() {
       successfulReps = user.reps;
       reps = user.reps;
       totalSets = user.sets;
-      // setCount = totalSets;
+      setCount = totalSets;
       console.log('Total Reps from Firestore', totalReps);
     }
   }
@@ -192,8 +194,8 @@ export function Model() {
 
         if (reps <= 0) {
           setCount--;
-          // await predict(false);
-          // countdown(predict, true);
+          togglePredict();
+          countdown(togglePredict);
           reps = totalReps;
 
           // togglePredict();
@@ -270,7 +272,7 @@ export function Model() {
     init();
 
     return function cleanup() {
-      console.log('useeffect', startAnimation);
+      // console.log('useeffect', startAnimation);
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
