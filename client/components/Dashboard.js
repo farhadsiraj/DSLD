@@ -81,16 +81,8 @@ export default function Dashboard() {
                 >
                   <ProfilePicture src={user.imageUrl} />
                   <UserName>{user.name}</UserName>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                    height: '100%',
-                  }}
-                >
-                  {/* <Link to="/exercise-form" className="link-reset hover-reset">
+
+                  <Link to="/exercise-form" className="link-reset hover-reset">
                     <StyledButton
                       style={{
                         backgroundColor: 'seagreen',
@@ -99,7 +91,7 @@ export default function Dashboard() {
                     >
                       Start workout
                     </StyledButton>
-                  </Link> */}
+                  </Link>
                 </div>
                 <UserInfo>
                   <Flex style={{ width: '90%' }}>
@@ -134,7 +126,7 @@ export default function Dashboard() {
                     </DataBox>
                   </Flex>
                 </UserInfo>
-                <div
+                {/* <div
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -152,7 +144,7 @@ export default function Dashboard() {
                       Start workout
                     </StyledButton>
                   </Link>
-                </div>
+                </div> */}
               </UserDataContainer>
               {/* <AnalyticsContainer>
                 <FALargeIcon>
@@ -169,9 +161,8 @@ export default function Dashboard() {
                 <CustomWorkoutTitle
                   style={{
                     color: 'white',
-                    padding: '1rem',
-                    border: '3px solid #F9A26C',
-                    borderRadius: '1rem',
+                    paddingLeft: '1rem',
+                    // borderRadius: '1rem',
                     marginLeft: '1rem',
                   }}
                 >
@@ -336,7 +327,7 @@ const ColumnContainer = styled.div`
 
 const UserDataContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   height: 35vh;
@@ -357,10 +348,9 @@ const ProfilePicture = styled.img`
   border: 5px solid #f8b195;
   position: relative;
   overflow: hidden;
-  margin: 1rem;
   @media only screen and (min-width: 960px) {
-    width: 15rem;
-    height: 15rem;
+    width: 12rem;
+    height: 12rem;
   }
 `;
 
