@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
 import app from '../../firebase';
@@ -13,6 +13,8 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const { currentUser, logout } = useAuth();
   const history = useHistory();
+  const [user, setUser] = useState(null);
+  const [workoutHistory, setWorkoutHistory] = useState(null);
 
   async function handleLogout() {
     setError('');
@@ -24,6 +26,21 @@ export default function Dashboard() {
       setError('Failed to log out');
     }
   }
+
+  useEffect(async () => {
+    console.log('currentUser before query', currentUser);
+    const userRef = app.firestore().collection('users').doc(currentUser.uid);
+    const userDoc = await userRef.get();
+    if (!userDoc.exists) {
+      console.log('No user data is available.');
+    } else {
+      userDoc.data();
+      // console.table(user.reps);
+      setUser(userDoc.data());
+    }
+  }, []);
+
+  console.log('currentUser', user);
 
   return (
     <Container>
@@ -268,6 +285,7 @@ const WorkoutBox = styled.div`
 `;
 
 const CustomWorkoutTitle = styled.h1`
+  font-family: 'Josefin Sans';
   color: white;
   font-size: 2rem;
 `;
