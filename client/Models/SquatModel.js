@@ -35,7 +35,6 @@ let startAnimation;
 let startAnimation2;
 
 export function Model() {
-  // Hooks
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const history = useHistory();
@@ -54,7 +53,6 @@ export function Model() {
       console.log('No default workout preferences set.');
     } else {
       const user = doc.data();
-      // console.table(user.reps);
       exercise = user.exercise;
       totalReps = user.reps;
       successfulReps = user.reps * user.sets;
@@ -198,18 +196,20 @@ export function Model() {
         if (reps <= 0) {
           setCount--;
           if (setCount === 0) {
-            console.log('TESTTESTTEST');
             db.collection('users')
               .doc(loggedIn)
               .collection('workoutHistory')
               .doc()
               .set(
                 {
-                  type: exercise,
-                  sets: totalSets,
-                  reps: totalReps,
-                  accuracy: accuracy,
-                  successfulReps: successfulReps,
+                  date: new Date(),
+                  workout: {
+                    type: exercise,
+                    sets: totalSets,
+                    reps: totalReps,
+                    accuracy: accuracy,
+                    successfulReps: successfulReps,
+                  },
                 },
                 { merge: true }
               );
