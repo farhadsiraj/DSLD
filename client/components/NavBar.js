@@ -34,7 +34,6 @@ export default function NavBar() {
           }}
           style={{ fontSize: '1.7rem' }}
         />
-        {/* {hamburgerDropdown ? ( */}
         <Dropdown
           className={hamburgerDropdown ? 'dropdown-open' : 'dropdown-closed'}
         >
@@ -88,12 +87,7 @@ export default function NavBar() {
             </>
           )}
         </Dropdown>
-        {/* )
-        : (
-          ''
-        )} */}
       </NavItem>
-
       <Logo
         style={{
           justifyContent: 'center',
@@ -114,7 +108,6 @@ export default function NavBar() {
           icon={userDropdown ? faTimes : faUser}
           style={{ fontSize: '1.5rem' }}
         />
-        {/* {userDropdown ? ( */}
         <DropdownRight
           className={
             userDropdown ? 'dropdown-open-right' : 'dropdown-closed-right'
@@ -159,9 +152,6 @@ export default function NavBar() {
             </>
           )}
         </DropdownRight>
-        {/* ) : (
-          ''
-        )} */}
       </NavItem>
     </Container>
   );

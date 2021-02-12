@@ -37,13 +37,16 @@ export default function UserProfileForm() {
 
       db.collection('users')
         .doc(auth.currentUser.uid)
-        .set({
-          username: usernameRef.current.value,
-          age: ageRef.current.value,
-          height: heightRef.current.value,
-          weight: weightRef.current.value,
-          sex: sexRef.current.value,
-        })
+        .set(
+          {
+            username: usernameRef.current.value,
+            age: ageRef.current.value,
+            height: heightRef.current.value,
+            weight: weightRef.current.value,
+            sex: sexRef.current.value,
+          },
+          { merge: true }
+        )
         .then(() => history.push('/dashboard'))
         .catch((error) => {
           console.log(
