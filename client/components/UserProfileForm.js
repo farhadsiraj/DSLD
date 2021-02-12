@@ -15,6 +15,7 @@ export default function UserProfileForm() {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const history = useHistory();
 
   async function handleSubmit(event) {
@@ -24,26 +25,29 @@ export default function UserProfileForm() {
       setError('');
       setLoading(true);
 
-      let usersRef = db.collection('users');
-      let snapshot = await usersRef
-        .where('username', '==', usernameRef.current.value)
-        .get();
-      snapshot.forEach((doc) => {
-        if (doc.data()) {
-          setError('Username not available');
-          throw new Error('Username not available');
-        }
-      });
+      // let usersRef = db.collection('users');
+      // let snapshot = await usersRef
+      //   .where('username', '==', usernameRef.current.value)
+      //   .get();
+
+      // snapshot.forEach((doc) => {
+      //   if (doc.data()) {
+      //     setError('Username not available');
+      //     throw new Error('Username not available');
+      //   }
+      // });
+
+      let updatedInfo = {};
+      if (usernameRef.current.value)
+        updatedInfo.username = usernameRef.current.value;
+      if (ageRef.current.value) updatedInfo.age = ageRef.current.value;
+      if (heightRef.current.value) updatedInfo.height = heightRef.current.value;
+      if (weightRef.current.value) updatedInfo.weight = weightRef.current.value;
+      if (sexRef.current.value) updatedInfo.sex = sexRef.current.value;
 
       db.collection('users')
         .doc(auth.currentUser.uid)
-        .set({
-          username: usernameRef.current.value,
-          age: ageRef.current.value,
-          height: heightRef.current.value,
-          weight: weightRef.current.value,
-          sex: sexRef.current.value,
-        })
+        .set(updatedInfo, { merge: true })
         .then(() => history.push('/dashboard'))
         .catch((error) => {
           console.log(

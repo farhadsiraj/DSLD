@@ -435,6 +435,7 @@ const Title = styled.p`
   font-size: 1.2rem;
   padding-right: 0.5rem;
 `;
+
 const Text = styled.p`
   color: white;
   font-size: 1rem;
