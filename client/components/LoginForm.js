@@ -39,11 +39,21 @@ export default function LoginForm() {
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" ref={emailRef} required />
+                  <Form.Control
+                    type="email"
+                    ref={emailRef}
+                    placeholder="Enter your email address"
+                    required
+                  />
                 </Form.Group>
                 <Form.Group id="password">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" ref={passwordRef} required />
+                  <Form.Control
+                    type="password"
+                    ref={passwordRef}
+                    placeholder="Enter your password"
+                    required
+                  />
                 </Form.Group>
                 <Button
                   style={buttonStyle}

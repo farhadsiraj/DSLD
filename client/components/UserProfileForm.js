@@ -71,23 +71,43 @@ export default function UserProfileForm() {
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="username">
                   <Form.Label>Username:</Form.Label>
-                  <Form.Control type="string" ref={usernameRef} />
+                  <Form.Control
+                    type="string"
+                    ref={usernameRef}
+                    placeholder="Enter a username"
+                  />
                 </Form.Group>
                 <Form.Group id="age">
                   <Form.Label>Age:</Form.Label>
-                  <Form.Control type="integer" ref={ageRef} />
+                  <Form.Control
+                    type="integer"
+                    ref={ageRef}
+                    placeholder="Enter your age"
+                  />
                 </Form.Group>
                 <Form.Group id="height">
                   <Form.Label>Height:</Form.Label>
-                  <Form.Control type="integer" ref={heightRef} />
+                  <Form.Control
+                    type="integer"
+                    ref={heightRef}
+                    placeholder="Enter your height in inches"
+                  />
                 </Form.Group>
                 <Form.Group id="weight">
                   <Form.Label>Weight:</Form.Label>
-                  <Form.Control type="integer" ref={weightRef} />
+                  <Form.Control
+                    type="integer"
+                    ref={weightRef}
+                    placeholder="Enter your weight"
+                  />
                 </Form.Group>
                 <Form.Group id="sex">
                   <Form.Label>Sex:</Form.Label>
-                  <Form.Control type="integer" ref={sexRef} />
+                  <Form.Control
+                    type="integer"
+                    ref={sexRef}
+                    placeholder="Enter your sex"
+                  />
                 </Form.Group>
                 <Button
                   style={buttonStyle}
