@@ -384,10 +384,14 @@ const ModelContainer = styled.div`
 
   @media only screen and (min-width: 960px) {
     padding: 1rem;
-    width: 60%;
+    width: 80%;
   }
 
   @media only screen and (min-width: 1200px) {
+    padding: 1rem;
+    width: 60%;
+  }
+  @media only screen and (min-width: 1750px) {
     padding: 1rem;
     width: 50%;
   }
