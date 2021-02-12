@@ -8,13 +8,8 @@ import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
 
-// TODO
-// 'NO MORE SETS' is being spammed after history.push, did useeffect cleanup work?
-
-let loggedIn;
-
 // needs to be outside of Model function scope to toggle Start/Stop
-// Initialize vars for repCount
+let loggedIn;
 let repCount = 0;
 let startingPosition;
 let squattingPosition;
@@ -201,10 +196,7 @@ export function Model() {
                 },
                 { merge: true }
               );
-            // window.cancelAnimationFrame(startAnimation);
-            // window.cancelAnimationFrame(startAnimation2);
-            // predict(false);
-            // togglePredict();
+
             history.push('/exercise-form');
           } else {
             togglePredict();
@@ -214,11 +206,6 @@ export function Model() {
         }
       } else {
         console.log('NO MORE SETS');
-        // window.cancelAnimationFrame(startAnimation);
-        // window.cancelAnimationFrame(startAnimation2);
-        // predict(false);
-        // togglePredict();
-        // history.push('/exercise-form');
       }
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
