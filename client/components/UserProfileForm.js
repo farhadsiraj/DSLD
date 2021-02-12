@@ -12,11 +12,9 @@ export default function UserProfileForm() {
   const weightRef = useRef();
   const ageRef = useRef();
   const sexRef = useRef();
-  // const { currentUser, logout } = useAuth();
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
 
   const history = useHistory();
 
@@ -31,6 +29,7 @@ export default function UserProfileForm() {
       // let snapshot = await usersRef
       //   .where('username', '==', usernameRef.current.value)
       //   .get();
+
       // snapshot.forEach((doc) => {
       //   if (doc.data()) {
       //     setError('Username not available');
@@ -38,18 +37,10 @@ export default function UserProfileForm() {
       //   }
       // });
 
-      // const currentUserRef = db.collection('users').doc(currentUser.uid);
-      // const userDoc = await currentUserRed.get();
-      // if (!userDoc.exists) {
-      //   console.log('No user data is available.');
-      //   setUser('N/A');
-      // } else {
-      //   userDoc.data();
-      //   setUser(userDoc.data());
-      // }
-
       let updatedInfo = {};
-      if (usernameRef.current.value) updatedInfo.age = ageRef.current.value;
+      if (usernameRef.current.value)
+        updatedInfo.username = usernameRef.current.value;
+      if (ageRef.current.value) updatedInfo.age = ageRef.current.value;
       if (heightRef.current.value) updatedInfo.height = heightRef.current.value;
       if (weightRef.current.value) updatedInfo.weight = weightRef.current.value;
       if (sexRef.current.value) updatedInfo.sex = sexRef.current.value;
