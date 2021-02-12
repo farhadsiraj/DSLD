@@ -32,6 +32,11 @@ let startAnimation2;
 export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
+  const [remReps, setRemReps] = useState(0);
+  const [acc, setAcc] = useState(0);
+  const [currRep, setCurrRep] = useState(0);
+  const [currSet, setCurrSet] = useState(0);
+  const [remSets, setRemSets] = useState(0);
   const history = useHistory();
 
   loggedIn = auth.currentUser.uid;
@@ -210,18 +215,20 @@ export function Model() {
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
         repContainer.innerHTML = `Total Reps: ${repCount}`;
+        // setCurrRep(repCount);
 
         let setContainer = document.getElementById('set-container');
         setContainer.innerHTML = `Total Sets: ${totalSets}`;
-
+        // setCurrSet(totalSets);
         let accContainer = document.getElementById('acc-container');
         accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-
+        // setAcc(accuracy);
         let remRepsContainer = document.getElementById('rem-reps-container');
         remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
-
+        // setRemReps(reps);
         let remSetsContainer = document.getElementById('rem-sets-container');
         remSetsContainer.innerHTML = `Remaining Sets: ${setCount}`;
+        // setRemSets(setCount);
       }
     } else {
       return;
@@ -331,20 +338,21 @@ export function Model() {
                 {toggleStart ? 'Stop' : 'Start'}
               </Button>
               <LabelContainer>
-                <Label id="rep-container"></Label>
-                <Label id="acc-container"></Label>
-                <Label id="set-container"></Label>
                 <Label id="rem-reps-container"></Label>
+                <Label id="acc-container"></Label>
+                <Label id="rep-container"></Label>
+                <Label id="set-container"></Label>
                 <Label id="rem-sets-container"></Label>
               </LabelContainer>
             </WebcamToolbar>
           </Webcam>
+
           <LabelContainerLarge>
-            <Label id="rep-container"></Label>
-            <Label id="acc-container"></Label>
-            <Label id="set-container"></Label>
-            <Label id="rem-reps-container"></Label>
-            <Label id="rem-sets-container"></Label>
+            <Label>Rep Count: {repCount}</Label>
+            <Label>Accuracy: {accuracy}</Label>
+            <Label>Total Reps: {totalReps}</Label>
+            <Label>Remaining Sets: {setCount}</Label>
+            <Label>Total Sets: {totalSets}</Label>
           </LabelContainerLarge>
         </WebcamDataContainer>
       </ModelContainer>
@@ -361,7 +369,7 @@ const ContentContainer = styled.div`
   margin-top: 65px;
   height: 100%;
   z-index: 1;
-  border: 3px solid orange;
+  /* border: 3px solid orange; */
   @media only screen and (min-width: 960px) {
   }
 `;
@@ -371,7 +379,7 @@ const TopToolbar = styled.div`
   margin-top: 1rem;
   justify-content: space-between;
   width: 100%;
-  border: 3px solid hotpink;
+  /* border: 3px solid hotpink; */
 `;
 
 const WorkoutType = styled.div`
@@ -383,7 +391,7 @@ const WorkoutType = styled.div`
   border-radius: 10px;
   background-color: #355c7d;
   width: 8rem;
-  border: 3px solid yellow;
+  /* border: 3px solid yellow; */
   @media only screen and (min-width: 960px) {
     padding: 1rem;
   }
@@ -392,23 +400,25 @@ const WorkoutType = styled.div`
 const ModelContainer = styled.div`
   display: flex;
   width: 100%;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   flex-direction: column;
   align-items: center;
 
   @media only screen and (min-width: 960px) {
     padding: 1rem;
+    margin: 1rem;
     width: 80%;
   }
 
   @media only screen and (min-width: 1200px) {
     padding: 1rem;
-    width: 60%;
+    margin: 1rem;
+    width: 80%;
     flex-direction: space-around;
   }
   @media only screen and (min-width: 1750px) {
     padding: 1rem;
-    width: 65%;
+    width: 80%;
     flex-direction: space-around;
   }
 `;
@@ -419,7 +429,7 @@ const Webcam = styled.div`
   width: 100%;
   max-width: 100rem;
   margin-top: 1rem;
-  border: 3px solid green;
+  /* border: 3px solid green; */
   @media only screen and (min-width: 960px) {
   }
 `;
@@ -428,7 +438,7 @@ const LabelContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 3px dotted orange;
+  /* border: 3px dotted orange; */
   border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
@@ -437,16 +447,20 @@ const LabelContainer = styled.div`
   }
 `;
 const LabelContainerLarge = styled.div`
-  @media only screen and (min-width: 1200px) {
+  display: none;
+  @media only screen and (min-width: 1400px) {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    border: 3px dotted orange;
+    /* border: 3px dotted orange; */
     border-radius: 1rem;
     background-color: #f9a26c;
     margin-top: 1rem;
-    width: 20rem;
+    margin-left: 1rem;
+    /* height: 100%; */
+    min-width: 8rem;
+    width: 100%;
   }
 `;
 
