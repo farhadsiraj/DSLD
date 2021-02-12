@@ -159,9 +159,6 @@ export default function NavBar() {
             </>
           )}
         </DropdownRight>
-        {/* ) : (
-          ''
-        )} */}
       </NavItem>
     </Container>
   );

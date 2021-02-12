@@ -221,12 +221,13 @@ export function Model() {
               .set(
                 {
                   lifetimeReps: lifetimeReps + successfulReps,
-                  lifetimeSets: lifetimeSets++,
+                  lifetimeSets: lifetimeSets + totalSets,
                 },
                 { merge: true }
               );
             counterStatus = 'pending';
             lineColor = '#9BD7D1';
+            totalReps = 0;
             setModalOpen(!modalOpen);
             togglePredict();
             window.cancelAnimationFrame(startAnimation);
