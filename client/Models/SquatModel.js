@@ -32,7 +32,7 @@ let startAnimation2;
 export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
-  const [modalOpen, setModalOpen] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
 
   loggedIn = auth.currentUser.uid;
@@ -124,12 +124,13 @@ export function Model() {
       const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
       const prediction = await model.predict(posenetOutput);
 
-      // for (let i = 0; i < maxPredictions; i++) {
-      //   const classPrediction = `${prediction[i].className}: ${Math.ceil(
-      //     prediction[i].probability.toFixed(2) * 100
-      //   )}%`;
-      //   labelContainer.childNodes[i].innerHTML = classPrediction;
-      // }
+      for (let i = 0; i < maxPredictions; i++) {
+        const classPrediction = `${prediction[i].className}: ${Math.ceil(
+          prediction[i].probability.toFixed(2) * 100
+        )}%`;
+
+        // labelContainer.childNodes[i].innerHTML = classPrediction;
+      }
 
       drawPose(pose, lineColor);
 
@@ -197,34 +198,58 @@ export function Model() {
                 },
                 { merge: true }
               );
+            counterStatus = 'pending';
+            lineColor = '#9BD7D1';
             setModalOpen(!modalOpen);
-            // history.push('/exercise-form');
+            togglePredict();
+            window.cancelAnimationFrame(startAnimation);
+            window.cancelAnimationFrame(startAnimation2);
           } else {
             togglePredict();
             countdown(restTimer, togglePredict);
             reps = totalReps;
           }
         }
-      } else {
-        console.log('NO MORE SETS');
       }
+
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
-        repContainer.innerHTML = `Total Reps: ${repCount}`;
-        // setCurrRep(repCount);
+        if (repContainer !== null) {
+          repContainer.innerHTML = `Total Reps: ${repCount}`;
 
-        let setContainer = document.getElementById('set-container');
-        setContainer.innerHTML = `Total Sets: ${totalSets}`;
-        // setCurrSet(totalSets);
-        let accContainer = document.getElementById('acc-container');
-        accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-        // setAcc(accuracy);
-        let remRepsContainer = document.getElementById('rem-reps-container');
-        remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
-        // setRemReps(reps);
-        let remSetsContainer = document.getElementById('rem-sets-container');
-        remSetsContainer.innerHTML = `Remaining Sets: ${setCount}`;
-        // setRemSets(setCount);
+          let setContainer = document.getElementById('set-container');
+          setContainer.innerHTML = `Total Sets: ${totalSets}`;
+
+          let accContainer = document.getElementById('acc-container');
+          accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+
+          let remRepsContainer = document.getElementById('rem-reps-container');
+          remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
+
+          let remSetsContainer = document.getElementById('rem-sets-container');
+          remSetsContainer.innerHTML = `Remaining Sets: ${setCount}`;
+        }
+
+        let repContainer1 = document.getElementById('rep1-container');
+        if (repContainer1 !== null) {
+          repContainer1.innerHTML = `Total Reps: ${repCount}`;
+
+          let setContainer1 = document.getElementById('set1-container');
+          setContainer1.innerHTML = `Total Sets: ${totalSets}`;
+
+          let accContainer1 = document.getElementById('acc1-container');
+          accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
+
+          let remRepsContainer1 = document.getElementById(
+            'rem1-reps-container'
+          );
+          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
+
+          let remSetsContainer1 = document.getElementById(
+            'rem1-sets-container'
+          );
+          remSetsContainer1.innerHTML = `Remaining Sets: ${setCount}`;
+        }
       }
     } else {
       return;
@@ -281,15 +306,16 @@ export function Model() {
     init();
 
     return function cleanup() {
-      togglePredict();
-      predict(false);
+      if (predictStatus === 'active') togglePredict();
+
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
   }, []);
 
+  let seconds;
   function countdown(time, callback, val) {
-    let seconds = time;
+    seconds = time;
     let countdownSeconds = document.getElementById('timer');
     countdownSeconds.innerHTML = seconds;
     let counter = setInterval(() => {
@@ -312,8 +338,8 @@ export function Model() {
               <h3>Great Work!</h3>
               <h4>
                 {' '}
-                You did {totalReps} {exercise} in {totalSets} sets with an
-                accuracy of {accuracy}.
+                You did {totalReps * totalSets} {exercise} in {totalSets} sets
+                with an accuracy of {accuracy}%.
               </h4>
               <button onClick={() => history.push('/exercise-form')}>
                 Do another workout
@@ -327,7 +353,7 @@ export function Model() {
       )}
       <ModelContainer>
         <TopToolbar>
-          <WorkoutType>Squat</WorkoutType>
+          <WorkoutType>Squats</WorkoutType>
           <WorkoutType id="timer">00:00</WorkoutType>
         </TopToolbar>
         <WebcamDataContainer>
@@ -353,7 +379,22 @@ export function Model() {
               >
                 {toggleStart ? 'Stop' : 'Start'}
               </Button>
-              <LabelContainer>
+              <LabelContainer id="workout-data-small">
+                {document.getElementById('workout-data-small') ? (
+                  <>
+                    <Label id="rem-reps-container">
+                      Remaining Reps: Loading...
+                    </Label>
+                    <Label id="acc-container">Accuracy: Loading...</Label>
+                    <Label id="rep-container">Reps: Loading...</Label>
+                    <Label id="set-container">Set: Loading...</Label>
+                    <Label id="rem-sets-container">
+                      Remaining Sets: Loading...
+                    </Label>
+                  </>
+                ) : (
+                  <Label>Press Start To Begin</Label>
+                )}
                 <Label id="rem-reps-container"></Label>
                 <Label id="acc-container"></Label>
                 <Label id="rep-container"></Label>
@@ -362,13 +403,22 @@ export function Model() {
               </LabelContainer>
             </WebcamToolbar>
           </Webcam>
-
-          <LabelContainerLarge>
-            <Label>Rep Count: {repCount}</Label>
-            <Label>Accuracy: {accuracy}</Label>
-            <Label>Total Reps: {totalReps}</Label>
-            <Label>Remaining Sets: {setCount}</Label>
-            <Label>Total Sets: {totalSets}</Label>
+          <LabelContainerLarge id="workout-data-large">
+            {document.getElementById('workout-data-large') ? (
+              <>
+                <Label id="rem1-reps-container">
+                  Remaining Reps: Loading...
+                </Label>
+                <Label id="acc1-container">Accuracy: Loading...</Label>
+                <Label id="rep1-container">Reps: Loading...</Label>
+                <Label id="set1-container">Set: Loading...</Label>
+                <Label id="rem1-sets-container">
+                  Remaining Sets: Loading...
+                </Label>
+              </>
+            ) : (
+              <Label>Press Start To Begin</Label>
+            )}
           </LabelContainerLarge>
         </WebcamDataContainer>
       </ModelContainer>
@@ -489,7 +539,8 @@ const LabelContainer = styled.div`
   border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
-  @media only screen and (min-width: 1200px) {
+  height: 20rem;
+  @media only screen and (min-width: 1400px) {
     display: none;
   }
 `;

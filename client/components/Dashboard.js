@@ -74,7 +74,7 @@ export default function Dashboard() {
                   <ProfilePicture
                     src={
                       user.imageUrl ||
-                      `https://media-exp1.licdn.com/dms/image/C5635AQGFPFNGkZF98Q/profile-framedphoto-shrink_800_800/0/1611853400540?e=1613149200&v=beta&t=2o5qxmUaPU_hkJI6tIpRCJ8Pof_gEINpccaCIVSaTBM`
+                      `https://robohash.org/${user.username}.png`
                     }
                   />
                   <UserName>{user.username}</UserName>
