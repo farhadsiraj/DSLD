@@ -83,7 +83,9 @@ export default function UserProfileForm() {
                     type="integer"
                     ref={ageRef}
                     placeholder="Enter your age"
-                    pattern="(^[1-9])(\d)"
+                    // min='1'
+                    // max='999'
+                    pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                   />
                 </Form.Group>
                 <Form.Group id="height">

@@ -80,7 +80,7 @@ export default function ExerciseForm() {
                     type="integer"
                     ref={setRef}
                     maxLength="3"
-                    pattern="^[1-9][0-9][0-9]?$|^100$"
+                    pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                     defaultValue="3"
                   />
                 </Form.Group>
@@ -90,7 +90,7 @@ export default function ExerciseForm() {
                     type="integer"
                     ref={repRef}
                     maxLength="3"
-                    pattern="^[1-9][0-9][0-9]?$|^100$"
+                    pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                     defaultValue="10"
                   />
                 </Form.Group>
@@ -100,7 +100,7 @@ export default function ExerciseForm() {
                     type="integer"
                     ref={restTimerRef}
                     maxLength="3"
-                    pattern="^[1-9][0-9][0-9]?$|^100$"
+                    pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                     defaultValue="10"
                   />
                 </Form.Group>
