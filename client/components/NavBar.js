@@ -200,7 +200,7 @@ const Dropdown = styled.div`
   height: 100%;
   padding: 0 1rem 0 1rem;
   width: 100%;
-  transition: 0.5s;
+  transition: 0.2s;
 
   @media only screen and (min-width: 673px) {
     padding: 0 2.5rem;
@@ -229,7 +229,7 @@ const DropdownRight = styled.div`
   height: 100%;
   padding: 0 1rem 0 1rem;
   align-items: center;
-  transition: 0.5s;
+  transition: 0.2s;
 
   @media only screen and (min-width: 674px) {
     padding: 0 2.5rem;
