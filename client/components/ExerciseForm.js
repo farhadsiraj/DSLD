@@ -113,23 +113,6 @@ export default function ExerciseForm() {
   );
 }
 
-const cards = {
-  display: 'flex',
-};
-
-const cardStyle = {
-  color: 'white',
-  backgroundColor: '#355c7d',
-  marginTop: '10rem',
-  borderRadius: '2rem',
-  paddingTop: '2rem',
-  paddingBottom: '4rem',
-  paddingLeft: '4rem',
-  paddingRight: '4rem',
-  height: '35rem',
-  width: '30rem',
-};
-
 const selectForm = {
   height: '2.25rem',
   borderRadius: '.25rem',
@@ -198,6 +181,6 @@ const NestedHeaderImage = styled.img`
     max-height: 100%;
     max-width: 90%;
     border-radius: 2rem;
-    margin-left: -10rem;
+    margin-left: 4rem;
   }
 `;
