@@ -214,11 +214,14 @@ const NestedHeaderImage = styled.img`
   display: none;
   @media only screen and (min-width: 960px) {
     display: flex;
-    width: 40rem;
+    width: auto;
     height: auto;
     max-height: 100%;
     max-width: 90%;
     border-radius: 2rem;
+  }
+    @media only screen and (min-width: 1200px){
+    height: 90%;
   }
 `;
 
@@ -231,6 +234,10 @@ const HeaderBox = styled.div`
   @media only screen and (min-width: 960px) {
     display: flex;
     flex-direction: column;
-    height: 85%;
+    height: 100%;
+  }
+
+  @media only screen and (min-width: 1200px){
+    height: 90%;
   }
 `;

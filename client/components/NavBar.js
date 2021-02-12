@@ -231,12 +231,12 @@ const DropdownRight = styled.div`
   align-items: center;
   transition: 0.5s;
 
-  @media only screen and (min-width: 540px) {
+  @media only screen and (min-width: 674px) {
     padding: 0 2.5rem;
     width: 30%;
     align-items: flex-end;
   }
-  @media only screen and (max-width: 540px) {
+  @media only screen and (max-width: 673px) {
     padding-top: 40%;
   }
 `;
