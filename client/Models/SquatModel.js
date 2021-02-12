@@ -32,11 +32,7 @@ let startAnimation2;
 export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
-  const [remReps, setRemReps] = useState(0);
-  const [acc, setAcc] = useState(0);
-  const [currRep, setCurrRep] = useState(0);
-  const [currSet, setCurrSet] = useState(0);
-  const [remSets, setRemSets] = useState(0);
+  const [modalOpen, setModalOpen] = useState(true);
   const history = useHistory();
 
   loggedIn = auth.currentUser.uid;
@@ -201,8 +197,8 @@ export function Model() {
                 },
                 { merge: true }
               );
-
-            history.push('/exercise-form');
+            setModalOpen(!modalOpen);
+            // history.push('/exercise-form');
           } else {
             togglePredict();
             countdown(restTimer, togglePredict);
@@ -309,6 +305,26 @@ export function Model() {
 
   return (
     <ContentContainer>
+      {modalOpen && (
+        <>
+          <ModalContainer>
+            <Modal>
+              <h3>Great Work!</h3>
+              <h4>
+                {' '}
+                You did {totalReps} {exercise} in {totalSets} sets with an
+                accuracy of {accuracy}.
+              </h4>
+              <button onClick={() => history.push('/exercise-form')}>
+                Do another workout
+              </button>
+              <button onClick={() => history.push('/dashboard')}>
+                Back to Dashboard
+              </button>
+            </Modal>
+          </ModalContainer>
+        </>
+      )}
       <ModelContainer>
         <TopToolbar>
           <WorkoutType>Squat</WorkoutType>
@@ -359,6 +375,37 @@ export function Model() {
     </ContentContainer>
   );
 }
+
+const ModalContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Modal = styled.div`
+  padding: 20px;
+  min-height: 200px;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  height: 50%;
+  background-color: #355c7d;
+  margin: 1rem;
+  border-radius: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+`;
 
 const ContentContainer = styled.div`
   display: flex;

@@ -220,7 +220,7 @@ const NestedHeaderImage = styled.img`
     max-width: 90%;
     border-radius: 2rem;
   }
-    @media only screen and (min-width: 1200px){
+  @media only screen and (min-width: 1200px) {
     height: 90%;
   }
 `;
@@ -237,7 +237,7 @@ const HeaderBox = styled.div`
     height: 100%;
   }
 
-  @media only screen and (min-width: 1200px){
+  @media only screen and (min-width: 1200px) {
     height: 90%;
   }
 `;
