@@ -53,28 +53,39 @@ export default function Signup() {
     <>
       <GradientContainer>
         <ContentContainer>
-        <div className="bootstrap-form-container">
-          <Card className="bootstrap-form">
+          <div className="bootstrap-form-container">
+            <Card className="bootstrap-form">
               <Card.Body>
                 <h2 className="text-center mb-4">Sign Up</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Form onSubmit={handleSubmit}>
                   <Form.Group id="email">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" ref={emailRef} required />
+                    <Form.Control
+                      type="email"
+                      ref={emailRef}
+                      placeholder="Enter your email address"
+                      required
+                    />
                   </Form.Group>
                   <Form.Group id="password">
                     <Form.Label>
                       Password (Must be at least 6 characters)
                     </Form.Label>
 
-                    <Form.Control type="password" ref={passwordRef} required />
+                    <Form.Control
+                      type="password"
+                      ref={passwordRef}
+                      placeholder="Enter a password"
+                      required
+                    />
                   </Form.Group>
                   <Form.Group id="password-confirm">
                     <Form.Label>Password Confirmation</Form.Label>
                     <Form.Control
                       type="password"
                       ref={passwordConfirmRef}
+                      placeholder="Enter same password from above"
                       required
                     />
                   </Form.Group>

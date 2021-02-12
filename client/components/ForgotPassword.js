@@ -40,7 +40,12 @@ export default function ForgotPassword() {
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="email" style={{ marginTop: '5rem' }}>
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" ref={emailRef} required />
+                  <Form.Control
+                    type="email"
+                    ref={emailRef}
+                    placeholder="Enter your email address"
+                    required
+                  />
                 </Form.Group>
                 <Button
                   style={buttonStyle}
@@ -120,7 +125,6 @@ const Box = styled.div`
     display: none;
   }
 `;
-
 
 const NestedHeaderImage = styled.img`
   display: none;
