@@ -40,7 +40,6 @@ export function Model() {
   const history = useHistory();
 
   loggedIn = auth.currentUser.uid;
-  console.log('loggedin----->', loggedIn);
 
   async function setRepPrefs() {
     const usersRef = db
@@ -65,11 +64,6 @@ export function Model() {
   }
   setRepPrefs();
 
-  // More API functions here:
-  // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
-
-  // the link to your model provided by Teachable Machine export panel
-
   // Squat v2
   // https://teachablemachine.withgoogle.com/models/J5d1HwacC/
   // Squat v3
@@ -82,17 +76,15 @@ export function Model() {
     const modelURL = URL + 'model.json';
     const metadataURL = URL + 'metadata.json';
 
-    // Note: the pose library adds a tmPose object to your window (window.tmPose)
     model = await tmPose.load(modelURL, metadataURL);
 
     maxPredictions = model.getTotalClasses();
 
     const size = 640;
     const flip = true;
-    webcam = new tmPose.Webcam(size, 480, flip); // width, height, flip
-    await webcam.setup({ facingMode: 'user' }); // request access to the webcam
+    webcam = new tmPose.Webcam(size, 480, flip);
 
-    // document.getElementById('webcam-container').appendChild(webcam.canvas);
+    await webcam.setup({ facingMode: 'user' });
     let iosVid = document.getElementById('webcam-container');
     iosVid.appendChild(webcam.webcam);
     let videoElement = document.getElementsByTagName('video')[0];
@@ -104,7 +96,6 @@ export function Model() {
 
     startAnimation = window.requestAnimationFrame(loop);
 
-    // append/get elements to the DOM
     const canvas = document.getElementById('canvas');
     canvas.width = size;
     canvas.height = 480;
@@ -134,10 +125,7 @@ export function Model() {
 
   async function predict(bool) {
     if (bool === true) {
-      // Prediction #1: run input through posenet
-      // estimatePose can take in an image, video or canvas html element
       const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
-      // Prediction 2: run input through teachable machine classification model
       const prediction = await model.predict(posenetOutput);
 
       // for (let i = 0; i < maxPredictions; i++) {
@@ -224,14 +212,6 @@ export function Model() {
             reps = totalReps;
           }
         }
-        // let repContainer = document.getElementById('rep-container');
-        // repContainer.innerHTML = `Total Reps: ${repCount} Total Sets: ${totalSets}`;
-
-        // let accContainer = document.getElementById('acc-container');
-        // accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-
-        // let remContainer = document.getElementById('rem-container');
-        // remContainer.innerHTML = `Remaining Reps: ${reps} Remaining Sets: ${setCount}`;
       } else {
         console.log('NO MORE SETS');
         // window.cancelAnimationFrame(startAnimation);
@@ -311,8 +291,6 @@ export function Model() {
     init();
 
     return function cleanup() {
-      // console.log('useeffect', startAnimation);
-
       togglePredict();
       predict(false);
       window.cancelAnimationFrame(startAnimation);
