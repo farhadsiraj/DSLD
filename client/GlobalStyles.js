@@ -52,6 +52,7 @@ const GlobalStyle = createGlobalStyle`
 
   .dropdown-open {
     left: 0;
+    backdrop-filter: blur(5px);
   }
 
   @media only screen and (min-width: 753px){
@@ -61,6 +62,7 @@ const GlobalStyle = createGlobalStyle`
 
   .dropdown-open {
     left: 0;
+    backdrop-filter: blur(5px);
   }
   }
 
@@ -71,6 +73,7 @@ const GlobalStyle = createGlobalStyle`
 
     .dropdown-open {
       left: 0;
+          backdrop-filter: blur(5px);
     }
   }
 
@@ -80,15 +83,17 @@ const GlobalStyle = createGlobalStyle`
 
   .dropdown-open-right {
     left: 0;
+        backdrop-filter: blur(5px);
   }
 
-  @media only screen and (min-width: 540px) {
+  @media only screen and (min-width: 674px) {
   .dropdown-closed-right {
     left: 100%;
   }
 
   .dropdown-open-right {
     left: 70%;
+    backdrop-filter: blur(5px);
   }
   }
 

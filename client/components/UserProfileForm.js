@@ -174,6 +174,6 @@ const NestedHeaderImage = styled.img`
     max-height: 100%;
     max-width: 90%;
     border-radius: 2rem;
-    margin-left: -10rem;
+    margin-left: 0rem;
   }
 `;
