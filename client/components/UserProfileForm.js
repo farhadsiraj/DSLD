@@ -83,6 +83,7 @@ export default function UserProfileForm() {
                     type="integer"
                     ref={ageRef}
                     placeholder="Enter your age"
+                    pattern="(^[1-9])(\d)"
                   />
                 </Form.Group>
                 <Form.Group id="height">
@@ -91,6 +92,8 @@ export default function UserProfileForm() {
                     type="integer"
                     ref={heightRef}
                     placeholder="Enter your height in inches"
+                    maxLength="3"
+                    pattern="^[0-9][0-9][0-9]?$|^100$"
                   />
                 </Form.Group>
                 <Form.Group id="weight">
@@ -99,15 +102,23 @@ export default function UserProfileForm() {
                     type="integer"
                     ref={weightRef}
                     placeholder="Enter your weight"
+                    maxLength="3"
+                    pattern="^[1-9][0-9][0-9]?$|^100$"
                   />
                 </Form.Group>
                 <Form.Group id="sex">
                   <Form.Label>Sex:</Form.Label>
-                  <Form.Control
-                    type="integer"
-                    ref={sexRef}
-                    placeholder="Enter your sex"
-                  />
+                  <Form.Control as="select">
+                    <option value="default" disabled>
+                      Choose Sex:
+                    </option>
+                    <option value="Male" ref={sexRef}>
+                      Male
+                    </option>
+                    <option value="Female" ref={sexRef}>
+                      Female
+                    </option>
+                  </Form.Control>
                 </Form.Group>
                 <Button
                   style={buttonStyle}

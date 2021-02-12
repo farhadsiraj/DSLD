@@ -76,17 +76,31 @@ export default function ExerciseForm() {
                 </Form.Group>
                 <Form.Group id="sets">
                   <Form.Label>Sets:</Form.Label>
-                  <Form.Control type="integer" ref={setRef} defaultValue="3" />
+                  <Form.Control
+                    type="integer"
+                    ref={setRef}
+                    maxLength="3"
+                    pattern="^[1-9][0-9][0-9]?$|^100$"
+                    defaultValue="3"
+                  />
                 </Form.Group>
                 <Form.Group id="reps">
                   <Form.Label>Reps:</Form.Label>
-                  <Form.Control type="integer" ref={repRef} defaultValue="10" />
+                  <Form.Control
+                    type="integer"
+                    ref={repRef}
+                    maxLength="3"
+                    pattern="^[1-9][0-9][0-9]?$|^100$"
+                    defaultValue="10"
+                  />
                 </Form.Group>
                 <Form.Group id="rest">
                   <Form.Label>Rest Timer:</Form.Label>
                   <Form.Control
                     type="integer"
                     ref={restTimerRef}
+                    maxLength="3"
+                    pattern="^[1-9][0-9][0-9]?$|^100$"
                     defaultValue="10"
                   />
                 </Form.Group>

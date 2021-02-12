@@ -6,6 +6,8 @@ import gym from '../../public/assets/images/gym.jpg';
 import ball from '../../public/assets/images/ball.png';
 import ohp from '../../public/assets/images/ohp.png';
 import press from '../../public/assets/images/press.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
   return (
@@ -26,6 +28,19 @@ export default function Home() {
                   completed reps to ensure you get the most out of your time in
                   the gym.
                 </Text>
+                <Link to="/signup" className="link-reset hover-reset">
+                  <StyledButton
+                    style={{
+                      backgroundColor: '#F9A26C',
+                    }}
+                  >
+                    Get DSLD
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      style={{ marginLeft: '.7rem' }}
+                    />
+                  </StyledButton>
+                </Link>
               </HeaderBox>
             </HeaderFlex>
           </HeaderContainer>
@@ -49,7 +64,7 @@ export default function Home() {
             Sign Up
           </Link>
           <Link to="/login" style={{ margin: '0.2rem' }}>
-            Login
+            Log In
           </Link>
         </Footer>
       </ContentContainer>
@@ -148,18 +163,20 @@ const Box = styled.div`
 
 const HeaderTitle = styled.h1`
   font-family: 'Josefin Sans';
-  margin-top: 0;
+  margin-top: 2rem;
   font-size: 1.4rem;
   color: white;
   font-weight: 300;
   @media only screen and (min-width: 960px) {
     font-size: 2rem;
+    margin-top: 5rem;
   }
 `;
 
 const Text = styled.p`
   color: white;
   font-size: 0.7rem;
+  margin-top: 1rem;
   width: 80%;
   @media only screen and (min-width: 960px) {
     font-size: 1rem;
@@ -239,5 +256,21 @@ const HeaderBox = styled.div`
 
   @media only screen and (min-width: 1200px) {
     height: 90%;
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: #f67280;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border-style: none;
+  margin-bottom: 1.5rem;
+  margin-top: 1.25rem;
+  width: 100%;
+  @media only screen and (min-width: 960px) {
+    width: 10rem;
+    margin-top: 4rem;
+    padding: 1rem;
   }
 `;
