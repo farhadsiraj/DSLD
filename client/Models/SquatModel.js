@@ -307,32 +307,46 @@ export function Model() {
           <WorkoutType>Squat</WorkoutType>
           <WorkoutType id="timer">00:00</WorkoutType>
         </TopToolbar>
-        <Webcam>
-          <div id="webcam-container" style={{ display: 'none' }}></div>
-          <canvas width="640" height="480" id="canvas"></canvas>
-          <WebcamToolbar>
-            <Button
-              id="togglePredict"
-              onClick={() => {
-                if (predictStatus === 'pending') {
-                  countdown(5, togglePredict);
-                } else {
-                  togglePredict();
-                }
-                setToggle(!toggleStart);
-              }}
-            >
-              {toggleStart ? 'Stop' : 'Start'}
-            </Button>
-            <LabelContainer>
-              <Label id="rep-container"></Label>
-              <Label id="acc-container"></Label>
-              <Label id="set-container"></Label>
-              <Label id="rem-reps-container"></Label>
-              <Label id="rem-sets-container"></Label>
-            </LabelContainer>
-          </WebcamToolbar>
-        </Webcam>
+        <WebcamDataContainer>
+          <Webcam>
+            <div id="webcam-container" style={{ display: 'none' }}></div>
+            <canvas
+              style={{ borderRadius: '1rem' }}
+              width="640"
+              height="480"
+              id="canvas"
+            ></canvas>
+            <WebcamToolbar>
+              <Button
+                id="togglePredict"
+                onClick={() => {
+                  if (predictStatus === 'pending') {
+                    countdown(5, togglePredict);
+                  } else {
+                    togglePredict();
+                  }
+                  setToggle(!toggleStart);
+                }}
+              >
+                {toggleStart ? 'Stop' : 'Start'}
+              </Button>
+              <LabelContainer>
+                <Label id="rep-container"></Label>
+                <Label id="acc-container"></Label>
+                <Label id="set-container"></Label>
+                <Label id="rem-reps-container"></Label>
+                <Label id="rem-sets-container"></Label>
+              </LabelContainer>
+            </WebcamToolbar>
+          </Webcam>
+          <LabelContainerLarge>
+            <Label id="rep-container"></Label>
+            <Label id="acc-container"></Label>
+            <Label id="set-container"></Label>
+            <Label id="rem-reps-container"></Label>
+            <Label id="rem-sets-container"></Label>
+          </LabelContainerLarge>
+        </WebcamDataContainer>
       </ModelContainer>
     </ContentContainer>
   );
@@ -390,10 +404,12 @@ const ModelContainer = styled.div`
   @media only screen and (min-width: 1200px) {
     padding: 1rem;
     width: 60%;
+    flex-direction: space-around;
   }
   @media only screen and (min-width: 1750px) {
     padding: 1rem;
-    width: 50%;
+    width: 65%;
+    flex-direction: space-around;
   }
 `;
 
@@ -402,6 +418,7 @@ const Webcam = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 100rem;
+  margin-top: 1rem;
   border: 3px solid green;
   @media only screen and (min-width: 960px) {
   }
@@ -415,20 +432,40 @@ const LabelContainer = styled.div`
   border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
+  @media only screen and (min-width: 1200px) {
+    display: none;
+  }
+`;
+const LabelContainerLarge = styled.div`
+  @media only screen and (min-width: 1200px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 3px dotted orange;
+    border-radius: 1rem;
+    background-color: #f9a26c;
+    margin-top: 1rem;
+    width: 20rem;
+  }
 `;
 
 const Label = styled.div`
   color: white;
   font-size: 1.2rem;
-  @media only screen and (min-width: 960px) {
+  /* @media only screen and (min-width: 960px) {
+    display: none;
   }
+  @media only screen and (min-width: 960px) {
+    display: inline-block;
+  } */
 `;
 
 const WebcamToolbar = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 3px dotted grey;
+  /* border: 3px dotted grey; */
 `;
 
 const Button = styled.button`
@@ -439,10 +476,19 @@ const Button = styled.button`
   background-color: #f67280;
   border: 0px;
   width: 7rem;
+  margin-top: 1rem;
   padding: 0.3rem 0 0.3rem 0;
   align-self: flex-end;
   width: 100%;
-  @media only screen and (max-width: 960px) {
+  @media only screen and (min-width: 960px) {
     font-size: 1.3rem;
+    width: 25%;
+  }
+`;
+
+const WebcamDataContainer = styled.div`
+  display: flex;
+  width: 100%;
+  @media only screen and (min-width: 1200px) {
   }
 `;
