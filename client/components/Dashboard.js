@@ -105,15 +105,15 @@ export default function Dashboard() {
                         <Title>Lifetime Reps:</Title>
                       </div>
                       <div>
-                        <Text>{user.lifetimeReps || 0}</Text>
+                        <Text>Squats: {user.lifetimeReps || 0}</Text>
                       </div>
                     </DataBox>
                     <DataBox>
                       <div>
-                        <Title>Activities:</Title>
+                        <Title>Lifetime Sets:</Title>
                       </div>
                       <div>
-                        <Text>{user.lifetimeWorkouts || 'n/a'}</Text>
+                        <Text>{user.lifetimeSets || 'n/a'}</Text>
                       </div>
                     </DataBox>
                     <DataBox>
@@ -123,12 +123,12 @@ export default function Dashboard() {
                       <div>
                         <Text>
                           {workoutHistory.length &&
-                            workoutHistory[0].date
+                            workoutHistory[workoutHistory.length - 1].date
                               .toDate()
                               .toString()
                               .slice(
                                 0,
-                                workoutHistory[0].date
+                                workoutHistory[workoutHistory.length - 1].date
                                   .toDate()
                                   .toString()
                                   .indexOf(':') - 3
@@ -149,13 +149,14 @@ export default function Dashboard() {
                     marginLeft: '1rem',
                   }}
                 >
-                  Previous Workouts
+                  Most Recent Sets
                 </CustomWorkoutTitle>
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
                   {workoutHistory
-                    .slice(0, Math.min(3, workoutHistory.length))
+                    .slice(Math.max(0, workoutHistory.length - 3))
+                    .reverse()
                     .map((ele, i) => {
                       return (
                         <WorkoutBox key={i}>
@@ -172,13 +173,17 @@ export default function Dashboard() {
                                 ele.date.toDate().toString().indexOf(':') - 8
                               )}
                           </CustomWorkoutType>
-                          <CustomWorkoutDetail>
+                          <CustomWorkoutDetail id="wText">
                             <Title>Reps: </Title>
                             <Text>{ele.workout.reps}</Text>
                           </CustomWorkoutDetail>
                           <CustomWorkoutDetail>
                             <Title>Sets: </Title>
                             <Text>{ele.workout.sets}</Text>
+                          </CustomWorkoutDetail>
+                          <CustomWorkoutDetail>
+                            <Title>Accuracy: </Title>
+                            <Text>{ele.workout.accuracy}%</Text>
                           </CustomWorkoutDetail>
                         </WorkoutBox>
                       );
@@ -387,6 +392,8 @@ const CustomWorkoutType = styled.p`
   margin-bottom: 0.4rem;
 `;
 const CustomWorkoutDetail = styled.h3`
+  display: flex;
+  align-items: center;
   color: white;
   font-size: 1rem;
 `;
