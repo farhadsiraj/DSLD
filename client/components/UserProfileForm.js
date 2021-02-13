@@ -17,6 +17,10 @@ export default function UserProfileForm() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+  function handleChange(event) {
+    sexRef.current.value = event.target.value;
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -83,8 +87,7 @@ export default function UserProfileForm() {
                     type="integer"
                     ref={ageRef}
                     placeholder="Enter your age"
-                    // min='1'
-                    // max='999'
+                    maxLength="3"
                     pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                   />
                 </Form.Group>
@@ -95,7 +98,7 @@ export default function UserProfileForm() {
                     ref={heightRef}
                     placeholder="Enter your height in inches"
                     maxLength="3"
-                    pattern="^[0-9][0-9][0-9]?$|^100$"
+                    pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                   />
                 </Form.Group>
                 <Form.Group id="weight">
@@ -105,12 +108,16 @@ export default function UserProfileForm() {
                     ref={weightRef}
                     placeholder="Enter your weight"
                     maxLength="3"
-                    pattern="^[1-9][0-9][0-9]?$|^100$"
+                    pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                   />
                 </Form.Group>
-                <Form.Group id="sex">
+                <Form.Group id="sex" style={selectStyle}>
                   <Form.Label>Sex:</Form.Label>
-                  <Form.Control as="select">
+                  <select
+                    style={selectBox}
+                    onChange={(event) => handleChange(event)}
+                    defaultValue="default"
+                  >
                     <option value="default" disabled>
                       Choose Sex:
                     </option>
@@ -120,13 +127,13 @@ export default function UserProfileForm() {
                     <option value="Female" ref={sexRef}>
                       Female
                     </option>
-                  </Form.Control>
+                  </select>
                 </Form.Group>
                 <Button
                   style={buttonStyle}
                   disable={loading.toString()}
                   type="submit"
-                  className="w-100 text-center mt-2"
+                  className="w-100 text-center"
                 >
                   Update
                 </Button>
@@ -145,9 +152,20 @@ export default function UserProfileForm() {
   );
 }
 
+const selectStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+const selectBox = {
+  height: '2.58rem',
+  borderRadius: '.30rem',
+};
+
 const buttonStyle = {
   backgroundColor: '#F9A26C',
   border: 'none',
+  marginTop: '1.5rem',
 };
 
 const GradientContainer = styled.div`

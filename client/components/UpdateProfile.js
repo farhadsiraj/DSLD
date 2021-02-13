@@ -5,44 +5,60 @@ import { Link, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import gym from '../../public/assets/images/gym.jpg';
+import firebase from 'firebase';
+import { auth } from '../../firebase';
 import { distSquared } from '@tensorflow/tfjs-core/dist/util';
 
 export default function UpdateProfile() {
   const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
+  const currentPasswordRef = useRef();
+  const newPasswordRef = useRef();
+  const newPasswordConfirmRef = useRef();
   const { currentUser, updateEmail, updatePassword } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+  console.log('hello');
+
   function handleSubmit(event) {
     event.preventDefault();
-
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError('Passwords do not match');
-    }
+    console.log('hello from handle');
+    console.log('currentPasswordRef in handlesubmit', currenPasswordRef);
 
     const promises = [];
     setError('');
     setLoading(true);
-    if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value));
-    }
-    if (passwordRef.current.value) {
-      promises.push(updatePassword(passwordRef.current.value));
-    }
 
-    Promise.all(promises)
-      .then(() => {
-        history.push('/dashboard');
-      })
-      .catch(() => {
-        setError('Failed to update account');
-      })
-      .finally(() => {
-        setLoading(false);
+    if (currentPasswordRef) {
+      const reauthenticate = (currentPassword) => {
+        var cred = auth.EmailAuthProvider.credential(
+          currentUser.email,
+          currentPassword
+        );
+        return currentUser.reauthenticateWithCredential(cred);
+      };
+
+      reauthenticate(currentPasswordRef).then(() => {
+        if (emailRef.current.value !== currentUser.email) {
+          promises.push(updateEmail(emailRef.current.value));
+        }
+        if (newPasswordRef.current.value) {
+          promises.push(updatePassword(newPasswordRef.current.value));
+        }
       });
+
+      Promise.all(promises)
+        .then(() => {
+          history.push('/dashboard');
+        })
+        .catch(() => {
+          setError('Failed to update account');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }
 
   return (
@@ -63,19 +79,27 @@ export default function UpdateProfile() {
                     defaultValue={currentUser.email}
                   />
                 </Form.Group>
-                <Form.Group id="password">
+                <Form.Group id="currentPassword">
+                  <Form.Label>Current Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    ref={currentPasswordRef}
+                    placeholder="Enter current password"
+                  />
+                </Form.Group>
+                <Form.Group id="newPassword">
                   <Form.Label>New Password</Form.Label>
                   <Form.Control
                     type="password"
-                    ref={passwordRef}
+                    ref={newPasswordRef}
                     placeholder="Leave blank to keep the same"
                   />
                 </Form.Group>
-                <Form.Group id="password-confirm">
+                <Form.Group id="newPassword-confirm">
                   <Form.Label>New Password Confirmation</Form.Label>
                   <Form.Control
                     type="password"
-                    ref={passwordConfirmRef}
+                    ref={newPasswordConfirmRef}
                     placeholder="Leave blank to keep the same"
                   />
                 </Form.Group>
