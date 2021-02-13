@@ -3,8 +3,6 @@ import * as tmPose from '@teachablemachine/pose';
 import positiveFeedback from '../../public/assets/audio/positiveFeedback_v1.mp3';
 import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
 
@@ -350,7 +348,7 @@ export function Model() {
       seconds--;
       countdownSeconds.innerHTML = seconds;
       if (seconds === 0) {
-        countdownSeconds.innerHTML = '00:00';
+        countdownSeconds.innerHTML = 'Active';
         clearInterval(counter);
         callback(val);
       }
@@ -369,12 +367,12 @@ export function Model() {
                 You did {totalReps * totalSets} {exercise} in {totalSets} sets
                 with an accuracy of {accuracy}%.
               </h4>
-              <button onClick={() => history.push('/exercise-form')}>
+              <Button onClick={() => history.push('/exercise-form')}>
                 Do another workout
-              </button>
-              <button onClick={() => history.push('/dashboard')}>
+              </Button>
+              <Button onClick={() => history.push('/dashboard')}>
                 Back to Dashboard
-              </button>
+              </Button>
             </Modal>
           </ModalContainer>
         </>
@@ -382,7 +380,9 @@ export function Model() {
       <ModelContainer>
         <TopToolbar>
           <WorkoutType>Squats</WorkoutType>
-          <WorkoutType id="timer">00:00</WorkoutType>
+          <WorkoutType id="timer">
+            {toggleStart === 'active' ? 'Active' : 'Inactive'}{' '}
+          </WorkoutType>
         </TopToolbar>
         <WebcamDataContainer>
           <Webcam>
@@ -394,6 +394,7 @@ export function Model() {
               id="canvas"
             ></canvas>
             <WebcamToolbar>
+              <Label style={{ color: 'black' }}>Hello</Label>
               <Button
                 id="togglePredict"
                 onClick={() => {
@@ -532,7 +533,7 @@ const ModelContainer = styled.div`
   @media only screen and (min-width: 960px) {
     padding: 1rem;
     margin: 1rem;
-    width: 80%;
+    width: 90%;
   }
 
   @media only screen and (min-width: 1200px) {
@@ -568,13 +569,15 @@ const LabelContainer = styled.div`
   background-color: #f9a26c;
   margin-top: 1rem;
   height: 20rem;
-  @media only screen and (min-width: 1400px) {
+  width: 100%;
+
+  @media only screen and (min-width: 960px) {
     display: none;
   }
 `;
 const LabelContainerLarge = styled.div`
   display: none;
-  @media only screen and (min-width: 1400px) {
+  @media only screen and (min-width: 960px) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -588,24 +591,26 @@ const LabelContainerLarge = styled.div`
     min-width: 8rem;
     width: 100%;
   }
+
+  @media only screen and (min-width: 1200px) {
+    background-color: yellow;
+  }
 `;
 
 const Label = styled.div`
   color: white;
   font-size: 1.2rem;
-  /* @media only screen and (min-width: 960px) {
-    display: none;
-  }
-  @media only screen and (min-width: 960px) {
-    display: inline-block;
-  } */
 `;
 
 const WebcamToolbar = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  /* border: 3px dotted grey; */
+  justify-content: center;
+  align-items: center;
+  border: 3px dotted grey;
+  @media only screen and (min-width: 1400px) {
+    flex-direction: row;
+  }
 `;
 
 const Button = styled.button`
@@ -618,7 +623,7 @@ const Button = styled.button`
   width: 7rem;
   margin-top: 1rem;
   padding: 0.3rem 0 0.3rem 0;
-  align-self: flex-end;
+  /* align-self: flex-end; */
   width: 100%;
   @media only screen and (min-width: 960px) {
     font-size: 1.3rem;
@@ -629,6 +634,7 @@ const Button = styled.button`
 const WebcamDataContainer = styled.div`
   display: flex;
   width: 100%;
+  border: 3px solid black;
   @media only screen and (min-width: 1200px) {
   }
 `;
