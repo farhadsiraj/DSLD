@@ -19,7 +19,7 @@ export default function Dashboard() {
       await logout();
       history.push('/login');
     } catch (error) {
-      setError('Failed to log out');
+      setError('Failed to log out.');
     }
   }
 
@@ -45,8 +45,8 @@ export default function Dashboard() {
 
       historySnapshot.forEach((doc) => {
         if (!doc.data()) {
-          setError('Username not available');
-          throw new Error('Username not available');
+          setError('Workout History not available.');
+          throw new Error('Workout History not available');
         } else {
           pastWorkouts.push(doc.data());
         }
