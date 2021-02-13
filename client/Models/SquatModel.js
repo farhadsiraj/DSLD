@@ -88,7 +88,7 @@ export function Model() {
     const metadataURL = URL + 'metadata.json';
 
     model = await tmPose.load(modelURL, metadataURL);
-
+    console.log(model);
     maxPredictions = model.getTotalClasses();
 
     const size = 640;
@@ -192,8 +192,7 @@ export function Model() {
         let denominator = totalReps * totalSets;
 
         accuracy = Math.ceil((successfulReps / denominator) * 100);
-        console.log('lifetimeReps from fireStore', lifetimeReps);
-        console.log('typeof lifetimeReps', typeof lifetimeReps);
+
         if (reps <= 0) {
           setCount--;
           if (setCount === 0) {
@@ -214,8 +213,7 @@ export function Model() {
                 },
                 { merge: true }
               );
-            console.log('lifetimeReps from fireStore', lifetimeReps);
-            console.log('typeof lifetimeReps', typeof lifetimeReps);
+
             db.collection('users')
               .doc(loggedIn)
               .set(

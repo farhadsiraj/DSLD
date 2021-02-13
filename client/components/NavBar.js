@@ -142,6 +142,36 @@ export default function NavBar() {
                 <Link
                   onClick={function () {
                     setUserDropdown(!userDropdown);
+                  }}
+                  to="/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                  to="/user-profile-form"
+                >
+                  Profile Settings
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                  to="/update-profile"
+                >
+                  Account Settings
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
                     handleLogout();
                   }}
                   to="/"
