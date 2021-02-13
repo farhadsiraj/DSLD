@@ -154,40 +154,52 @@ export default function Dashboard() {
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
-                  {workoutHistory
-                    .slice(Math.max(0, workoutHistory.length - 3))
-                    .reverse()
-                    .map((ele, i) => {
-                      return (
-                        <WorkoutBox key={i}>
-                          <CustomWorkoutTitle>
-                            {ele.workout.type[0].toUpperCase() +
-                              ele.workout.type.slice(1)}
-                          </CustomWorkoutTitle>
-                          <CustomWorkoutType className="lighter">
-                            {ele.date
-                              .toDate()
-                              .toString()
-                              .slice(
-                                0,
-                                ele.date.toDate().toString().indexOf(':') - 8
-                              )}
-                          </CustomWorkoutType>
-                          <CustomWorkoutDetail id="wText">
-                            <Title>Reps: </Title>
-                            <Text>{ele.workout.reps}</Text>
-                          </CustomWorkoutDetail>
-                          <CustomWorkoutDetail>
-                            <Title>Sets: </Title>
-                            <Text>{ele.workout.sets}</Text>
-                          </CustomWorkoutDetail>
-                          <CustomWorkoutDetail>
-                            <Title>Accuracy: </Title>
-                            <Text>{ele.workout.accuracy}%</Text>
-                          </CustomWorkoutDetail>
-                        </WorkoutBox>
-                      );
-                    })}
+                  {workoutHistory.length ? (
+                    workoutHistory
+                      .slice(Math.max(0, workoutHistory.length - 3))
+                      .reverse()
+                      .map((ele, i) => {
+                        return (
+                          <WorkoutBox key={i}>
+                            <CustomWorkoutTitle>
+                              {ele.workout.type[0].toUpperCase() +
+                                ele.workout.type.slice(1)}
+                            </CustomWorkoutTitle>
+                            <CustomWorkoutType className="lighter">
+                              {ele.date
+                                .toDate()
+                                .toString()
+                                .slice(
+                                  0,
+                                  ele.date.toDate().toString().indexOf(':') - 8
+                                )}
+                            </CustomWorkoutType>
+                            <CustomWorkoutDetail id="wText">
+                              <Title>Reps: </Title>
+                              <Text>{ele.workout.reps}</Text>
+                            </CustomWorkoutDetail>
+                            <CustomWorkoutDetail>
+                              <Title>Sets: </Title>
+                              <Text>{ele.workout.sets}</Text>
+                            </CustomWorkoutDetail>
+                            <CustomWorkoutDetail>
+                              <Title>Accuracy: </Title>
+                              <Text>{ele.workout.accuracy}%</Text>
+                            </CustomWorkoutDetail>
+                          </WorkoutBox>
+                        );
+                      })
+                  ) : (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        width: '100%',
+                      }}
+                    >
+                      <h1 style={{ color: 'lightgrey' }}>No workout history</h1>
+                    </div>
+                  )}
                 </Workouts>
               </WorkoutContainer>
             </ColumnContainer>
