@@ -228,7 +228,7 @@ export default function Dashboard() {
               </Link>
               <div>
                 <StyledButton
-                  style={{ backgroundColor: 'seagreen' }}
+                  style={{ backgroundColor: '#FD374C' }}
                   onClick={handleLogout}
                 >
                   Log Out
