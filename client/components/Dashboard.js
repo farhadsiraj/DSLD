@@ -181,18 +181,37 @@ export default function Dashboard() {
                                   ele.date.toDate().toString().indexOf(':') - 8
                                 )}
                             </CustomWorkoutType>
-                            <CustomWorkoutDetail id="wText">
-                              <Title>Reps: </Title>
-                              <Text>{ele.workout.reps}</Text>
-                            </CustomWorkoutDetail>
-                            <CustomWorkoutDetail>
-                              <Title>Sets: </Title>
-                              <Text>{ele.workout.sets}</Text>
-                            </CustomWorkoutDetail>
-                            <CustomWorkoutDetail>
-                              <Title>Accuracy: </Title>
-                              <Text>{ele.workout.accuracy}%</Text>
-                            </CustomWorkoutDetail>
+                            <div>
+                              <CustomWorkoutDetail id="wText">
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    width: '100%',
+                                  }}
+                                >
+                                  <Title>Reps: </Title>
+                                  <Text>{ele.workout.reps}</Text>
+                                </div>
+                              </CustomWorkoutDetail>
+                              <CustomWorkoutDetail>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                  }}
+                                >
+                                  <Title>Sets: </Title>
+                                  <Text>{ele.workout.sets}</Text>
+                                </div>
+                              </CustomWorkoutDetail>
+                              <CustomWorkoutDetail>
+                                <Title>Accuracy: </Title>
+                                <Text>{ele.workout.accuracy}%</Text>
+                              </CustomWorkoutDetail>
+                            </div>
                           </WorkoutBox>
                         );
                       })
@@ -441,9 +460,8 @@ const CurrentSettings = styled.div`
 `;
 
 const Title = styled.p`
-  font-family: 'Josefin Sans';
   color: white;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   padding-right: 0.5rem;
 `;
 
@@ -454,7 +472,7 @@ const AcheivementText = styled.h3`
 
 const Text = styled.p`
   color: white;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 300;
 `;
 
