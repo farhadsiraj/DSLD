@@ -19,6 +19,8 @@ let counterStatus = 'pending';
 let lineColor = '#9BD7D1';
 let exercise;
 let restTimer;
+let lifetimeReps;
+let lifetimeSets;
 let totalSets;
 let setCount;
 let totalReps; // Number of reps user specifies
@@ -36,6 +38,22 @@ export function Model() {
   const history = useHistory();
 
   loggedIn = auth.currentUser.uid;
+
+  async function setLifetimeStats() {
+    const usersRef = db.collection('users').doc(loggedIn);
+
+    const doc = await usersRef.get();
+    if (!doc.exists) {
+      console.log('No user data found.');
+    } else {
+      const user = doc.data();
+      console.log(user);
+      lifetimeReps = user.lifetimeReps;
+      lifetimeSets = user.lifetimeSets;
+      console.log('lifetimeStats', lifetimeReps, lifetimeSets);
+    }
+  }
+  setLifetimeStats();
 
   async function setRepPrefs() {
     const usersRef = db
@@ -198,8 +216,18 @@ export function Model() {
                 },
                 { merge: true }
               );
+            db.collection('users')
+              .doc(loggedIn)
+              .set(
+                {
+                  lifetimeReps: lifetimeReps + successfulReps,
+                  lifetimeSets: lifetimeSets + totalSets,
+                },
+                { merge: true }
+              );
             counterStatus = 'pending';
             lineColor = '#9BD7D1';
+            totalReps = 0;
             setModalOpen(!modalOpen);
             togglePredict();
             window.cancelAnimationFrame(startAnimation);

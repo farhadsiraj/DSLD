@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import gym from '../../public/assets/images/gym.jpg';
@@ -10,6 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
+  const { currentUser } = useAuth();
+
   return (
     <GradientContainer>
       <GlobalStyles />
@@ -59,14 +62,20 @@ export default function Home() {
             </Box>
           </DetailsContainer>
         </InfoContainer>
-        <Footer>
-          <Link to="/signup" style={{ margin: '0.2rem' }}>
-            Sign Up
-          </Link>
-          <Link to="/login" style={{ margin: '0.2rem' }}>
-            Log In
-          </Link>
-        </Footer>
+        {!currentUser ? (
+          <Footer>
+            <Link to="/signup" style={{ margin: '0.2rem' }}>
+              Sign Up
+            </Link>
+            <Link to="/login" style={{ margin: '0.2rem' }}>
+              Login
+            </Link>
+          </Footer>
+        ) : (
+          <Footer>
+            <Text style={{ width: 'auto' }}>Copyright ©2021 DSLD</Text>
+          </Footer>
+        )}
       </ContentContainer>
     </GradientContainer>
   );
