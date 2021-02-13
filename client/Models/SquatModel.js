@@ -14,7 +14,7 @@ let squattingPosition;
 let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
-let lineColor = '#9BD7D1';
+let lineColor = '#FFD700';
 let exercise;
 let restTimer;
 let lifetimeReps;
@@ -158,10 +158,14 @@ export function Model() {
 
       if (setCount > 0) {
         if (counterStatus === 'pending' && startingPosition > 0.9) {
+          lineColor = '#FFD700';
+          canvasBorder.style.border = `20px solid ${lineColor}`;
           counterStatus = 'starting';
         }
 
         if (counterStatus === 'starting' && middlePosition > 0.5) {
+          lineColor = '#9BD7D1';
+          canvasBorder.style.border = `20px solid ${lineColor}`;
           counterStatus = 'middle';
         }
 
