@@ -94,80 +94,42 @@ export default function Dashboard() {
                 </div>
                 <UserInfo>
                   <Flex style={{ width: '90%' }}>
-                    <DataBox
-                      style={{
-                        border: '5px solid lightblue',
-                        height: '90%',
-                        borderRadius: '50%',
-                        margin: '1rem',
-                        padding: '1rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                      }}
-                    >
+                    <DataBox>
                       <div>
                         <Title>Active Streak:</Title>
                       </div>
                       <div>
-                        <Text>{user.activeStreak || 0}</Text>
+                        <AcheivementText>
+                          {user.activeStreak || 0}
+                        </AcheivementText>
                       </div>
                     </DataBox>
-                    <DataBox
-                      style={{
-                        border: '5px solid lightblue',
-                        height: '90%',
-                        borderRadius: '50%',
-                        margin: '1rem',
-                        padding: '1rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                      }}
-                    >
+                    <DataBox>
                       <div>
                         <Title>Lifetime Reps:</Title>
                       </div>
                       <div>
-                        <Text>Squats: {user.lifetimeReps || 0}</Text>
+                        <AcheivementText>
+                          Squats: {user.lifetimeReps || 0}
+                        </AcheivementText>
                       </div>
                     </DataBox>
-                    <DataBox
-                      style={{
-                        border: '5px solid lightblue',
-                        height: '90%',
-                        borderRadius: '50%',
-                        margin: '1rem',
-                        padding: '1rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                      }}
-                    >
+                    <DataBox>
                       <div>
                         <Title>Lifetime Sets:</Title>
                       </div>
                       <div>
-                        <Text>{user.lifetimeSets || 'n/a'}</Text>
+                        <AcheivementText>
+                          {user.lifetimeSets || 'n/a'}
+                        </AcheivementText>
                       </div>
                     </DataBox>
-                    <DataBox
-                      style={{
-                        border: '5px solid lightblue',
-                        height: '90%',
-                        borderRadius: '50%',
-                        margin: '1rem',
-                        padding: '1rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                      }}
-                    >
+                    <DataBox>
                       <div>
                         <Title>Latest Activity:</Title>
                       </div>
                       <div>
-                        <Text>
+                        <AcheivementText>
                           {workoutHistory.length &&
                             workoutHistory[workoutHistory.length - 1].date
                               .toDate()
@@ -179,7 +141,7 @@ export default function Dashboard() {
                                   .toString()
                                   .indexOf(':') - 3
                               )}
-                        </Text>
+                        </AcheivementText>
                       </div>
                     </DataBox>
                   </Flex>
@@ -190,7 +152,6 @@ export default function Dashboard() {
               >
                 <CustomWorkoutTitle
                   style={{
-                    color: '#355C7D',
                     paddingLeft: '1rem',
                     marginLeft: '1rem',
                   }}
@@ -266,7 +227,7 @@ export default function Dashboard() {
               </WorkoutContainer>
             </ColumnContainer>
             <AccountSettingsContainer>
-              <CurrentSettings>
+              {/* <CurrentSettings>
                 <h2 style={{ color: 'white' }}>Account Settings</h2>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <Row>
@@ -299,7 +260,7 @@ export default function Dashboard() {
               </Link>
               <Link to="/user-profile-form" className="link-reset hover-reset">
                 <StyledButton>Update User Profile</StyledButton>
-              </Link>
+              </Link> */}
               <div>
                 <StyledButton
                   style={{ backgroundColor: '#FD374C' }}
@@ -307,6 +268,7 @@ export default function Dashboard() {
                 >
                   Log Out
                 </StyledButton>
+                <div style={{ color: 'white' }}>Copyright ©2021 DSLD</div>
               </div>
             </AccountSettingsContainer>
           </GradientContainer>
@@ -461,8 +423,12 @@ const WorkoutBox = styled.div`
 
 const CustomWorkoutTitle = styled.h1`
   font-family: 'Inter';
-  color: white;
+  color: #355c7d;
   font-size: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-radius: 1rem;
 `;
 const CustomWorkoutType = styled.p`
   color: white;
@@ -509,9 +475,15 @@ const CurrentSettings = styled.div`
 `;
 
 const Title = styled.p`
+  font-family: 'Josefin Sans';
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   padding-right: 0.5rem;
+`;
+
+const AcheivementText = styled.h3`
+  color: white;
+  font-size: 1.4rem;
 `;
 
 const Text = styled.p`
@@ -532,6 +504,17 @@ const DataBox = styled.div`
   width: 100%;
   padding: 1rem 0;
   justify-content: center;
+
+  @media only screen and (min-width: 960px) {
+    border: 7px solid #6be19b;
+    height: 90%;
+    border-radius: 50%;
+    margin: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
 `;
 
 const UserName = styled.h1`
@@ -550,4 +533,15 @@ const NoWorkouts = styled.h1`
   @media only screen and (min-width: 1110px) {
     font-size: 7rem;
   }
+`;
+
+const StatCircles = styled.div`
+  border: '5px solid #FFD700';
+  height: '90%';
+  border-radius: '50%';
+  margin: '1rem';
+  padding: '1rem';
+  display: 'flex';
+  align-items: 'center';
+  flex-direction: 'column';
 `;

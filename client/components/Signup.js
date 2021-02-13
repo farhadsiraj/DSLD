@@ -32,6 +32,8 @@ export default function Signup() {
             .doc(auth.currentUser.uid)
             .set({
               email: emailRef.current.value,
+              lifetimeReps: 0,
+              lifetimeSets: 0,
             })
             .catch((error) => {
               console.log(

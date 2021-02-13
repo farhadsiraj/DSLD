@@ -28,6 +28,7 @@ let predictStatus = 'pending';
 let accuracy;
 let startAnimation;
 let startAnimation2;
+let finalRepCount;
 
 export function Model() {
   const [isLoading, setIsLoading] = useState(true);
@@ -203,6 +204,7 @@ export function Model() {
         let denominator = totalReps * totalSets;
 
         accuracy = Math.ceil((successfulReps / denominator) * 100);
+        finalRepCount = successfulReps;
 
         if (reps <= 0) {
           setCount--;
@@ -225,18 +227,27 @@ export function Model() {
                 { merge: true }
               );
 
+            console.log('successfulReps', successfulReps);
+            console.log('successfulReps typeof', typeof successfulReps);
+            console.log('totalSets', totalSets);
+            console.log('totalSets typeof', typeof totalSets);
+            console.log('lifetimeReps', lifetimeReps);
+            console.log('lifetimeReps typeof', typeof lifetimeReps);
+            console.log('lifetimeSets', lifetimeSets);
+            console.log('lifetimeSets typeof', typeof lifetimeSets);
             db.collection('users')
               .doc(loggedIn)
               .set(
                 {
-                  lifetimeReps: lifetimeReps + parseInt(successfulReps),
-                  lifetimeSets: lifetimeSets + parseInt(totalSets),
+                  lifetimeReps:
+                    parseInt(lifetimeReps) + parseInt(successfulReps),
+                  lifetimeSets: parseInt(lifetimeSets) + parseInt(totalSets),
                 },
                 { merge: true }
               );
             counterStatus = 'pending';
             lineColor = '#9BD7D1';
-            totalReps = 0;
+
             setModalOpen(!modalOpen);
             togglePredict();
             window.cancelAnimationFrame(startAnimation);
@@ -276,7 +287,7 @@ export function Model() {
           let remSetsContainer1 = document.getElementById(
             'rem1-sets-container'
           );
-          repContainer1.innerHTML = `Total Reps: <p>${repCount}</p>`;
+          repContainer1.innerHTML = `Total Reps: ${repCount}`;
           setContainer1.innerHTML = `Total Sets: ${totalSets}`;
           accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
           remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
@@ -339,7 +350,8 @@ export function Model() {
 
     return function cleanup() {
       if (predictStatus === 'active') togglePredict();
-
+      totalReps = 0;
+      successfulReps = 0;
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
@@ -370,8 +382,11 @@ export function Model() {
               <h3>Great Work!</h3>
               <h4>
                 {' '}
-                You did {totalReps * totalSets} {exercise} in {totalSets} sets
-                with an accuracy of {accuracy}%.
+                {console.log('Final Rep Count-->', finalRepCount)}
+                {console.log('Total Sets-->', totalSets)}
+                {console.log('successfulReps-->', successfulReps)}
+                You did {finalRepCount} {exercise}s in {totalSets} sets with an
+                accuracy of {accuracy}%.
               </h4>
               <Button onClick={() => history.push('/exercise-form')}>
                 Do another workout
