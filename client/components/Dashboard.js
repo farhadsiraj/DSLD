@@ -227,40 +227,6 @@ export default function Dashboard() {
               </WorkoutContainer>
             </ColumnContainer>
             <AccountSettingsContainer>
-              {/* <CurrentSettings>
-                <h2 style={{ color: 'white' }}>Account Settings</h2>
-                {error && <Alert variant="danger">{error}</Alert>}
-                <Row>
-                  <Title>Email: </Title>
-                  <Text> {currentUser.email}</Text>
-                </Row>
-                <Row>
-                  <Title>Username: </Title>
-                  <Text>{user.username || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Age: </Title>
-                  <Text>{user.age || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Height: </Title>
-                  <Text>{user.height || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Weight: </Title>
-                  <Text>{user.weight || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Sex:{'  '}</Title>
-                  <Text>{user.sex || 'n/a'}</Text>
-                </Row>
-              </CurrentSettings>
-              <Link to="/update-profile" className="link-reset hover-reset">
-                <StyledButton>Update Account Info</StyledButton>
-              </Link>
-              <Link to="/user-profile-form" className="link-reset hover-reset">
-                <StyledButton>Update User Profile</StyledButton>
-              </Link> */}
               <div>
                 <StyledButton
                   style={{ backgroundColor: '#FD374C' }}
