@@ -122,7 +122,7 @@ export default function NavBar() {
                     setUserDropdown(!userDropdown);
                   }}
                 >
-                  Login
+                  Log In
                 </Link>
               </DropdownItem>
               <DropdownItem>
