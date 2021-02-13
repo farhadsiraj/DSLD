@@ -396,6 +396,7 @@ export function Model() {
                 Are you ready to get DSLD?
               </RemainingRepCount>
               <Button
+                style={{ backgroundColor: toggleStart ? '#FD374C' : '#6BE19B' }}
                 id="togglePredict"
                 onClick={() => {
                   if (predictStatus === 'pending') {
@@ -435,18 +436,20 @@ export function Model() {
           <LabelContainerLarge id="workout-data-large">
             {document.getElementById('workout-data-large') ? (
               <>
-                <Label id="rem1-reps-container">
+                <LargeLabel id="rem1-reps-container">
                   Remaining Reps: Loading...
-                </Label>
-                <Label id="acc1-container">Accuracy: Loading...</Label>
-                <Label id="rep1-container">Reps: Loading...</Label>
-                <Label id="set1-container">Set: Loading...</Label>
-                <Label id="rem1-sets-container">
+                </LargeLabel>
+                <LargeLabel id="acc1-container">
+                  Accuracy: Loading...
+                </LargeLabel>
+                <LargeLabel id="rep1-container">Reps: Loading...</LargeLabel>
+                <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
+                <LargeLabel id="rem1-sets-container">
                   Remaining Sets: Loading...
-                </Label>
+                </LargeLabel>
               </>
             ) : (
-              <Label>Press Start To Begin</Label>
+              <LargeLabel>Press Start To Begin</LargeLabel>
             )}
           </LabelContainerLarge>
         </WebcamDataContainer>
@@ -571,7 +574,7 @@ const LabelContainer = styled.div`
   border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
-  height: 20rem;
+  height: 10rem;
   width: 100%;
 
   @media only screen and (min-width: 960px) {
@@ -599,6 +602,10 @@ const Label = styled.div`
   color: white;
   font-size: 1.2rem;
 `;
+const LargeLabel = styled.div`
+  color: white;
+  font-size: 2rem;
+`;
 
 const WebcamToolbar = styled.div`
   display: flex;
@@ -608,6 +615,7 @@ const WebcamToolbar = styled.div`
   /* border: 3px dotted grey; */
   @media only screen and (min-width: 1400px) {
     flex-direction: row;
+    justify-content: space-between;
   }
 `;
 
@@ -621,7 +629,6 @@ const Button = styled.button`
   width: 7rem;
   margin-top: 1rem;
   padding: 0.3rem 0 0.3rem 0;
-  /* align-self: flex-end; */
   width: 100%;
   @media only screen and (min-width: 960px) {
     font-size: 1.3rem;
@@ -638,6 +645,7 @@ const WebcamDataContainer = styled.div`
 `;
 
 const RemainingRepCount = styled.h2`
-  color: orange;
+  color: #325d79;
   padding-top: 0.8rem;
+  margin: 0;
 `;
