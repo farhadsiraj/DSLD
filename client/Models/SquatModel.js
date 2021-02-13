@@ -240,40 +240,35 @@ export function Model() {
 
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
+
         if (repContainer !== null) {
-          repContainer.innerHTML = `Total Reps: ${repCount}`;
-
           let setContainer = document.getElementById('set-container');
-          setContainer.innerHTML = `Total Sets: ${totalSets}`;
-
           let accContainer = document.getElementById('acc-container');
-          accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-
           let remRepsContainer = document.getElementById('rem-reps-container');
-          remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
-
           let remSetsContainer = document.getElementById('rem-sets-container');
+
+          repContainer.innerHTML = `Total Reps: ${repCount}`;
+          setContainer.innerHTML = `Total Sets: ${totalSets}`;
+          accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+          remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
           remSetsContainer.innerHTML = `Remaining Sets: ${setCount}`;
         }
 
         let repContainer1 = document.getElementById('rep1-container');
+
         if (repContainer1 !== null) {
-          repContainer1.innerHTML = `Total Reps: ${repCount}`;
-
           let setContainer1 = document.getElementById('set1-container');
-          setContainer1.innerHTML = `Total Sets: ${totalSets}`;
-
           let accContainer1 = document.getElementById('acc1-container');
-          accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
-
           let remRepsContainer1 = document.getElementById(
             'rem1-reps-container'
           );
-          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
-
           let remSetsContainer1 = document.getElementById(
             'rem1-sets-container'
           );
+          repContainer1.innerHTML = `Total Reps: ${repCount}`;
+          setContainer1.innerHTML = `Total Sets: ${totalSets}`;
+          accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
+          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
           remSetsContainer1.innerHTML = `Remaining Sets: ${setCount}`;
         }
       }
@@ -493,12 +488,13 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 95%;
   margin-top: 65px;
   height: 100%;
   z-index: 1;
   /* border: 3px solid orange; */
   @media only screen and (min-width: 960px) {
+    width: 100%;
   }
 `;
 
@@ -515,13 +511,15 @@ const WorkoutType = styled.div`
   justify-content: center;
   text-decoration: none;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1rem;
+  padding: 0.5rem;
   border-radius: 10px;
   background-color: #355c7d;
   width: 8rem;
   /* border: 3px solid yellow; */
   @media only screen and (min-width: 960px) {
     padding: 1rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -604,7 +602,7 @@ const WebcamToolbar = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 3px dotted grey;
+  /* border: 3px dotted grey; */
   @media only screen and (min-width: 1400px) {
     flex-direction: row;
   }
@@ -631,7 +629,7 @@ const Button = styled.button`
 const WebcamDataContainer = styled.div`
   display: flex;
   width: 100%;
-  border: 3px solid black;
+  /* border: 3px solid black; */
   @media only screen and (min-width: 960px) {
   }
 `;
