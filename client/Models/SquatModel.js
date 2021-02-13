@@ -3,8 +3,6 @@ import * as tmPose from '@teachablemachine/pose';
 import positiveFeedback from '../../public/assets/audio/positiveFeedback_v1.mp3';
 import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
 
@@ -73,7 +71,6 @@ export function Model() {
       totalSets = user.sets;
       setCount = totalSets;
       restTimer = user.restTimer;
-      console.log('Total Reps from Firestore', totalReps);
     }
   }
   setRepPrefs();
@@ -91,7 +88,7 @@ export function Model() {
     const metadataURL = URL + 'metadata.json';
 
     model = await tmPose.load(modelURL, metadataURL);
-
+    console.log(model);
     maxPredictions = model.getTotalClasses();
 
     const size = 640;
@@ -216,12 +213,13 @@ export function Model() {
                 },
                 { merge: true }
               );
+
             db.collection('users')
               .doc(loggedIn)
               .set(
                 {
-                  lifetimeReps: lifetimeReps + successfulReps,
-                  lifetimeSets: lifetimeSets + totalSets,
+                  lifetimeReps: lifetimeReps + parseInt(successfulReps),
+                  lifetimeSets: lifetimeSets + parseInt(totalSets),
                 },
                 { merge: true }
               );
@@ -242,40 +240,35 @@ export function Model() {
 
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
+
         if (repContainer !== null) {
-          repContainer.innerHTML = `Total Reps: ${repCount}`;
-
           let setContainer = document.getElementById('set-container');
-          setContainer.innerHTML = `Total Sets: ${totalSets}`;
-
           let accContainer = document.getElementById('acc-container');
-          accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-
           let remRepsContainer = document.getElementById('rem-reps-container');
-          remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
-
           let remSetsContainer = document.getElementById('rem-sets-container');
+
+          repContainer.innerHTML = `Total Reps: ${repCount}`;
+          setContainer.innerHTML = `Total Sets: ${totalSets}`;
+          accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+          remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
           remSetsContainer.innerHTML = `Remaining Sets: ${setCount}`;
         }
 
         let repContainer1 = document.getElementById('rep1-container');
+
         if (repContainer1 !== null) {
-          repContainer1.innerHTML = `Total Reps: ${repCount}`;
-
           let setContainer1 = document.getElementById('set1-container');
-          setContainer1.innerHTML = `Total Sets: ${totalSets}`;
-
           let accContainer1 = document.getElementById('acc1-container');
-          accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
-
           let remRepsContainer1 = document.getElementById(
             'rem1-reps-container'
           );
-          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
-
           let remSetsContainer1 = document.getElementById(
             'rem1-sets-container'
           );
+          repContainer1.innerHTML = `Total Reps: ${repCount}`;
+          setContainer1.innerHTML = `Total Sets: ${totalSets}`;
+          accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
+          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
           remSetsContainer1.innerHTML = `Remaining Sets: ${setCount}`;
         }
       }
@@ -350,7 +343,7 @@ export function Model() {
       seconds--;
       countdownSeconds.innerHTML = seconds;
       if (seconds === 0) {
-        countdownSeconds.innerHTML = '00:00';
+        countdownSeconds.innerHTML = 'Active';
         clearInterval(counter);
         callback(val);
       }
@@ -369,12 +362,12 @@ export function Model() {
                 You did {totalReps * totalSets} {exercise} in {totalSets} sets
                 with an accuracy of {accuracy}%.
               </h4>
-              <button onClick={() => history.push('/exercise-form')}>
+              <Button onClick={() => history.push('/exercise-form')}>
                 Do another workout
-              </button>
-              <button onClick={() => history.push('/dashboard')}>
+              </Button>
+              <Button onClick={() => history.push('/dashboard')}>
                 Back to Dashboard
-              </button>
+              </Button>
             </Modal>
           </ModalContainer>
         </>
@@ -382,7 +375,9 @@ export function Model() {
       <ModelContainer>
         <TopToolbar>
           <WorkoutType>Squats</WorkoutType>
-          <WorkoutType id="timer">00:00</WorkoutType>
+          <WorkoutType id="timer">
+            {toggleStart === 'active' ? 'Active' : 'Inactive'}{' '}
+          </WorkoutType>
         </TopToolbar>
         <WebcamDataContainer>
           <Webcam>
@@ -394,7 +389,11 @@ export function Model() {
               id="canvas"
             ></canvas>
             <WebcamToolbar>
+              <RemainingRepCount id="rem-reps-container">
+                Are you ready to get DSLD?
+              </RemainingRepCount>
               <Button
+                style={{ backgroundColor: toggleStart ? '#FD374C' : '#6BE19B' }}
                 id="togglePredict"
                 onClick={() => {
                   if (predictStatus === 'pending') {
@@ -410,9 +409,9 @@ export function Model() {
               <LabelContainer id="workout-data-small">
                 {document.getElementById('workout-data-small') ? (
                   <>
-                    <Label id="rem-reps-container">
+                    {/* <Label id="rem-reps-container">
                       Remaining Reps: Loading...
-                    </Label>
+                    </Label> */}
                     <Label id="acc-container">Accuracy: Loading...</Label>
                     <Label id="rep-container">Reps: Loading...</Label>
                     <Label id="set-container">Set: Loading...</Label>
@@ -434,18 +433,20 @@ export function Model() {
           <LabelContainerLarge id="workout-data-large">
             {document.getElementById('workout-data-large') ? (
               <>
-                <Label id="rem1-reps-container">
+                <LargeLabel id="rem1-reps-container">
                   Remaining Reps: Loading...
-                </Label>
-                <Label id="acc1-container">Accuracy: Loading...</Label>
-                <Label id="rep1-container">Reps: Loading...</Label>
-                <Label id="set1-container">Set: Loading...</Label>
-                <Label id="rem1-sets-container">
+                </LargeLabel>
+                <LargeLabel id="acc1-container">
+                  Accuracy: Loading...
+                </LargeLabel>
+                <LargeLabel id="rep1-container">Reps: Loading...</LargeLabel>
+                <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
+                <LargeLabel id="rem1-sets-container">
                   Remaining Sets: Loading...
-                </Label>
+                </LargeLabel>
               </>
             ) : (
-              <Label>Press Start To Begin</Label>
+              <LargeLabel>Press Start To Begin</LargeLabel>
             )}
           </LabelContainerLarge>
         </WebcamDataContainer>
@@ -490,12 +491,13 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 95%;
   margin-top: 65px;
   height: 100%;
   z-index: 1;
   /* border: 3px solid orange; */
   @media only screen and (min-width: 960px) {
+    width: 100%;
   }
 `;
 
@@ -512,13 +514,15 @@ const WorkoutType = styled.div`
   justify-content: center;
   text-decoration: none;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1rem;
+  padding: 0.5rem;
   border-radius: 10px;
   background-color: #355c7d;
   width: 8rem;
   /* border: 3px solid yellow; */
   @media only screen and (min-width: 960px) {
     padding: 1rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -532,7 +536,7 @@ const ModelContainer = styled.div`
   @media only screen and (min-width: 960px) {
     padding: 1rem;
     margin: 1rem;
-    width: 80%;
+    width: 90%;
   }
 
   @media only screen and (min-width: 1200px) {
@@ -567,14 +571,16 @@ const LabelContainer = styled.div`
   border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
-  height: 20rem;
-  @media only screen and (min-width: 1400px) {
+  height: 10rem;
+  width: 100%;
+
+  @media only screen and (min-width: 960px) {
     display: none;
   }
 `;
 const LabelContainerLarge = styled.div`
   display: none;
-  @media only screen and (min-width: 1400px) {
+  @media only screen and (min-width: 960px) {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -584,7 +590,6 @@ const LabelContainerLarge = styled.div`
     background-color: #f9a26c;
     margin-top: 1rem;
     margin-left: 1rem;
-    /* height: 100%; */
     min-width: 8rem;
     width: 100%;
   }
@@ -593,19 +598,22 @@ const LabelContainerLarge = styled.div`
 const Label = styled.div`
   color: white;
   font-size: 1.2rem;
-  /* @media only screen and (min-width: 960px) {
-    display: none;
-  }
-  @media only screen and (min-width: 960px) {
-    display: inline-block;
-  } */
+`;
+const LargeLabel = styled.div`
+  color: white;
+  font-size: 2rem;
 `;
 
 const WebcamToolbar = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   /* border: 3px dotted grey; */
+  @media only screen and (min-width: 1400px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 
 const Button = styled.button`
@@ -618,7 +626,6 @@ const Button = styled.button`
   width: 7rem;
   margin-top: 1rem;
   padding: 0.3rem 0 0.3rem 0;
-  align-self: flex-end;
   width: 100%;
   @media only screen and (min-width: 960px) {
     font-size: 1.3rem;
@@ -629,6 +636,13 @@ const Button = styled.button`
 const WebcamDataContainer = styled.div`
   display: flex;
   width: 100%;
-  @media only screen and (min-width: 1200px) {
+  /* border: 3px solid black; */
+  @media only screen and (min-width: 960px) {
   }
+`;
+
+const RemainingRepCount = styled.h2`
+  color: #325d79;
+  padding-top: 0.8rem;
+  margin: 0;
 `;

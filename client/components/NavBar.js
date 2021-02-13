@@ -26,14 +26,19 @@ export default function NavBar() {
     <Container>
       <GlobalStyles />
       <NavItem style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-        <FontAwesomeIcon
-          icon={hamburgerDropdown ? faTimes : faBars}
-          onClick={function () {
-            setHamburgerDropdown(!hamburgerDropdown);
-            setUserDropdown(false);
-          }}
-          style={{ fontSize: '1.7rem' }}
-        />
+        {!currentUser ? (
+          ''
+        ) : (
+          <FontAwesomeIcon
+            icon={hamburgerDropdown ? faTimes : faBars}
+            onClick={function () {
+              setHamburgerDropdown(!hamburgerDropdown);
+              setUserDropdown(false);
+            }}
+            style={{ fontSize: '1.7rem' }}
+          />
+        )}
+
         <Dropdown
           className={hamburgerDropdown ? 'dropdown-open' : 'dropdown-closed'}
         >
@@ -72,16 +77,6 @@ export default function NavBar() {
                   }}
                 >
                   Start Workout
-                </Link>
-              </DropdownItem>
-              <DropdownItem>
-                <Link
-                  onClick={function () {
-                    setHamburgerDropdown(!hamburgerDropdown);
-                  }}
-                  to="/dashboard"
-                >
-                  Dashboard
                 </Link>
               </DropdownItem>
             </>
@@ -138,6 +133,36 @@ export default function NavBar() {
             </>
           ) : (
             <>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                  to="/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                  to="/user-profile-form"
+                >
+                  Profile Settings
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                  to="/update-profile"
+                >
+                  Account Settings
+                </Link>
+              </DropdownItem>
               <DropdownItem>
                 <Link
                   onClick={function () {

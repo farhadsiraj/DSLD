@@ -5,6 +5,8 @@ import { db } from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import { Alert } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -19,7 +21,7 @@ export default function Dashboard() {
       await logout();
       history.push('/login');
     } catch (error) {
-      setError('Failed to log out');
+      setError('Failed to log out.');
     }
   }
 
@@ -45,8 +47,8 @@ export default function Dashboard() {
 
       historySnapshot.forEach((doc) => {
         if (!doc.data()) {
-          setError('Username not available');
-          throw new Error('Username not available');
+          setError('Workout History not available.');
+          throw new Error('Workout History not available');
         } else {
           pastWorkouts.push(doc.data());
         }
@@ -154,40 +156,68 @@ export default function Dashboard() {
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
-                  {workoutHistory
-                    .slice(Math.max(0, workoutHistory.length - 3))
-                    .reverse()
-                    .map((ele, i) => {
-                      return (
-                        <WorkoutBox key={i}>
-                          <CustomWorkoutTitle>
-                            {ele.workout.type[0].toUpperCase() +
-                              ele.workout.type.slice(1)}
-                          </CustomWorkoutTitle>
-                          <CustomWorkoutType className="lighter">
-                            {ele.date
-                              .toDate()
-                              .toString()
-                              .slice(
-                                0,
-                                ele.date.toDate().toString().indexOf(':') - 8
-                              )}
-                          </CustomWorkoutType>
-                          <CustomWorkoutDetail id="wText">
-                            <Title>Reps: </Title>
-                            <Text>{ele.workout.reps}</Text>
-                          </CustomWorkoutDetail>
-                          <CustomWorkoutDetail>
-                            <Title>Sets: </Title>
-                            <Text>{ele.workout.sets}</Text>
-                          </CustomWorkoutDetail>
-                          <CustomWorkoutDetail>
-                            <Title>Accuracy: </Title>
-                            <Text>{ele.workout.accuracy}%</Text>
-                          </CustomWorkoutDetail>
-                        </WorkoutBox>
-                      );
-                    })}
+                  {workoutHistory.length ? (
+                    workoutHistory
+                      .slice(Math.max(0, workoutHistory.length - 3))
+                      .reverse()
+                      .map((ele, i) => {
+                        return (
+                          <WorkoutBox key={i}>
+                            <CustomWorkoutTitle>
+                              {ele.workout.type[0].toUpperCase() +
+                                ele.workout.type.slice(1)}
+                            </CustomWorkoutTitle>
+                            <CustomWorkoutType className="lighter">
+                              {ele.date
+                                .toDate()
+                                .toString()
+                                .slice(
+                                  0,
+                                  ele.date.toDate().toString().indexOf(':') - 8
+                                )}
+                            </CustomWorkoutType>
+                            <CustomWorkoutDetail id="wText">
+                              <Title>Reps: </Title>
+                              <Text>{ele.workout.reps}</Text>
+                            </CustomWorkoutDetail>
+                            <CustomWorkoutDetail>
+                              <Title>Sets: </Title>
+                              <Text>{ele.workout.sets}</Text>
+                            </CustomWorkoutDetail>
+                            <CustomWorkoutDetail>
+                              <Title>Accuracy: </Title>
+                              <Text>{ele.workout.accuracy}%</Text>
+                            </CustomWorkoutDetail>
+                          </WorkoutBox>
+                        );
+                      })
+                  ) : (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        height: 'auto',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <NoWorkouts>No workout history</NoWorkouts>
+                      <Link
+                        to="/exercise-form"
+                        className="link-reset hover-reset"
+                      >
+                        <StyledButton
+                          style={{
+                            backgroundColor: '#6BE19B',
+                            padding: '1rem',
+                          }}
+                        >
+                          Get Started <FontAwesomeIcon icon={faArrowRight} />
+                        </StyledButton>
+                      </Link>
+                    </div>
+                  )}
                 </Workouts>
               </WorkoutContainer>
             </ColumnContainer>
@@ -228,7 +258,7 @@ export default function Dashboard() {
               </Link>
               <div>
                 <StyledButton
-                  style={{ backgroundColor: 'seagreen' }}
+                  style={{ backgroundColor: '#FD374C' }}
                   onClick={handleLogout}
                 >
                   Log Out
@@ -360,7 +390,7 @@ const Workouts = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50rem;
+  /* height: 50rem; */
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     width: 100%;
@@ -464,4 +494,16 @@ const UserName = styled.h1`
   font-family: 'Josefin Sans';
   font-size: 2rem;
   color: whitesmoke;
+`;
+
+const NoWorkouts = styled.h1`
+  color: rgb(0, 0, 0, 0.04);
+  font-size: 1.8rem;
+  @media only screen and (min-width: 960px) {
+    font-size: 5rem;
+  }
+
+  @media only screen and (min-width: 1110px) {
+    font-size: 7rem;
+  }
 `;
