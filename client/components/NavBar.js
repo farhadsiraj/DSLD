@@ -26,14 +26,19 @@ export default function NavBar() {
     <Container>
       <GlobalStyles />
       <NavItem style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-        <FontAwesomeIcon
-          icon={hamburgerDropdown ? faTimes : faBars}
-          onClick={function () {
-            setHamburgerDropdown(!hamburgerDropdown);
-            setUserDropdown(false);
-          }}
-          style={{ fontSize: '1.7rem' }}
-        />
+        {!currentUser ? (
+          ''
+        ) : (
+          <FontAwesomeIcon
+            icon={hamburgerDropdown ? faTimes : faBars}
+            onClick={function () {
+              setHamburgerDropdown(!hamburgerDropdown);
+              setUserDropdown(false);
+            }}
+            style={{ fontSize: '1.7rem' }}
+          />
+        )}
+
         <Dropdown
           className={hamburgerDropdown ? 'dropdown-open' : 'dropdown-closed'}
         >
