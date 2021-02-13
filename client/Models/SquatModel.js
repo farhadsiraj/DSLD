@@ -394,7 +394,9 @@ export function Model() {
               id="canvas"
             ></canvas>
             <WebcamToolbar>
-              <Label style={{ color: 'black' }}>Hello</Label>
+              <RemainingRepCount id="rem-reps-container">
+                Are you ready to get DSLD?
+              </RemainingRepCount>
               <Button
                 id="togglePredict"
                 onClick={() => {
@@ -411,9 +413,9 @@ export function Model() {
               <LabelContainer id="workout-data-small">
                 {document.getElementById('workout-data-small') ? (
                   <>
-                    <Label id="rem-reps-container">
+                    {/* <Label id="rem-reps-container">
                       Remaining Reps: Loading...
-                    </Label>
+                    </Label> */}
                     <Label id="acc-container">Accuracy: Loading...</Label>
                     <Label id="rep-container">Reps: Loading...</Label>
                     <Label id="set-container">Set: Loading...</Label>
@@ -587,13 +589,8 @@ const LabelContainerLarge = styled.div`
     background-color: #f9a26c;
     margin-top: 1rem;
     margin-left: 1rem;
-    /* height: 100%; */
     min-width: 8rem;
     width: 100%;
-  }
-
-  @media only screen and (min-width: 1200px) {
-    background-color: yellow;
   }
 `;
 
@@ -635,6 +632,11 @@ const WebcamDataContainer = styled.div`
   display: flex;
   width: 100%;
   border: 3px solid black;
-  @media only screen and (min-width: 1200px) {
+  @media only screen and (min-width: 960px) {
   }
+`;
+
+const RemainingRepCount = styled.h2`
+  color: orange;
+  padding-top: 0.8rem;
 `;
