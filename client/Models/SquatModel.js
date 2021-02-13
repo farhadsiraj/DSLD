@@ -71,7 +71,6 @@ export function Model() {
       totalSets = user.sets;
       setCount = totalSets;
       restTimer = user.restTimer;
-      console.log('Total Reps from Firestore', totalReps);
     }
   }
   setRepPrefs();
@@ -221,8 +220,8 @@ export function Model() {
               .doc(loggedIn)
               .set(
                 {
-                  lifetimeReps: lifetimeReps + successfulReps,
-                  lifetimeSets: lifetimeSets + totalSets,
+                  lifetimeReps: lifetimeReps + parseInt(successfulReps),
+                  lifetimeSets: lifetimeSets + parseInt(totalSets),
                 },
                 { merge: true }
               );
