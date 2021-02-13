@@ -208,6 +208,10 @@ export default function Dashboard() {
                   <Text>{user.age || 'n/a'}</Text>
                 </Row>
                 <Row>
+                  <Title>Height: </Title>
+                  <Text>{user.height || 'n/a'}</Text>
+                </Row>
+                <Row>
                   <Title>Weight: </Title>
                   <Text>{user.weight || 'n/a'}</Text>
                 </Row>
