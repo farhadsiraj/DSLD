@@ -33,6 +33,7 @@ export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [state, setState] = useState({ repCount: 0 });
   const history = useHistory();
 
   loggedIn = auth.currentUser.uid;
@@ -48,6 +49,12 @@ export function Model() {
       console.log(user);
       lifetimeReps = user.lifetimeReps;
       lifetimeSets = user.lifetimeSets;
+
+      // setState({
+      //   ...state,
+      //   lifetimeReps: user.lifetimeReps,
+      //   lifetimeSets: user.lifetimeSets,
+      // });
       console.log('lifetimeStats', lifetimeReps, lifetimeSets);
     }
   }
@@ -88,7 +95,7 @@ export function Model() {
     const metadataURL = URL + 'metadata.json';
 
     model = await tmPose.load(modelURL, metadataURL);
-    console.log(model);
+
     maxPredictions = model.getTotalClasses();
 
     const size = 640;
@@ -265,7 +272,7 @@ export function Model() {
           let remSetsContainer1 = document.getElementById(
             'rem1-sets-container'
           );
-          repContainer1.innerHTML = `Total Reps: ${repCount}`;
+          repContainer1.innerHTML = `Total Reps: <p>${repCount}</p>`;
           setContainer1.innerHTML = `Total Sets: ${totalSets}`;
           accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
           remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
@@ -431,23 +438,28 @@ export function Model() {
             </WebcamToolbar>
           </Webcam>
           <LabelContainerLarge id="workout-data-large">
-            {document.getElementById('workout-data-large') ? (
-              <>
-                <LargeLabel id="rem1-reps-container">
-                  Remaining Reps: Loading...
-                </LargeLabel>
-                <LargeLabel id="acc1-container">
-                  Accuracy: Loading...
-                </LargeLabel>
-                <LargeLabel id="rep1-container">Reps: Loading...</LargeLabel>
-                <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
-                <LargeLabel id="rem1-sets-container">
-                  Remaining Sets: Loading...
-                </LargeLabel>
-              </>
-            ) : (
-              <LargeLabel>Press Start To Begin</LargeLabel>
-            )}
+            <LabelBox>{repCount}</LabelBox>
+
+            <LabelBox>
+              {document.getElementById('workout-data-large') ? (
+                <>
+                  <LargeLabel id="rem1-reps-container">
+                    Remaining Reps: Loading...
+                  </LargeLabel>
+                  <LargeLabel id="acc1-container">
+                    Accuracy: Loading...
+                  </LargeLabel>
+                  <LargeLabel id="rep1-container">Reps: Loading...</LargeLabel>
+                  <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
+                  <LargeLabel id="rem1-sets-container">
+                    Remaining Sets: Loading...
+                  </LargeLabel>
+                </>
+              ) : (
+                <LargeLabel>Press Start To Begin</LargeLabel>
+              )}
+            </LabelBox>
+            <LabelBox></LabelBox>
           </LabelContainerLarge>
         </WebcamDataContainer>
       </ModelContainer>
@@ -583,16 +595,24 @@ const LabelContainerLarge = styled.div`
   @media only screen and (min-width: 960px) {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     flex-direction: column;
-    /* border: 3px dotted orange; */
+    border: 3px dotted hotpink;
     border-radius: 1rem;
     background-color: #f9a26c;
     margin-top: 1rem;
     margin-left: 1rem;
     min-width: 8rem;
-    width: 100%;
+    padding: 1rem;
+    width: 70%;
   }
+`;
+
+const LabelBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 2px solid red;
+  padding: 2rem;
 `;
 
 const Label = styled.div`

@@ -94,7 +94,18 @@ export default function Dashboard() {
                 </div>
                 <UserInfo>
                   <Flex style={{ width: '90%' }}>
-                    <DataBox>
+                    <DataBox
+                      style={{
+                        border: '5px solid lightblue',
+                        height: '90%',
+                        borderRadius: '50%',
+                        margin: '1rem',
+                        padding: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                      }}
+                    >
                       <div>
                         <Title>Active Streak:</Title>
                       </div>
@@ -102,7 +113,18 @@ export default function Dashboard() {
                         <Text>{user.activeStreak || 0}</Text>
                       </div>
                     </DataBox>
-                    <DataBox>
+                    <DataBox
+                      style={{
+                        border: '5px solid lightblue',
+                        height: '90%',
+                        borderRadius: '50%',
+                        margin: '1rem',
+                        padding: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                      }}
+                    >
                       <div>
                         <Title>Lifetime Reps:</Title>
                       </div>
@@ -110,7 +132,18 @@ export default function Dashboard() {
                         <Text>Squats: {user.lifetimeReps || 0}</Text>
                       </div>
                     </DataBox>
-                    <DataBox>
+                    <DataBox
+                      style={{
+                        border: '5px solid lightblue',
+                        height: '90%',
+                        borderRadius: '50%',
+                        margin: '1rem',
+                        padding: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                      }}
+                    >
                       <div>
                         <Title>Lifetime Sets:</Title>
                       </div>
@@ -118,7 +151,18 @@ export default function Dashboard() {
                         <Text>{user.lifetimeSets || 'n/a'}</Text>
                       </div>
                     </DataBox>
-                    <DataBox>
+                    <DataBox
+                      style={{
+                        border: '5px solid lightblue',
+                        height: '90%',
+                        borderRadius: '50%',
+                        margin: '1rem',
+                        padding: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                      }}
+                    >
                       <div>
                         <Title>Latest Activity:</Title>
                       </div>
