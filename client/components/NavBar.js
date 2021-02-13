@@ -79,16 +79,6 @@ export default function NavBar() {
                   Start Workout
                 </Link>
               </DropdownItem>
-              <DropdownItem>
-                <Link
-                  onClick={function () {
-                    setHamburgerDropdown(!hamburgerDropdown);
-                  }}
-                  to="/dashboard"
-                >
-                  Dashboard
-                </Link>
-              </DropdownItem>
             </>
           )}
         </Dropdown>
