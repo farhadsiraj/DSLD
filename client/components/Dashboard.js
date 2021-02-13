@@ -5,6 +5,8 @@ import { db } from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import { Alert } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -194,10 +196,26 @@ export default function Dashboard() {
                       style={{
                         display: 'flex',
                         justifyContent: 'center',
+                        alignItems: 'center',
                         width: '100%',
+                        height: 'auto',
+                        flexDirection: 'column',
                       }}
                     >
-                      <h1 style={{ color: 'lightgrey' }}>No workout history</h1>
+                      <NoWorkouts>No workout history</NoWorkouts>
+                      <Link
+                        to="/exercise-form"
+                        className="link-reset hover-reset"
+                      >
+                        <StyledButton
+                          style={{
+                            backgroundColor: '#6BE19B',
+                            padding: '1rem',
+                          }}
+                        >
+                          Get Started <FontAwesomeIcon icon={faArrowRight} />
+                        </StyledButton>
+                      </Link>
                     </div>
                   )}
                 </Workouts>
@@ -372,7 +390,7 @@ const Workouts = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50rem;
+  /* height: 50rem; */
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     width: 100%;
@@ -476,4 +494,16 @@ const UserName = styled.h1`
   font-family: 'Josefin Sans';
   font-size: 2rem;
   color: whitesmoke;
+`;
+
+const NoWorkouts = styled.h1`
+  color: rgb(0, 0, 0, 0.04);
+  font-size: 1.8rem;
+  @media only screen and (min-width: 960px) {
+    font-size: 5rem;
+  }
+
+  @media only screen and (min-width: 1110px) {
+    font-size: 7rem;
+  }
 `;
