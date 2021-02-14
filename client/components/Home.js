@@ -8,8 +8,11 @@ import ohp from '../../public/assets/images/ohp.png';
 import press from '../../public/assets/images/press.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from './contexts/AuthContext';
 
 export default function Home() {
+  const { currentUser } = useAuth();
+
   return (
     <GradientContainer>
       <GlobalStyles />
@@ -28,7 +31,11 @@ export default function Home() {
                   completed reps to ensure you get the most out of your time in
                   the gym.
                 </Text>
-                <Link to="/signup" className="link-reset hover-reset">
+
+                <Link
+                  to={!currentUser ? '/signup' : '/dashboard'}
+                  className="link-reset hover-reset"
+                >
                   <StyledButton
                     style={{
                       backgroundColor: '#F9A26C',
