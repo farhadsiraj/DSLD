@@ -14,7 +14,8 @@ let squattingPosition;
 let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
-let lineColor = '#FFD700';
+// let lineColor = '#FFD700';
+let lineColor = '#9BD7D1';
 let exercise;
 let restTimer;
 let lifetimeReps;
@@ -143,6 +144,7 @@ export function Model() {
     if (bool === true) {
       const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
       const prediction = await model.predict(posenetOutput);
+      console.log('PREDICTION', prediction);
 
       for (let i = 0; i < maxPredictions; i++) {
         const classPrediction = `${prediction[i].className}: ${Math.ceil(
@@ -158,25 +160,29 @@ export function Model() {
       middlePosition = prediction[1].probability;
       squattingPosition = prediction[2].probability;
 
+
       let canvasBorder = document.getElementById('canvas');
 
       if (setCount > 0) {
+        // Checking for Starting Position
         if (counterStatus === 'pending' && startingPosition > 0.9) {
-          lineColor = '#FFD700';
-          canvasBorder.style.border = `20px solid ${lineColor}`;
+          // lineColor = '#9BD7D1';
+          // canvasBorder.style.border = `20px solid ${lineColor}`;
+          // drawPose(pose, lineColor);
           counterStatus = 'starting';
         }
 
+        // Transition from Starting to Middle Squat
         if (counterStatus === 'starting' && middlePosition > 0.5) {
-          lineColor = '#9BD7D1';
-          canvasBorder.style.border = `20px solid ${lineColor}`;
           counterStatus = 'middle';
         }
 
+        // Transition from Middle to Full Squat
         if (counterStatus === 'middle' && squattingPosition > 0.9) {
           counterStatus = 'squatting';
         }
 
+        // Successful Full Squat
         if (counterStatus === 'squatting' && startingPosition > 0.9) {
           lineColor = '#39E47E';
           drawPose(pose, lineColor);
@@ -187,6 +193,7 @@ export function Model() {
           reps = reps - 1;
         }
 
+        // Failed Squat (didn't reach to full squat position)
         if (counterStatus === 'middle' && startingPosition > 0.9) {
           lineColor = '#EE4A40';
           canvasBorder.style.border = `20px solid ${lineColor}`;
@@ -418,7 +425,7 @@ export function Model() {
                 id="togglePredict"
                 onClick={() => {
                   if (predictStatus === 'pending') {
-                    countdown(5, togglePredict);
+                    countdown(10, togglePredict);
                   } else {
                     togglePredict();
                   }
