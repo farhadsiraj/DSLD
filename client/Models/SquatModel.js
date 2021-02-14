@@ -454,7 +454,7 @@ export function Model() {
             </WebcamToolbar>
           </Webcam>
           <LabelContainerLarge id="workout-data-large">
-            <LabelBox>{repCount}</LabelBox>
+            <LabelBox></LabelBox>
 
             <LabelBox>
               {document.getElementById('workout-data-large') ? (
@@ -613,7 +613,7 @@ const LabelContainerLarge = styled.div`
     justify-content: center;
     /* align-items: center; */
     flex-direction: column;
-    border: 3px dotted hotpink;
+    /* border: 3px dotted hotpink; */
     border-radius: 1rem;
     background-color: #f9a26c;
     margin-top: 1rem;
@@ -627,7 +627,7 @@ const LabelContainerLarge = styled.div`
 const LabelBox = styled.div`
   display: flex;
   flex-direction: column;
-  border: 2px solid red;
+  /* border: 2px solid red; */
   padding: 2rem;
 `;
 
