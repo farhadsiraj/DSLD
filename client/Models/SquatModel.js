@@ -517,7 +517,6 @@ const Modal = styled.div`
   padding: 20px;
   min-height: 200px;
   color: white;
-
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -577,13 +576,11 @@ const ModelContainer = styled.div`
   /* border: 3px solid black; */
   flex-direction: column;
   align-items: center;
-
   @media only screen and (min-width: 960px) {
     padding: 1rem;
     margin: 1rem;
     width: 90%;
   }
-
   @media only screen and (min-width: 1200px) {
     padding: 1rem;
     margin: 1rem;
@@ -618,7 +615,6 @@ const LabelContainer = styled.div`
   margin-top: 1rem;
   height: 10rem;
   width: 100%;
-
   @media only screen and (min-width: 960px) {
     display: none;
   }
