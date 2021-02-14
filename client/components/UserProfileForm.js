@@ -32,7 +32,7 @@ export default function UserProfileForm() {
     axios
       .post(`https://api.Cloudinary.com/v1_1/dsld-cloud/image/upload`, formData)
       .then(({ data: { public_id } }) => {
-        updatedInfo.imageUrl = `https://res.cloudinary.com/dsld-cloud/image/upload/c_crop,g_face,h_192,r_100,w_192/${public_id}.jpg`;
+        updatedInfo.imageUrl = `https://res.cloudinary.com/dsld-cloud/image/upload/c_lfill,g_face,h_192,r_100,w_192/${public_id}.jpg`;
       });
   }
 
