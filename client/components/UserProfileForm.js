@@ -31,8 +31,8 @@ export default function UserProfileForm() {
 
     axios
       .post(`https://api.Cloudinary.com/v1_1/dsld-cloud/image/upload`, formData)
-      .then(({ data: { url } }) => {
-        updatedInfo.imageUrl = url;
+      .then(({ data: { public_id } }) => {
+        updatedInfo.imageUrl = `https://res.cloudinary.com/dsld-cloud/image/upload/c_crop,g_face,h_192,r_100,w_192/${public_id}.jpg`;
       });
   }
 
@@ -53,7 +53,7 @@ export default function UserProfileForm() {
       db.collection('users')
         .doc(auth.currentUser.uid)
         .set(updatedInfo, { merge: true })
-        // .then(() => history.push('/dashboard'))
+        .then(() => history.push('/dashboard'))
         .catch((error) => {
           console.log(
             'Something went wrong with adding user data to firestore: ',
