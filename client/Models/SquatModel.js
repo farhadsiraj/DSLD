@@ -157,10 +157,9 @@ export function Model() {
 
       drawPose(pose, lineColor);
 
-      startingPosition = prediction[1].probability;
-      squattingPosition = prediction[3].probability;
-      middlePosition = prediction[2].probability;
-      setupPosition = prediction[0].probability;
+      startingPosition = prediction[0].probability;
+      middlePosition = prediction[1].probability;
+      squattingPosition = prediction[2].probability;
 
       let canvasBorder = document.getElementById('canvas');
 
@@ -350,8 +349,7 @@ export function Model() {
 
     return function cleanup() {
       if (predictStatus === 'active') togglePredict();
-      totalReps = 0;
-      successfulReps = 0;
+
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };

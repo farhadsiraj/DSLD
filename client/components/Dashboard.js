@@ -168,11 +168,14 @@ export default function Dashboard() {
                       .map((ele, i) => {
                         return (
                           <WorkoutBox key={i}>
-                            <CustomWorkoutTitle>
+                            <CustomWorkoutTitle sty>
                               {ele.workout.type[0].toUpperCase() +
                                 ele.workout.type.slice(1)}
                             </CustomWorkoutTitle>
-                            <CustomWorkoutType className="lighter">
+                            <CustomWorkoutType
+                              className="lighter"
+                              style={{ color: 'lightgrey' }}
+                            >
                               {ele.date
                                 .toDate()
                                 .toString()
@@ -339,6 +342,7 @@ const UserInfo = styled.div`
   color: white;
   justify-content: center;
   align-items: center;
+  padding: 1.5rem;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     margin-left: 2rem;
@@ -401,6 +405,7 @@ const WorkoutBox = styled.div`
   border-radius: 2rem;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
   @media only screen and (min-width: 960px) {
     margin: 0 1rem;
   }
@@ -425,6 +430,8 @@ const CustomWorkoutDetail = styled.h3`
   align-items: center;
   color: white;
   font-size: 1rem;
+  @media only screen and (min-width: 960px) {
+  }
 `;
 
 const StyledButton = styled.button`
@@ -443,7 +450,6 @@ const StyledButton = styled.button`
 const AccountSettingsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
   justify-content: center;
@@ -461,13 +467,23 @@ const CurrentSettings = styled.div`
 
 const Title = styled.p`
   color: white;
-  font-size: 1.5rem;
   padding-right: 0.5rem;
+  font-size: 1.3rem;
+
+  @media only screen and (min-width: 960px) {
+    font-size: 1.7rem;
+  }
 `;
 
 const AcheivementText = styled.h3`
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  justify-content: center;
+  align-items: center;
+  @media only screen and (min-width: 960px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const Text = styled.p`
@@ -484,14 +500,21 @@ const Row = styled.div`
 `;
 
 const DataBox = styled.div`
+  display: flex;
   flex: 1;
   width: 100%;
   padding: 1rem 0;
   justify-content: center;
+  align-items: center;
+  border: 4px solid #6be19b;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 0.5rem;
+  flex-direction: column;
 
   @media only screen and (min-width: 960px) {
     border: 7px solid #6be19b;
-    height: 90%;
+    height: 100%;
     border-radius: 50%;
     margin: 1rem;
     padding: 1rem;
