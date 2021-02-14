@@ -43,7 +43,7 @@ export function Model() {
 
   loggedIn = auth.currentUser.uid;
 
-  useEffect(async () => {
+  async function setLifetimeStats() {
     const usersRef = db.collection('users').doc(loggedIn);
 
     const doc = await usersRef.get();
@@ -54,16 +54,9 @@ export function Model() {
       console.log(user);
       lifetimeReps = user.lifetimeReps;
       lifetimeSets = user.lifetimeSets;
-
-      setState({
-        ...state,
-        lifetimeReps: user.lifetimeReps,
-        lifetimeSets: user.lifetimeSets,
-      });
-
-      console.log('lifetimeStats', lifetimeReps, lifetimeSets);
     }
-  }, []);
+  }
+  setLifetimeStats();
 
   console.log('test state', state);
   async function setRepPrefs() {
@@ -441,6 +434,7 @@ export function Model() {
                     {/* <Label id="rem-reps-container">
                       Remaining Reps: Loading...
                     </Label> */}
+
                     <Label id="acc-container">Accuracy: Loading...</Label>
                     <Label id="rep-container">Reps: Loading...</Label>
                     <Label id="set-container">Set: Loading...</Label>
