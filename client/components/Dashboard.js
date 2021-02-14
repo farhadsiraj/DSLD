@@ -35,7 +35,7 @@ export default function Dashboard() {
         userDoc.data();
         setUser(userDoc.data());
       }
-
+      console.log(user);
       let pastWorkouts = [];
       const workoutHistoryRef = db
         .collection('users')
@@ -55,6 +55,7 @@ export default function Dashboard() {
       setWorkoutHistory(pastWorkouts);
     })();
   }, []);
+  console.log(user);
 
   return (
     <div>
@@ -95,16 +96,6 @@ export default function Dashboard() {
                   <Flex style={{ width: '90%' }}>
                     <DataBox>
                       <div>
-                        <Title>Active Streak:</Title>
-                      </div>
-                      <div>
-                        <AcheivementText>
-                          {user.activeStreak || 0}
-                        </AcheivementText>
-                      </div>
-                    </DataBox>
-                    <DataBox>
-                      <div>
                         <Title>Lifetime Reps:</Title>
                       </div>
                       <div>
@@ -143,6 +134,18 @@ export default function Dashboard() {
                         </AcheivementText>
                       </div>
                     </DataBox>
+                    <div
+                      style={{
+                        flexDirection: 'column',
+                        flex: '1',
+                      }}
+                    >
+                      <CustomWorkoutTitle>Age: {user.age}</CustomWorkoutTitle>
+                      <CustomWorkoutTitle>
+                        Weight: {user.weight}
+                      </CustomWorkoutTitle>
+                      <CustomWorkoutTitle>Sex: {user.sex}</CustomWorkoutTitle>
+                    </div>
                   </Flex>
                 </UserInfo>
               </UserDataContainer>
@@ -167,7 +170,7 @@ export default function Dashboard() {
                       .map((ele, i) => {
                         return (
                           <WorkoutBox key={i}>
-                            <CustomWorkoutTitle sty>
+                            <CustomWorkoutTitle>
                               {ele.workout.type[0].toUpperCase() +
                                 ele.workout.type.slice(1)}
                             </CustomWorkoutTitle>
@@ -411,7 +414,6 @@ const WorkoutBox = styled.div`
 `;
 
 const CustomWorkoutTitle = styled.h1`
-  font-family: 'Inter';
   color: #355c7d;
   font-size: 2rem;
   background: rgba(255, 255, 255, 0.5);
@@ -502,6 +504,7 @@ const DataBox = styled.div`
   display: flex;
   flex: 1;
   width: 100%;
+  min-width: 12rem;
   padding: 1rem 0;
   justify-content: center;
   align-items: center;
