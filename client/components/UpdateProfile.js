@@ -5,7 +5,6 @@ import { Link, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import gym from '../../public/assets/images/gym.jpg';
-import { distSquared } from '@tensorflow/tfjs-core/dist/util';
 
 export default function UpdateProfile() {
   const emailRef = useRef();
