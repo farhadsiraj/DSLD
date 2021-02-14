@@ -77,6 +77,7 @@ export default function UpdateProfile() {
                     ref={emailRef}
                     required
                     defaultValue={currentUser.email}
+                    onClick={(event) => selectText(event)}
                   />
                 </Form.Group>
                 <Form.Group id="currentPassword">

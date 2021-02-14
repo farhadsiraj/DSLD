@@ -55,6 +55,13 @@ export default function ExerciseForm() {
     setLoading(false);
   }
 
+  function selectText(event) {
+    const input = event.target;
+    console.log('input in selectText', input);
+    input.focus();
+    input.select();
+  }
+
   return (
     <GradientContainer>
       <ContentContainer>
@@ -82,6 +89,7 @@ export default function ExerciseForm() {
                     maxLength="3"
                     pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                     defaultValue="3"
+                    onClick={(event) => selectText(event)}
                   />
                 </Form.Group>
                 <Form.Group id="reps">
@@ -92,6 +100,7 @@ export default function ExerciseForm() {
                     maxLength="3"
                     pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                     defaultValue="10"
+                    onClick={(event) => selectText(event)}
                   />
                 </Form.Group>
                 <Form.Group id="rest">
@@ -102,6 +111,7 @@ export default function ExerciseForm() {
                     maxLength="3"
                     pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                     defaultValue="10"
+                    onClick={(event) => selectText(event)}
                   />
                 </Form.Group>
                 <Button
