@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ball from '../../public/assets/images/ball.png';
+import axios from 'axios';
 import { db, auth } from '../../firebase';
 
 export default function UserProfileForm() {
@@ -13,8 +14,12 @@ export default function UserProfileForm() {
   const ageRef = useRef();
   const sexRef = useRef();
 
+  if (profileImageRef.current) console.log(profileImageRef.current);
+  console.log(profileImageRef.current);
+
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [profileImage, setProfileImage] = useState('');
 
   const history = useHistory();
 
@@ -28,18 +33,6 @@ export default function UserProfileForm() {
     try {
       setError('');
       setLoading(true);
-
-      // let usersRef = db.collection('users');
-      // let snapshot = await usersRef
-      //   .where('username', '==', usernameRef.current.value)
-      //   .get();
-
-      // snapshot.forEach((doc) => {
-      //   if (doc.data()) {
-      //     setError('Username not available');
-      //     throw new Error('Username not available');
-      //   }
-      // });
 
       let updatedInfo = {};
       if (usernameRef.current.value)
@@ -67,7 +60,7 @@ export default function UserProfileForm() {
     }
     setLoading(false);
   }
-
+  console.log(profileImage);
   return (
     <GradientContainer>
       <ContentContainer>
@@ -83,6 +76,14 @@ export default function UserProfileForm() {
                     type="string"
                     ref={usernameRef}
                     placeholder="Enter a username"
+                  />
+                </Form.Group>
+                <Form.Group id="image">
+                  <Form.Label>Profile Image:</Form.Label>
+                  <Form.Control
+                    type="file"
+                    ref={profileImageRef}
+                    onChange={(e) => setProfileImage(e.target.files[0])}
                   />
                 </Form.Group>
                 <Form.Group id="age">
