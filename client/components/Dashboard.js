@@ -4,7 +4,6 @@ import { Link, useHistory } from 'react-router-dom';
 import { db } from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
-import { Alert } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -120,7 +119,7 @@ export default function Dashboard() {
                       </div>
                       <div>
                         <AcheivementText>
-                          {user.lifetimeSets || 'n/a'}
+                          {user.lifetimeSets || 0}
                         </AcheivementText>
                       </div>
                     </DataBox>
@@ -540,15 +539,4 @@ const NoWorkouts = styled.h1`
   @media only screen and (min-width: 1110px) {
     font-size: 7rem;
   }
-`;
-
-const StatCircles = styled.div`
-  border: '5px solid #FFD700';
-  height: '90%';
-  border-radius: '50%';
-  margin: '1rem';
-  padding: '1rem';
-  display: 'flex';
-  align-items: 'center';
-  flex-direction: 'column';
 `;
