@@ -171,13 +171,12 @@ const Box = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
-  font-family: 'Josefin Sans';
   margin-top: 2rem;
   font-size: 1.4rem;
   color: white;
-  font-weight: 300;
+  font-weight: 800;
   @media only screen and (min-width: 960px) {
-    font-size: 2rem;
+    font-size: 2.6rem;
     margin-top: 5rem;
   }
 `;
@@ -185,10 +184,12 @@ const HeaderTitle = styled.h1`
 const Text = styled.p`
   color: white;
   font-size: 0.7rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   width: 80%;
+  font-weight: 400;
   @media only screen and (min-width: 960px) {
     font-size: 1rem;
+    margin-top: 1rem;
   }
 `;
 

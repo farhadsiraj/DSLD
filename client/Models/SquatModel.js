@@ -29,12 +29,18 @@ let predictStatus = 'pending';
 let accuracy;
 let startAnimation;
 let startAnimation2;
+let finalRepCount;
 
 export function Model() {
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const history = useHistory();
+  const [state, setState] = useState({
+    repCount: 0,
+    lifetimeReps: null,
+    lifetimeSets: null,
+  });
 
   loggedIn = auth.currentUser.uid;
 
@@ -49,7 +55,6 @@ export function Model() {
       console.log(user);
       lifetimeReps = user.lifetimeReps;
       lifetimeSets = user.lifetimeSets;
-      console.log('lifetimeStats', lifetimeReps, lifetimeSets);
     }
   }
   setLifetimeStats();
@@ -89,7 +94,7 @@ export function Model() {
     const metadataURL = URL + 'metadata.json';
 
     model = await tmPose.load(modelURL, metadataURL);
-    console.log(model);
+
     maxPredictions = model.getTotalClasses();
 
     const size = 640;
@@ -154,7 +159,7 @@ export function Model() {
       startingPosition = prediction[0].probability;
       middlePosition = prediction[1].probability;
       squattingPosition = prediction[2].probability;
-      // setupPosition = prediction[0].probability;
+
 
       let canvasBorder = document.getElementById('canvas');
 
@@ -202,6 +207,7 @@ export function Model() {
         let denominator = totalReps * totalSets;
 
         accuracy = Math.ceil((successfulReps / denominator) * 100);
+        finalRepCount = successfulReps;
 
         if (reps <= 0) {
           setCount--;
@@ -224,18 +230,27 @@ export function Model() {
                 { merge: true }
               );
 
+            console.log('successfulReps', successfulReps);
+            console.log('successfulReps typeof', typeof successfulReps);
+            console.log('totalSets', totalSets);
+            console.log('totalSets typeof', typeof totalSets);
+            console.log('lifetimeReps', lifetimeReps);
+            console.log('lifetimeReps typeof', typeof lifetimeReps);
+            console.log('lifetimeSets', lifetimeSets);
+            console.log('lifetimeSets typeof', typeof lifetimeSets);
             db.collection('users')
               .doc(loggedIn)
               .set(
                 {
-                  lifetimeReps: lifetimeReps + parseInt(successfulReps),
-                  lifetimeSets: lifetimeSets + parseInt(totalSets),
+                  lifetimeReps:
+                    parseInt(lifetimeReps) + parseInt(successfulReps),
+                  lifetimeSets: parseInt(lifetimeSets) + parseInt(totalSets),
                 },
                 { merge: true }
               );
             counterStatus = 'pending';
             lineColor = '#9BD7D1';
-            totalReps = 0;
+
             setModalOpen(!modalOpen);
             togglePredict();
             window.cancelAnimationFrame(startAnimation);
@@ -338,7 +353,7 @@ export function Model() {
 
     return function cleanup() {
       if (predictStatus === 'active') togglePredict();
-
+      repCount = 0;
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
@@ -369,8 +384,11 @@ export function Model() {
               <h3>Great Work!</h3>
               <h4>
                 {' '}
-                You did {totalReps * totalSets} {exercise} in {totalSets} sets
-                with an accuracy of {accuracy}%.
+                {console.log('Final Rep Count-->', finalRepCount)}
+                {console.log('Total Sets-->', totalSets)}
+                {console.log('successfulReps-->', successfulReps)}
+                You did {finalRepCount} {exercise}s in {totalSets} sets with an
+                accuracy of {accuracy}%.
               </h4>
               <Button onClick={() => history.push('/exercise-form')}>
                 Do another workout
@@ -422,6 +440,7 @@ export function Model() {
                     {/* <Label id="rem-reps-container">
                       Remaining Reps: Loading...
                     </Label> */}
+
                     <Label id="acc-container">Accuracy: Loading...</Label>
                     <Label id="rep-container">Reps: Loading...</Label>
                     <Label id="set-container">Set: Loading...</Label>
@@ -441,23 +460,40 @@ export function Model() {
             </WebcamToolbar>
           </Webcam>
           <LabelContainerLarge id="workout-data-large">
-            {document.getElementById('workout-data-large') ? (
-              <>
-                <LargeLabel id="rem1-reps-container">
-                  Remaining Reps: Loading...
-                </LargeLabel>
-                <LargeLabel id="acc1-container">
-                  Accuracy: Loading...
-                </LargeLabel>
-                <LargeLabel id="rep1-container">Reps: Loading...</LargeLabel>
-                <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
-                <LargeLabel id="rem1-sets-container">
-                  Remaining Sets: Loading...
-                </LargeLabel>
-              </>
-            ) : (
-              <LargeLabel>Press Start To Begin</LargeLabel>
-            )}
+            <LabelBox></LabelBox>
+
+            <LabelBox style={{ border: '1px solid red' }}>
+              {document.getElementById('workout-data-large') ? (
+                <>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rem1-reps-container">
+                      Remaining Reps: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="acc1-container">
+                      Accuracy: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rep1-container">
+                      Reps: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rem1-sets-container">
+                      Remaining Sets: Loading...
+                    </LargeLabel>
+                  </div>
+                </>
+              ) : (
+                <LargeLabel>Press Start To Begin</LargeLabel>
+              )}
+            </LabelBox>
+            <LabelBox></LabelBox>
           </LabelContainerLarge>
         </WebcamDataContainer>
       </ModelContainer>
@@ -593,16 +629,24 @@ const LabelContainerLarge = styled.div`
   @media only screen and (min-width: 960px) {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     flex-direction: column;
-    /* border: 3px dotted orange; */
+    /* border: 3px dotted hotpink; */
     border-radius: 1rem;
     background-color: #f9a26c;
     margin-top: 1rem;
     margin-left: 1rem;
     min-width: 8rem;
-    width: 100%;
+    padding: 1rem;
+    width: 70%;
   }
+`;
+
+const LabelBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid red; */
+  padding: 2rem;
 `;
 
 const Label = styled.div`
@@ -611,7 +655,10 @@ const Label = styled.div`
 `;
 const LargeLabel = styled.div`
   color: white;
-  font-size: 2rem;
+  font-size: 1.2rem;
+  @media only screen and (min-width: 1400px) {
+    font-size: 2rem;
+  }
 `;
 
 const WebcamToolbar = styled.div`
