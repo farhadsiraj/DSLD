@@ -13,18 +13,27 @@ export default function UserProfileForm() {
   const weightRef = useRef();
   const ageRef = useRef();
   const sexRef = useRef();
-
-  if (profileImageRef.current) console.log(profileImageRef.current);
-  console.log(profileImageRef.current);
+  let updatedInfo = {};
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [profileImage, setProfileImage] = useState('');
 
   const history = useHistory();
 
   function handleChange(event) {
     sexRef.current.value = event.target.value;
+  }
+
+  async function uploadImage(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'eiuwkszz');
+
+    axios
+      .post(`https://api.Cloudinary.com/v1_1/dsld-cloud/image/upload`, formData)
+      .then(({ data: { url } }) => {
+        updatedInfo.imageUrl = url;
+      });
   }
 
   async function handleSubmit(event) {
@@ -34,7 +43,6 @@ export default function UserProfileForm() {
       setError('');
       setLoading(true);
 
-      let updatedInfo = {};
       if (usernameRef.current.value)
         updatedInfo.username = usernameRef.current.value;
       if (ageRef.current.value) updatedInfo.age = ageRef.current.value;
@@ -45,7 +53,7 @@ export default function UserProfileForm() {
       db.collection('users')
         .doc(auth.currentUser.uid)
         .set(updatedInfo, { merge: true })
-        .then(() => history.push('/dashboard'))
+        // .then(() => history.push('/dashboard'))
         .catch((error) => {
           console.log(
             'Something went wrong with adding user data to firestore: ',
@@ -60,7 +68,6 @@ export default function UserProfileForm() {
     }
     setLoading(false);
   }
-  console.log(profileImage);
   return (
     <GradientContainer>
       <ContentContainer>
@@ -82,8 +89,7 @@ export default function UserProfileForm() {
                   <Form.Label>Profile Image:</Form.Label>
                   <Form.Control
                     type="file"
-                    ref={profileImageRef}
-                    onChange={(e) => setProfileImage(e.target.files[0])}
+                    onChange={(e) => uploadImage(e.target.files[0])}
                   />
                 </Form.Group>
                 <Form.Group id="age">
