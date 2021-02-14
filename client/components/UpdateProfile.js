@@ -19,13 +19,9 @@ export default function UpdateProfile() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  console.log('hello');
-
   function handleSubmit(event) {
     event.preventDefault();
-    console.log('hello from handle');
-    console.log('currentPasswordRef in handlesubmit', currenPasswordRef);
-
+    
     const promises = [];
     setError('');
     setLoading(true);
