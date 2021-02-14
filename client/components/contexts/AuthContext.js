@@ -35,6 +35,10 @@ export function AuthProvider({ children }) {
     return currentUser.updatePassword(password);
   }
 
+  function reauthenticateCurrentUser(password) {
+    currentUser.reauthenticateWithCredential(password);
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -51,6 +55,7 @@ export function AuthProvider({ children }) {
     resetPassword,
     updateEmail,
     updatePassword,
+    reauthenticateCurrentUser,
   };
 
   return (
