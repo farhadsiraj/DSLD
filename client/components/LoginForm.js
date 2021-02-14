@@ -5,6 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import ball from '../../public/assets/images/ball.png';
+import { auth } from '../../firebase';
 
 export default function LoginForm() {
   const emailRef = useRef();

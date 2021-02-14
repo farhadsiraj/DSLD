@@ -57,7 +57,6 @@ export default function ExerciseForm() {
 
   function selectText(event) {
     const input = event.target;
-    console.log('input in selectText', input);
     input.focus();
     input.select();
   }
