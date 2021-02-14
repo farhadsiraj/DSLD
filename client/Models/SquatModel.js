@@ -160,7 +160,6 @@ export function Model() {
       middlePosition = prediction[1].probability;
       squattingPosition = prediction[2].probability;
 
-
       let canvasBorder = document.getElementById('canvas');
 
       if (setCount > 0) {
@@ -462,7 +461,7 @@ export function Model() {
           <LabelContainerLarge id="workout-data-large">
             <LabelBox></LabelBox>
 
-            <LabelBox style={{ border: '1px solid red' }}>
+            <LabelBox>
               {document.getElementById('workout-data-large') ? (
                 <>
                   <div style={{ padding: '1rem' }}>
