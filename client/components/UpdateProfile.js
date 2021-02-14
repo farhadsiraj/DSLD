@@ -22,7 +22,7 @@ export default function UpdateProfile() {
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError('Passwords do not match');
     }
-
+    
     const promises = [];
     setError('');
     setLoading(true);

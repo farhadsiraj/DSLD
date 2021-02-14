@@ -16,8 +16,6 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  console.log(auth);
-
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -34,6 +32,8 @@ export default function Signup() {
             .doc(auth.currentUser.uid)
             .set({
               email: emailRef.current.value,
+              lifetimeReps: 0,
+              lifetimeSets: 0,
             })
             .catch((error) => {
               console.log(

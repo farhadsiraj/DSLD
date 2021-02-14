@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import gym from '../../public/assets/images/gym.jpg';
@@ -66,14 +67,20 @@ export default function Home() {
             </Box>
           </DetailsContainer>
         </InfoContainer>
-        <Footer>
-          <Link to="/signup" style={{ margin: '0.2rem' }}>
-            Sign Up
-          </Link>
-          <Link to="/login" style={{ margin: '0.2rem' }}>
-            Log In
-          </Link>
-        </Footer>
+        {!currentUser ? (
+          <Footer>
+            <Link to="/signup" style={{ margin: '0.2rem' }}>
+              Sign Up
+            </Link>
+            <Link to="/login" style={{ margin: '0.2rem' }}>
+              Login
+            </Link>
+          </Footer>
+        ) : (
+          <Footer>
+            <Text style={{ width: 'auto' }}>Copyright ©2021 DSLD</Text>
+          </Footer>
+        )}
       </ContentContainer>
     </GradientContainer>
   );
@@ -169,13 +176,12 @@ const Box = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
-  font-family: 'Josefin Sans';
   margin-top: 2rem;
   font-size: 1.4rem;
   color: white;
-  font-weight: 300;
+  font-weight: 800;
   @media only screen and (min-width: 960px) {
-    font-size: 2rem;
+    font-size: 2.6rem;
     margin-top: 5rem;
   }
 `;
@@ -183,10 +189,12 @@ const HeaderTitle = styled.h1`
 const Text = styled.p`
   color: white;
   font-size: 0.7rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   width: 80%;
+  font-weight: 400;
   @media only screen and (min-width: 960px) {
     font-size: 1rem;
+    margin-top: 1rem;
   }
 `;
 

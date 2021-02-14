@@ -4,7 +4,8 @@ import { Link, useHistory } from 'react-router-dom';
 import { db } from '../../firebase';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
-import { Alert } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -19,7 +20,7 @@ export default function Dashboard() {
       await logout();
       history.push('/login');
     } catch (error) {
-      setError('Failed to log out');
+      setError('Failed to log out.');
     }
   }
 
@@ -34,7 +35,7 @@ export default function Dashboard() {
         userDoc.data();
         setUser(userDoc.data());
       }
-
+      console.log(user);
       let pastWorkouts = [];
       const workoutHistoryRef = db
         .collection('users')
@@ -45,8 +46,8 @@ export default function Dashboard() {
 
       historySnapshot.forEach((doc) => {
         if (!doc.data()) {
-          setError('Username not available');
-          throw new Error('Username not available');
+          setError('Workout History not available.');
+          throw new Error('Workout History not available');
         } else {
           pastWorkouts.push(doc.data());
         }
@@ -54,6 +55,7 @@ export default function Dashboard() {
       setWorkoutHistory(pastWorkouts);
     })();
   }, []);
+  console.log(user);
 
   return (
     <div>
@@ -94,26 +96,22 @@ export default function Dashboard() {
                   <Flex style={{ width: '90%' }}>
                     <DataBox>
                       <div>
-                        <Title>Active Streak:</Title>
-                      </div>
-                      <div>
-                        <Text>{user.activeStreak || 0}</Text>
-                      </div>
-                    </DataBox>
-                    <DataBox>
-                      <div>
                         <Title>Lifetime Reps:</Title>
                       </div>
                       <div>
-                        <Text>{user.lifetimeReps || 0}</Text>
+                        <AcheivementText>
+                          Squats: {user.lifetimeReps || 0}
+                        </AcheivementText>
                       </div>
                     </DataBox>
                     <DataBox>
                       <div>
-                        <Title>Activities:</Title>
+                        <Title>Lifetime Sets:</Title>
                       </div>
                       <div>
-                        <Text>{user.lifetimeWorkouts || 'n/a'}</Text>
+                        <AcheivementText>
+                          {user.lifetimeSets || 0}
+                        </AcheivementText>
                       </div>
                     </DataBox>
                     <DataBox>
@@ -121,21 +119,33 @@ export default function Dashboard() {
                         <Title>Latest Activity:</Title>
                       </div>
                       <div>
-                        <Text>
+                        <AcheivementText>
                           {workoutHistory.length &&
-                            workoutHistory[0].date
+                            workoutHistory[workoutHistory.length - 1].date
                               .toDate()
                               .toString()
                               .slice(
                                 0,
-                                workoutHistory[0].date
+                                workoutHistory[workoutHistory.length - 1].date
                                   .toDate()
                                   .toString()
                                   .indexOf(':') - 3
                               )}
-                        </Text>
+                        </AcheivementText>
                       </div>
                     </DataBox>
+                    <div
+                      style={{
+                        flexDirection: 'column',
+                        flex: '1',
+                      }}
+                    >
+                      <CustomWorkoutTitle>Age: {user.age}</CustomWorkoutTitle>
+                      <CustomWorkoutTitle>
+                        Weight: {user.weight}
+                      </CustomWorkoutTitle>
+                      <CustomWorkoutTitle>Sex: {user.sex}</CustomWorkoutTitle>
+                    </div>
                   </Flex>
                 </UserInfo>
               </UserDataContainer>
@@ -144,90 +154,111 @@ export default function Dashboard() {
               >
                 <CustomWorkoutTitle
                   style={{
-                    color: '#355C7D',
                     paddingLeft: '1rem',
                     marginLeft: '1rem',
                   }}
                 >
-                  Previous Workouts
+                  Most Recent Sets
                 </CustomWorkoutTitle>
               </AnalyticsContainer>
               <WorkoutContainer>
                 <Workouts>
-                  {workoutHistory
-                    .slice(0, Math.min(3, workoutHistory.length))
-                    .map((ele, i) => {
-                      return (
-                        <WorkoutBox key={i}>
-                          <CustomWorkoutTitle>
-                            {ele.workout.type[0].toUpperCase() +
-                              ele.workout.type.slice(1)}
-                          </CustomWorkoutTitle>
-                          <CustomWorkoutType className="lighter">
-                            {ele.date
-                              .toDate()
-                              .toString()
-                              .slice(
-                                0,
-                                ele.date.toDate().toString().indexOf(':') - 8
-                              )}
-                          </CustomWorkoutType>
-                          <CustomWorkoutDetail>
-                            <Title>Reps: </Title>
-                            <Text>{ele.workout.reps}</Text>
-                          </CustomWorkoutDetail>
-                          <CustomWorkoutDetail>
-                            <Title>Sets: </Title>
-                            <Text>{ele.workout.sets}</Text>
-                          </CustomWorkoutDetail>
-                        </WorkoutBox>
-                      );
-                    })}
+                  {workoutHistory.length ? (
+                    workoutHistory
+                      .slice(Math.max(0, workoutHistory.length - 3))
+                      .reverse()
+                      .map((ele, i) => {
+                        return (
+                          <WorkoutBox key={i}>
+                            <CustomWorkoutTitle>
+                              {ele.workout.type[0].toUpperCase() +
+                                ele.workout.type.slice(1)}
+                            </CustomWorkoutTitle>
+                            <CustomWorkoutType
+                              className="lighter"
+                              style={{ color: 'lightgrey' }}
+                            >
+                              {ele.date
+                                .toDate()
+                                .toString()
+                                .slice(
+                                  0,
+                                  ele.date.toDate().toString().indexOf(':') - 8
+                                )}
+                            </CustomWorkoutType>
+                            <div>
+                              <CustomWorkoutDetail id="wText">
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                    width: '100%',
+                                  }}
+                                >
+                                  <Title>Reps: </Title>
+                                  <Text>{ele.workout.reps}</Text>
+                                </div>
+                              </CustomWorkoutDetail>
+                              <CustomWorkoutDetail>
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    flexDirection: 'row',
+                                  }}
+                                >
+                                  <Title>Sets: </Title>
+                                  <Text>{ele.workout.sets}</Text>
+                                </div>
+                              </CustomWorkoutDetail>
+                              <CustomWorkoutDetail>
+                                <Title>Accuracy: </Title>
+                                <Text>{ele.workout.accuracy}%</Text>
+                              </CustomWorkoutDetail>
+                            </div>
+                          </WorkoutBox>
+                        );
+                      })
+                  ) : (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        height: 'auto',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <NoWorkouts>No workout history</NoWorkouts>
+                      <Link
+                        to="/exercise-form"
+                        className="link-reset hover-reset"
+                      >
+                        <StyledButton
+                          style={{
+                            backgroundColor: '#6BE19B',
+                            padding: '1rem',
+                          }}
+                        >
+                          Get Started <FontAwesomeIcon icon={faArrowRight} />
+                        </StyledButton>
+                      </Link>
+                    </div>
+                  )}
                 </Workouts>
               </WorkoutContainer>
             </ColumnContainer>
             <AccountSettingsContainer>
-              <CurrentSettings>
-                <h2 style={{ color: 'white' }}>Account Settings</h2>
-                {error && <Alert variant="danger">{error}</Alert>}
-                <Row>
-                  <Title>Email: </Title>
-                  <Text> {currentUser.email}</Text>
-                </Row>
-                <Row>
-                  <Title>Username: </Title>
-                  <Text>{user.username || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Age: </Title>
-                  <Text>{user.age || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Height: </Title>
-                  <Text>{user.height || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Weight: </Title>
-                  <Text>{user.weight || 'n/a'}</Text>
-                </Row>
-                <Row>
-                  <Title>Sex:{'  '}</Title>
-                  <Text>{user.sex || 'n/a'}</Text>
-                </Row>
-              </CurrentSettings>
-              <Link to="/update-profile" className="link-reset hover-reset">
-                <StyledButton>Update Account Info</StyledButton>
-              </Link>
-              <Link to="/user-profile-form" className="link-reset hover-reset">
-                <StyledButton>Update User Profile</StyledButton>
-              </Link>
               <div>
                 <StyledButton
-                  style={{ backgroundColor: 'seagreen' }}
+                  style={{ backgroundColor: '#FD374C' }}
                   onClick={handleLogout}
                 >
                   Log Out
                 </StyledButton>
+                <div style={{ color: 'white' }}>Copyright ©2021 DSLD</div>
               </div>
             </AccountSettingsContainer>
           </GradientContainer>
@@ -313,6 +344,7 @@ const UserInfo = styled.div`
   color: white;
   justify-content: center;
   align-items: center;
+  padding: 1.5rem;
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     margin-left: 2rem;
@@ -355,7 +387,7 @@ const Workouts = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50rem;
+  /* height: 50rem; */
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     width: 100%;
@@ -375,15 +407,19 @@ const WorkoutBox = styled.div`
   border-radius: 2rem;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
   @media only screen and (min-width: 960px) {
     margin: 0 1rem;
   }
 `;
 
 const CustomWorkoutTitle = styled.h1`
-  font-family: 'Inter';
-  color: white;
+  color: #355c7d;
   font-size: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-radius: 1rem;
 `;
 const CustomWorkoutType = styled.p`
   color: white;
@@ -391,8 +427,12 @@ const CustomWorkoutType = styled.p`
   margin-bottom: 0.4rem;
 `;
 const CustomWorkoutDetail = styled.h3`
+  display: flex;
+  align-items: center;
   color: white;
   font-size: 1rem;
+  @media only screen and (min-width: 960px) {
+  }
 `;
 
 const StyledButton = styled.button`
@@ -411,7 +451,6 @@ const StyledButton = styled.button`
 const AccountSettingsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 100%;
   justify-content: center;
@@ -429,12 +468,28 @@ const CurrentSettings = styled.div`
 
 const Title = styled.p`
   color: white;
-  font-size: 1.2rem;
   padding-right: 0.5rem;
+  font-size: 1.3rem;
+
+  @media only screen and (min-width: 960px) {
+    font-size: 1.7rem;
+  }
 `;
+
+const AcheivementText = styled.h3`
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 300;
+  justify-content: center;
+  align-items: center;
+  @media only screen and (min-width: 960px) {
+    font-size: 1.4rem;
+  }
+`;
+
 const Text = styled.p`
   color: white;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 300;
 `;
 
@@ -446,14 +501,45 @@ const Row = styled.div`
 `;
 
 const DataBox = styled.div`
+  display: flex;
   flex: 1;
   width: 100%;
+  min-width: 12rem;
   padding: 1rem 0;
   justify-content: center;
+  align-items: center;
+  border: 4px solid #6be19b;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 0.5rem;
+  flex-direction: column;
+
+  @media only screen and (min-width: 960px) {
+    border: 7px solid #6be19b;
+    height: 100%;
+    border-radius: 50%;
+    margin: 1rem;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
 `;
 
 const UserName = styled.h1`
   font-family: 'Josefin Sans';
   font-size: 2rem;
   color: whitesmoke;
+`;
+
+const NoWorkouts = styled.h1`
+  color: rgb(0, 0, 0, 0.04);
+  font-size: 1.8rem;
+  @media only screen and (min-width: 960px) {
+    font-size: 5rem;
+  }
+
+  @media only screen and (min-width: 1110px) {
+    font-size: 7rem;
+  }
 `;

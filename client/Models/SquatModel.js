@@ -3,8 +3,6 @@ import * as tmPose from '@teachablemachine/pose';
 import positiveFeedback from '../../public/assets/audio/positiveFeedback_v1.mp3';
 import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faForward } from '@fortawesome/free-solid-svg-icons';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
 
@@ -16,9 +14,12 @@ let squattingPosition;
 let middlePosition;
 let setupPosition;
 let counterStatus = 'pending';
+// let lineColor = '#FFD700';
 let lineColor = '#9BD7D1';
 let exercise;
 let restTimer;
+let lifetimeReps;
+let lifetimeSets;
 let totalSets;
 let setCount;
 let totalReps; // Number of reps user specifies
@@ -28,14 +29,35 @@ let predictStatus = 'pending';
 let accuracy;
 let startAnimation;
 let startAnimation2;
+let finalRepCount;
 
 export function Model() {
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const history = useHistory();
+  const [state, setState] = useState({
+    repCount: 0,
+    lifetimeReps: null,
+    lifetimeSets: null,
+  });
 
   loggedIn = auth.currentUser.uid;
+
+  async function setLifetimeStats() {
+    const usersRef = db.collection('users').doc(loggedIn);
+
+    const doc = await usersRef.get();
+    if (!doc.exists) {
+      console.log('No user data found.');
+    } else {
+      const user = doc.data();
+      console.log(user);
+      lifetimeReps = user.lifetimeReps;
+      lifetimeSets = user.lifetimeSets;
+    }
+  }
+  setLifetimeStats();
 
   async function setRepPrefs() {
     const usersRef = db
@@ -55,7 +77,6 @@ export function Model() {
       totalSets = user.sets;
       setCount = totalSets;
       restTimer = user.restTimer;
-      console.log('Total Reps from Firestore', totalReps);
     }
   }
   setRepPrefs();
@@ -123,6 +144,7 @@ export function Model() {
     if (bool === true) {
       const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
       const prediction = await model.predict(posenetOutput);
+      console.log('PREDICTION', prediction);
 
       for (let i = 0; i < maxPredictions; i++) {
         const classPrediction = `${prediction[i].className}: ${Math.ceil(
@@ -134,26 +156,32 @@ export function Model() {
 
       drawPose(pose, lineColor);
 
-      startingPosition = prediction[1].probability;
-      squattingPosition = prediction[3].probability;
-      middlePosition = prediction[2].probability;
-      setupPosition = prediction[0].probability;
+      startingPosition = prediction[0].probability;
+      middlePosition = prediction[1].probability;
+      squattingPosition = prediction[2].probability;
 
       let canvasBorder = document.getElementById('canvas');
 
       if (setCount > 0) {
+        // Checking for Starting Position
         if (counterStatus === 'pending' && startingPosition > 0.9) {
+          // lineColor = '#9BD7D1';
+          // canvasBorder.style.border = `20px solid ${lineColor}`;
+          // drawPose(pose, lineColor);
           counterStatus = 'starting';
         }
 
+        // Transition from Starting to Middle Squat
         if (counterStatus === 'starting' && middlePosition > 0.5) {
           counterStatus = 'middle';
         }
 
+        // Transition from Middle to Full Squat
         if (counterStatus === 'middle' && squattingPosition > 0.9) {
           counterStatus = 'squatting';
         }
 
+        // Successful Full Squat
         if (counterStatus === 'squatting' && startingPosition > 0.9) {
           lineColor = '#39E47E';
           drawPose(pose, lineColor);
@@ -164,6 +192,7 @@ export function Model() {
           reps = reps - 1;
         }
 
+        // Failed Squat (didn't reach to full squat position)
         if (counterStatus === 'middle' && startingPosition > 0.9) {
           lineColor = '#EE4A40';
           canvasBorder.style.border = `20px solid ${lineColor}`;
@@ -177,6 +206,7 @@ export function Model() {
         let denominator = totalReps * totalSets;
 
         accuracy = Math.ceil((successfulReps / denominator) * 100);
+        finalRepCount = successfulReps;
 
         if (reps <= 0) {
           setCount--;
@@ -198,8 +228,28 @@ export function Model() {
                 },
                 { merge: true }
               );
+
+            console.log('successfulReps', successfulReps);
+            console.log('successfulReps typeof', typeof successfulReps);
+            console.log('totalSets', totalSets);
+            console.log('totalSets typeof', typeof totalSets);
+            console.log('lifetimeReps', lifetimeReps);
+            console.log('lifetimeReps typeof', typeof lifetimeReps);
+            console.log('lifetimeSets', lifetimeSets);
+            console.log('lifetimeSets typeof', typeof lifetimeSets);
+            db.collection('users')
+              .doc(loggedIn)
+              .set(
+                {
+                  lifetimeReps:
+                    parseInt(lifetimeReps) + parseInt(successfulReps),
+                  lifetimeSets: parseInt(lifetimeSets) + parseInt(totalSets),
+                },
+                { merge: true }
+              );
             counterStatus = 'pending';
             lineColor = '#9BD7D1';
+
             setModalOpen(!modalOpen);
             togglePredict();
             window.cancelAnimationFrame(startAnimation);
@@ -214,40 +264,35 @@ export function Model() {
 
       if (setCount) {
         let repContainer = document.getElementById('rep-container');
+
         if (repContainer !== null) {
-          repContainer.innerHTML = `Total Reps: ${repCount}`;
-
           let setContainer = document.getElementById('set-container');
-          setContainer.innerHTML = `Total Sets: ${totalSets}`;
-
           let accContainer = document.getElementById('acc-container');
-          accContainer.innerHTML = `Accuracy: ${accuracy}%`;
-
           let remRepsContainer = document.getElementById('rem-reps-container');
-          remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
-
           let remSetsContainer = document.getElementById('rem-sets-container');
+
+          repContainer.innerHTML = `Total Reps: ${repCount}`;
+          setContainer.innerHTML = `Total Sets: ${totalSets}`;
+          accContainer.innerHTML = `Accuracy: ${accuracy}%`;
+          remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
           remSetsContainer.innerHTML = `Remaining Sets: ${setCount}`;
         }
 
         let repContainer1 = document.getElementById('rep1-container');
+
         if (repContainer1 !== null) {
-          repContainer1.innerHTML = `Total Reps: ${repCount}`;
-
           let setContainer1 = document.getElementById('set1-container');
-          setContainer1.innerHTML = `Total Sets: ${totalSets}`;
-
           let accContainer1 = document.getElementById('acc1-container');
-          accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
-
           let remRepsContainer1 = document.getElementById(
             'rem1-reps-container'
           );
-          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
-
           let remSetsContainer1 = document.getElementById(
             'rem1-sets-container'
           );
+          repContainer1.innerHTML = `Total Reps: ${repCount}`;
+          setContainer1.innerHTML = `Total Sets: ${totalSets}`;
+          accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
+          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
           remSetsContainer1.innerHTML = `Remaining Sets: ${setCount}`;
         }
       }
@@ -307,7 +352,7 @@ export function Model() {
 
     return function cleanup() {
       if (predictStatus === 'active') togglePredict();
-
+      repCount = 0;
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
@@ -322,7 +367,7 @@ export function Model() {
       seconds--;
       countdownSeconds.innerHTML = seconds;
       if (seconds === 0) {
-        countdownSeconds.innerHTML = '00:00';
+        countdownSeconds.innerHTML = 'Active';
         clearInterval(counter);
         callback(val);
       }
@@ -338,15 +383,18 @@ export function Model() {
               <h3>Great Work!</h3>
               <h4>
                 {' '}
-                You did {totalReps * totalSets} {exercise} in {totalSets} sets
-                with an accuracy of {accuracy}%.
+                {console.log('Final Rep Count-->', finalRepCount)}
+                {console.log('Total Sets-->', totalSets)}
+                {console.log('successfulReps-->', successfulReps)}
+                You did {finalRepCount} {exercise}s in {totalSets} sets with an
+                accuracy of {accuracy}%.
               </h4>
-              <button onClick={() => history.push('/exercise-form')}>
+              <Button onClick={() => history.push('/exercise-form')}>
                 Do another workout
-              </button>
-              <button onClick={() => history.push('/dashboard')}>
+              </Button>
+              <Button onClick={() => history.push('/dashboard')}>
                 Back to Dashboard
-              </button>
+              </Button>
             </Modal>
           </ModalContainer>
         </>
@@ -354,7 +402,9 @@ export function Model() {
       <ModelContainer>
         <TopToolbar>
           <WorkoutType>Squats</WorkoutType>
-          <WorkoutType id="timer">00:00</WorkoutType>
+          <WorkoutType id="timer">
+            {toggleStart === 'active' ? 'Active' : 'Inactive'}{' '}
+          </WorkoutType>
         </TopToolbar>
         <WebcamDataContainer>
           <Webcam>
@@ -366,11 +416,15 @@ export function Model() {
               id="canvas"
             ></canvas>
             <WebcamToolbar>
+              <RemainingRepCount id="rem-reps-container">
+                Are you ready to get DSLD?
+              </RemainingRepCount>
               <Button
+                style={{ backgroundColor: toggleStart ? '#FD374C' : '#6BE19B' }}
                 id="togglePredict"
                 onClick={() => {
                   if (predictStatus === 'pending') {
-                    countdown(5, togglePredict);
+                    countdown(10, togglePredict);
                   } else {
                     togglePredict();
                   }
@@ -382,9 +436,10 @@ export function Model() {
               <LabelContainer id="workout-data-small">
                 {document.getElementById('workout-data-small') ? (
                   <>
-                    <Label id="rem-reps-container">
+                    {/* <Label id="rem-reps-container">
                       Remaining Reps: Loading...
-                    </Label>
+                    </Label> */}
+
                     <Label id="acc-container">Accuracy: Loading...</Label>
                     <Label id="rep-container">Reps: Loading...</Label>
                     <Label id="set-container">Set: Loading...</Label>
@@ -404,21 +459,40 @@ export function Model() {
             </WebcamToolbar>
           </Webcam>
           <LabelContainerLarge id="workout-data-large">
-            {document.getElementById('workout-data-large') ? (
-              <>
-                <Label id="rem1-reps-container">
-                  Remaining Reps: Loading...
-                </Label>
-                <Label id="acc1-container">Accuracy: Loading...</Label>
-                <Label id="rep1-container">Reps: Loading...</Label>
-                <Label id="set1-container">Set: Loading...</Label>
-                <Label id="rem1-sets-container">
-                  Remaining Sets: Loading...
-                </Label>
-              </>
-            ) : (
-              <Label>Press Start To Begin</Label>
-            )}
+            <LabelBox></LabelBox>
+
+            <LabelBox>
+              {document.getElementById('workout-data-large') ? (
+                <>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rem1-reps-container">
+                      Remaining Reps: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="acc1-container">
+                      Accuracy: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rep1-container">
+                      Reps: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rem1-sets-container">
+                      Remaining Sets: Loading...
+                    </LargeLabel>
+                  </div>
+                </>
+              ) : (
+                <LargeLabel>Press Start To Begin</LargeLabel>
+              )}
+            </LabelBox>
+            <LabelBox></LabelBox>
           </LabelContainerLarge>
         </WebcamDataContainer>
       </ModelContainer>
@@ -462,12 +536,13 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: 95%;
   margin-top: 65px;
   height: 100%;
   z-index: 1;
   /* border: 3px solid orange; */
   @media only screen and (min-width: 960px) {
+    width: 100%;
   }
 `;
 
@@ -484,13 +559,15 @@ const WorkoutType = styled.div`
   justify-content: center;
   text-decoration: none;
   color: white;
-  font-size: 1.4rem;
+  font-size: 1rem;
+  padding: 0.5rem;
   border-radius: 10px;
   background-color: #355c7d;
   width: 8rem;
   /* border: 3px solid yellow; */
   @media only screen and (min-width: 960px) {
     padding: 1rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -504,7 +581,7 @@ const ModelContainer = styled.div`
   @media only screen and (min-width: 960px) {
     padding: 1rem;
     margin: 1rem;
-    width: 80%;
+    width: 90%;
   }
 
   @media only screen and (min-width: 1200px) {
@@ -539,45 +616,60 @@ const LabelContainer = styled.div`
   border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
-  height: 20rem;
-  @media only screen and (min-width: 1400px) {
+  height: 10rem;
+  width: 100%;
+
+  @media only screen and (min-width: 960px) {
     display: none;
   }
 `;
 const LabelContainerLarge = styled.div`
   display: none;
-  @media only screen and (min-width: 1400px) {
+  @media only screen and (min-width: 960px) {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     flex-direction: column;
-    /* border: 3px dotted orange; */
+    /* border: 3px dotted hotpink; */
     border-radius: 1rem;
     background-color: #f9a26c;
     margin-top: 1rem;
     margin-left: 1rem;
-    /* height: 100%; */
     min-width: 8rem;
-    width: 100%;
+    padding: 1rem;
+    width: 70%;
   }
+`;
+
+const LabelBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid red; */
+  padding: 2rem;
 `;
 
 const Label = styled.div`
   color: white;
   font-size: 1.2rem;
-  /* @media only screen and (min-width: 960px) {
-    display: none;
+`;
+const LargeLabel = styled.div`
+  color: white;
+  font-size: 1.2rem;
+  @media only screen and (min-width: 1400px) {
+    font-size: 2rem;
   }
-  @media only screen and (min-width: 960px) {
-    display: inline-block;
-  } */
 `;
 
 const WebcamToolbar = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   /* border: 3px dotted grey; */
+  @media only screen and (min-width: 1400px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 `;
 
 const Button = styled.button`
@@ -590,7 +682,6 @@ const Button = styled.button`
   width: 7rem;
   margin-top: 1rem;
   padding: 0.3rem 0 0.3rem 0;
-  align-self: flex-end;
   width: 100%;
   @media only screen and (min-width: 960px) {
     font-size: 1.3rem;
@@ -601,6 +692,13 @@ const Button = styled.button`
 const WebcamDataContainer = styled.div`
   display: flex;
   width: 100%;
-  @media only screen and (min-width: 1200px) {
+  /* border: 3px solid black; */
+  @media only screen and (min-width: 960px) {
   }
+`;
+
+const RemainingRepCount = styled.h2`
+  color: #325d79;
+  padding-top: 0.8rem;
+  margin: 0;
 `;

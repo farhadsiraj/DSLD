@@ -26,15 +26,19 @@ export default function NavBar() {
     <Container>
       <GlobalStyles />
       <NavItem style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-        <FontAwesomeIcon
-          icon={hamburgerDropdown ? faTimes : faBars}
-          onClick={function () {
-            setHamburgerDropdown(!hamburgerDropdown);
-            setUserDropdown(false);
-          }}
-          style={{ fontSize: '1.7rem' }}
-        />
-        {/* {hamburgerDropdown ? ( */}
+        {!currentUser ? (
+          ''
+        ) : (
+          <FontAwesomeIcon
+            icon={hamburgerDropdown ? faTimes : faBars}
+            onClick={function () {
+              setHamburgerDropdown(!hamburgerDropdown);
+              setUserDropdown(false);
+            }}
+            style={{ fontSize: '1.7rem' }}
+          />
+        )}
+
         <Dropdown
           className={hamburgerDropdown ? 'dropdown-open' : 'dropdown-closed'}
         >
@@ -75,25 +79,10 @@ export default function NavBar() {
                   Start Workout
                 </Link>
               </DropdownItem>
-              <DropdownItem>
-                <Link
-                  onClick={function () {
-                    setHamburgerDropdown(!hamburgerDropdown);
-                  }}
-                  to="/dashboard"
-                >
-                  Dashboard
-                </Link>
-              </DropdownItem>
             </>
           )}
         </Dropdown>
-        {/* )
-        : (
-          ''
-        )} */}
       </NavItem>
-
       <Logo
         style={{
           justifyContent: 'center',
@@ -114,7 +103,6 @@ export default function NavBar() {
           icon={userDropdown ? faTimes : faUser}
           style={{ fontSize: '1.5rem' }}
         />
-        {/* {userDropdown ? ( */}
         <DropdownRight
           className={
             userDropdown ? 'dropdown-open-right' : 'dropdown-closed-right'
@@ -149,6 +137,36 @@ export default function NavBar() {
                 <Link
                   onClick={function () {
                     setUserDropdown(!userDropdown);
+                  }}
+                  to="/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                  to="/user-profile-form"
+                >
+                  Profile Settings
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
+                  }}
+                  to="/update-profile"
+                >
+                  Account Settings
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link
+                  onClick={function () {
+                    setUserDropdown(!userDropdown);
                     handleLogout();
                   }}
                   to="/"
@@ -159,9 +177,6 @@ export default function NavBar() {
             </>
           )}
         </DropdownRight>
-        {/* ) : (
-          ''
-        )} */}
       </NavItem>
     </Container>
   );
@@ -200,7 +215,7 @@ const Dropdown = styled.div`
   height: 100%;
   padding: 0 1rem 0 1rem;
   width: 100%;
-  transition: 0.5s;
+  transition: 0.2s;
 
   @media only screen and (min-width: 673px) {
     padding: 0 2.5rem;
@@ -229,7 +244,7 @@ const DropdownRight = styled.div`
   height: 100%;
   padding: 0 1rem 0 1rem;
   align-items: center;
-  transition: 0.5s;
+  transition: 0.2s;
 
   @media only screen and (min-width: 674px) {
     padding: 0 2.5rem;
