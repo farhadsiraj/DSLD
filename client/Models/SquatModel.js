@@ -247,19 +247,15 @@ export function Model() {
                 },
                 { merge: true }
               );
-            counterStatus = 'pending';
-            lineColor = '#9BD7D1';
-
-            setModalOpen(!modalOpen);
-            togglePredict();
-            window.cancelAnimationFrame(startAnimation);
-            window.cancelAnimationFrame(startAnimation2);
+            history.push('/exercise-form');
           } else {
             togglePredict();
             countdown(restTimer, togglePredict);
             reps = totalReps;
           }
         }
+      } else {
+        console.log('NO MORE SETS');
       }
 
       if (setCount) {

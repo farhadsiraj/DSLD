@@ -31,7 +31,11 @@ export default function Home() {
                   completed reps to ensure you get the most out of your time in
                   the gym.
                 </Text>
-                <Link to="/signup" className="link-reset hover-reset">
+
+                <Link
+                  to={!currentUser ? '/signup' : '/dashboard'}
+                  className="link-reset hover-reset"
+                >
                   <StyledButton
                     style={{
                       backgroundColor: '#F9A26C',
@@ -138,7 +142,6 @@ const HeaderContainer = styled.div`
   background-color: #355c7d;
   margin-top: 3vh;
   border-radius: 2rem;
-
   @media only screen and (min-width: 960px) {
     height: 40vh;
   }
@@ -215,7 +218,6 @@ const Footer = styled.div`
   width: 100%;
   height: 10vh;
   background-color: #9bd7d1;
-
   @media only screen and (min-width: 960px) {
     position: absolute;
     left: 0;
@@ -230,7 +232,6 @@ const DetailsContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     width: 92%;
@@ -263,7 +264,6 @@ const HeaderBox = styled.div`
     flex-direction: column;
     height: 100%;
   }
-
   @media only screen and (min-width: 1200px) {
     height: 90%;
   }
