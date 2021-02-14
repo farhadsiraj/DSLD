@@ -58,7 +58,6 @@ export function Model() {
   }
   setLifetimeStats();
 
-  console.log('test state', state);
   async function setRepPrefs() {
     const usersRef = db
       .collection('users')
@@ -456,20 +455,32 @@ export function Model() {
           <LabelContainerLarge id="workout-data-large">
             <LabelBox></LabelBox>
 
-            <LabelBox>
+            <LabelBox style={{ border: '1px solid red' }}>
               {document.getElementById('workout-data-large') ? (
                 <>
-                  <LargeLabel id="rem1-reps-container">
-                    Remaining Reps: Loading...
-                  </LargeLabel>
-                  <LargeLabel id="acc1-container">
-                    Accuracy: Loading...
-                  </LargeLabel>
-                  <LargeLabel id="rep1-container">Reps: Loading...</LargeLabel>
-                  <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
-                  <LargeLabel id="rem1-sets-container">
-                    Remaining Sets: Loading...
-                  </LargeLabel>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rem1-reps-container">
+                      Remaining Reps: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="acc1-container">
+                      Accuracy: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rep1-container">
+                      Reps: Loading...
+                    </LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
+                  </div>
+                  <div style={{ padding: '1rem' }}>
+                    <LargeLabel id="rem1-sets-container">
+                      Remaining Sets: Loading...
+                    </LargeLabel>
+                  </div>
                 </>
               ) : (
                 <LargeLabel>Press Start To Begin</LargeLabel>
@@ -637,7 +648,10 @@ const Label = styled.div`
 `;
 const LargeLabel = styled.div`
   color: white;
-  font-size: 2rem;
+  font-size: 1.2rem;
+  @media only screen and (min-width: 1400px) {
+    font-size: 2rem;
+  }
 `;
 
 const WebcamToolbar = styled.div`
