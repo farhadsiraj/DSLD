@@ -31,15 +31,19 @@ let startAnimation2;
 let finalRepCount;
 
 export function Model() {
+  const history = useHistory();
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [state, setState] = useState({ repCount: 0 });
-  const history = useHistory();
+  const [state, setState] = useState({
+    repCount: 0,
+    lifetimeReps: null,
+    lifetimeSets: null,
+  });
 
   loggedIn = auth.currentUser.uid;
 
-  async function setLifetimeStats() {
+  useEffect(async () => {
     const usersRef = db.collection('users').doc(loggedIn);
 
     const doc = await usersRef.get();
@@ -51,16 +55,17 @@ export function Model() {
       lifetimeReps = user.lifetimeReps;
       lifetimeSets = user.lifetimeSets;
 
-      // setState({
-      //   ...state,
-      //   lifetimeReps: user.lifetimeReps,
-      //   lifetimeSets: user.lifetimeSets,
-      // });
+      setState({
+        ...state,
+        lifetimeReps: user.lifetimeReps,
+        lifetimeSets: user.lifetimeSets,
+      });
+
       console.log('lifetimeStats', lifetimeReps, lifetimeSets);
     }
-  }
-  setLifetimeStats();
+  }, []);
 
+  console.log('test state', state);
   async function setRepPrefs() {
     const usersRef = db
       .collection('users')
@@ -349,7 +354,7 @@ export function Model() {
 
     return function cleanup() {
       if (predictStatus === 'active') togglePredict();
-
+      repCount = 0;
       window.cancelAnimationFrame(startAnimation);
       window.cancelAnimationFrame(startAnimation2);
     };
