@@ -62,205 +62,209 @@ export default function Dashboard() {
         <Container>
           <GradientContainer>
             <GlobalStyles />
-            <ColumnContainer>
-              <UserDataContainer>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <ProfilePicture
-                    src={
-                      user.imageUrl ||
-                      `https://robohash.org/${user.username}.png`
-                    }
-                  />
-                  <UserName>{user.username}</UserName>
+            <MainView>
+              <ColumnContainer>
+                <UserDataContainer>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <ProfilePicture
+                      src={
+                        user.imageUrl ||
+                        `https://robohash.org/${user.username}.png`
+                      }
+                    />
+                    <UserName>{user.username}</UserName>
 
-                  <Link to="/exercise-form" className="link-reset hover-reset">
-                    <StyledButton
-                      style={{
-                        backgroundColor: '#6BE19B',
-                        padding: '1rem',
-                      }}
+                    <Link
+                      to="/exercise-form"
+                      className="link-reset hover-reset"
                     >
-                      Start Workout
-                    </StyledButton>
-                  </Link>
-                </div>
-                <UserInfo>
-                  <Flex style={{ width: '90%' }}>
-                    <DataBox>
-                      <div>
-                        <Title>Lifetime Reps:</Title>
-                      </div>
-                      <div>
-                        <AcheivementText>
-                          Squats: {user.lifetimeReps || 0}
-                        </AcheivementText>
-                      </div>
-                    </DataBox>
-                    <DataBox>
-                      <div>
-                        <Title>Lifetime Sets:</Title>
-                      </div>
-                      <div>
-                        <AcheivementText>
-                          {user.lifetimeSets || 0}
-                        </AcheivementText>
-                      </div>
-                    </DataBox>
-                    <DataBox>
-                      <div>
-                        <Title>Latest Activity:</Title>
-                      </div>
-                      <div>
-                        <AcheivementText>
-                          {workoutHistory.length &&
-                            workoutHistory[workoutHistory.length - 1].date
-                              .toDate()
-                              .toString()
-                              .slice(
-                                0,
-                                workoutHistory[workoutHistory.length - 1].date
-                                  .toDate()
-                                  .toString()
-                                  .indexOf(':') - 3
-                              )}
-                        </AcheivementText>
-                      </div>
-                    </DataBox>
-                    <div
-                      style={{
-                        flexDirection: 'column',
-                        flex: '1',
-                      }}
-                    >
-                      <CustomWorkoutTitle>Age: {user.age}</CustomWorkoutTitle>
-                      <CustomWorkoutTitle>
-                        Weight: {user.weight}
-                      </CustomWorkoutTitle>
-                      <CustomWorkoutTitle>Sex: {user.sex}</CustomWorkoutTitle>
-                    </div>
-                  </Flex>
-                </UserInfo>
-              </UserDataContainer>
-              <AnalyticsContainer
-                style={{ marginTop: '2rem', justifyContent: 'flex-start' }}
-              >
-                <CustomWorkoutTitle
-                  style={{
-                    paddingLeft: '1rem',
-                    marginLeft: '1rem',
-                  }}
-                >
-                  Most Recent Sets
-                </CustomWorkoutTitle>
-              </AnalyticsContainer>
-              <WorkoutContainer>
-                <Workouts>
-                  {workoutHistory.length ? (
-                    workoutHistory
-                      .slice(Math.max(0, workoutHistory.length - 3))
-                      .reverse()
-                      .map((ele, i) => {
-                        return (
-                          <WorkoutBox key={i}>
-                            <CustomWorkoutTitle>
-                              {ele.workout.type[0].toUpperCase() +
-                                ele.workout.type.slice(1)}
-                            </CustomWorkoutTitle>
-                            <CustomWorkoutType
-                              className="lighter"
-                              style={{ color: 'lightgrey' }}
-                            >
-                              {ele.date
+                      <StyledButton
+                        style={{
+                          backgroundColor: '#6BE19B',
+                          padding: '1rem',
+                        }}
+                      >
+                        Start Workout
+                      </StyledButton>
+                    </Link>
+                  </div>
+                  <UserInfo>
+                    <Flex style={{ width: '90%' }}>
+                      <DataCircle>
+                        <div>
+                          <Title>Lifetime Reps:</Title>
+                        </div>
+                        <div>
+                          <AcheivementText>
+                            Squats: {user.lifetimeReps || 0}
+                          </AcheivementText>
+                        </div>
+                      </DataCircle>
+                      <DataCircle>
+                        <div>
+                          <Title>Lifetime Sets:</Title>
+                        </div>
+                        <div>
+                          <AcheivementText>
+                            {user.lifetimeSets || 0}
+                          </AcheivementText>
+                        </div>
+                      </DataCircle>
+                      <DataCircle>
+                        <div>
+                          <Title>Latest Activity:</Title>
+                        </div>
+                        <div>
+                          <AcheivementText>
+                            {workoutHistory.length &&
+                              workoutHistory[workoutHistory.length - 1].date
                                 .toDate()
                                 .toString()
                                 .slice(
                                   0,
-                                  ele.date.toDate().toString().indexOf(':') - 8
+                                  workoutHistory[workoutHistory.length - 1].date
+                                    .toDate()
+                                    .toString()
+                                    .indexOf(':') - 3
                                 )}
-                            </CustomWorkoutType>
-                            <div>
-                              <CustomWorkoutDetail id="wText">
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                    width: '100%',
-                                  }}
-                                >
-                                  <Title>Reps: </Title>
-                                  <Text>{ele.workout.reps}</Text>
-                                </div>
-                              </CustomWorkoutDetail>
-                              <CustomWorkoutDetail>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    flexDirection: 'row',
-                                  }}
-                                >
-                                  <Title>Sets: </Title>
-                                  <Text>{ele.workout.sets}</Text>
-                                </div>
-                              </CustomWorkoutDetail>
-                              <CustomWorkoutDetail>
-                                <Title>Accuracy: </Title>
-                                <Text>{ele.workout.accuracy}%</Text>
-                              </CustomWorkoutDetail>
-                            </div>
-                          </WorkoutBox>
-                        );
-                      })
-                  ) : (
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: '100%',
-                        height: 'auto',
-                        flexDirection: 'column',
-                      }}
-                    >
-                      <NoWorkouts>No workout history</NoWorkouts>
-                      <Link
-                        to="/exercise-form"
-                        className="link-reset hover-reset"
+                          </AcheivementText>
+                        </div>
+                      </DataCircle>
+                      <div
+                        style={{
+                          flexDirection: 'column',
+                          flex: '1',
+                        }}
                       >
-                        <StyledButton
-                          style={{
-                            backgroundColor: '#6BE19B',
-                            padding: '1rem',
-                          }}
-                        >
-                          Get Started <FontAwesomeIcon icon={faArrowRight} />
-                        </StyledButton>
-                      </Link>
-                    </div>
-                  )}
-                </Workouts>
-              </WorkoutContainer>
-            </ColumnContainer>
-            <AccountSettingsContainer>
-              <div>
-                <StyledButton
-                  style={{ backgroundColor: '#FD374C' }}
-                  onClick={handleLogout}
+                        <UserStats>Age: {user.age}</UserStats>
+                        <UserStats>Weight: {user.weight}</UserStats>
+                        <UserStats>Sex: {user.sex}</UserStats>
+                      </div>
+                    </Flex>
+                  </UserInfo>
+                </UserDataContainer>
+                <AnalyticsContainer
+                  style={{ marginTop: '2rem', justifyContent: 'flex-start' }}
                 >
-                  Log Out
-                </StyledButton>
-                <div style={{ color: 'white' }}>Copyright ©2021 DSLD</div>
-              </div>
-            </AccountSettingsContainer>
+                  <CustomWorkoutTitle
+                    style={{
+                      paddingLeft: '1rem',
+                      marginLeft: '1rem',
+                    }}
+                  >
+                    Most Recent Sets
+                  </CustomWorkoutTitle>
+                </AnalyticsContainer>
+                <WorkoutContainer>
+                  <Workouts>
+                    {workoutHistory.length ? (
+                      workoutHistory
+                        .slice(Math.max(0, workoutHistory.length - 3))
+                        .reverse()
+                        .map((ele, i) => {
+                          return (
+                            <WorkoutBox key={i}>
+                              <CustomWorkoutTitle>
+                                {ele.workout.type[0].toUpperCase() +
+                                  ele.workout.type.slice(1)}
+                              </CustomWorkoutTitle>
+                              <CustomWorkoutType
+                                className="lighter"
+                                style={{ color: 'lightgrey' }}
+                              >
+                                {ele.date
+                                  .toDate()
+                                  .toString()
+                                  .slice(
+                                    0,
+                                    ele.date.toDate().toString().indexOf(':') -
+                                      8
+                                  )}
+                              </CustomWorkoutType>
+                              <div>
+                                <CustomWorkoutDetail id="wText">
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      flexDirection: 'row',
+                                      width: '100%',
+                                    }}
+                                  >
+                                    <Title>Reps: </Title>
+                                    <Text>{ele.workout.reps}</Text>
+                                  </div>
+                                </CustomWorkoutDetail>
+                                <CustomWorkoutDetail>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      flexDirection: 'row',
+                                    }}
+                                  >
+                                    <Title>Sets: </Title>
+                                    <Text>{ele.workout.sets}</Text>
+                                  </div>
+                                </CustomWorkoutDetail>
+                                <CustomWorkoutDetail>
+                                  <Title>Accuracy: </Title>
+                                  <Text>{ele.workout.accuracy}%</Text>
+                                </CustomWorkoutDetail>
+                              </div>
+                            </WorkoutBox>
+                          );
+                        })
+                    ) : (
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '100%',
+                          height: 'auto',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <NoWorkouts>No workout history</NoWorkouts>
+                        <Link
+                          to="/exercise-form"
+                          className="link-reset hover-reset"
+                        >
+                          <StyledButton
+                            style={{
+                              backgroundColor: '#6BE19B',
+                              padding: '1rem',
+                            }}
+                          >
+                            Get Started <FontAwesomeIcon icon={faArrowRight} />
+                          </StyledButton>
+                        </Link>
+                      </div>
+                    )}
+                  </Workouts>
+                </WorkoutContainer>
+              </ColumnContainer>
+            </MainView>
           </GradientContainer>
+          <AccountSettingsContainer>
+            <div>
+              <StyledButton
+                style={{ backgroundColor: '#FD374C' }}
+                onClick={handleLogout}
+              >
+                Log Out
+              </StyledButton>
+              <div style={{ color: 'white' }}>Copyright ©2021 DSLD</div>
+            </div>
+          </AccountSettingsContainer>
         </Container>
       ) : (
         ''
@@ -272,11 +276,26 @@ export default function Dashboard() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
 `;
 
+const MainView = styled.div`
+  width: 100%;
+  height: 100%;
+  @media only screen and (min-width: 960px) {
+    max-width: 90%;
+  }
+`;
+
 const GradientContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
   &:after {
     background: rgb(242, 102, 39);
     background: linear-gradient(
@@ -290,8 +309,8 @@ const GradientContainer = styled.div`
     position: absolute;
     top: -20px;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
   }
 `;
@@ -300,7 +319,10 @@ const ColumnContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1.5rem 1.5rem;
+  width: 100%;
   margin-top: 65px;
+  @media only screen and (min-width: 960px) {
+  }
 `;
 
 const UserDataContainer = styled.div`
@@ -419,6 +441,23 @@ const CustomWorkoutTitle = styled.h1`
   padding: 1rem;
   border-radius: 1rem;
 `;
+
+const UserStats = styled.h1`
+  color: #355c7d;
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-radius: 1rem;
+
+  @media only screen and (min-width: 960px) {
+    font-size: 1.5rem;
+  }
+  @media only screen and (min-width: 1400px) {
+    font-size: 1.8rem;
+  }
+`;
+
 const CustomWorkoutType = styled.p`
   color: white;
   font-size: 1.5rem;
@@ -458,16 +497,6 @@ const AccountSettingsContainer = styled.div`
   padding-bottom: 2rem;
 `;
 
-const Title = styled.p`
-  color: white;
-  padding-right: 0.5rem;
-  font-size: 1.3rem;
-
-  @media only screen and (min-width: 960px) {
-    font-size: 1.7rem;
-  }
-`;
-
 const AcheivementText = styled.h3`
   color: white;
   font-size: 1.5rem;
@@ -475,6 +504,10 @@ const AcheivementText = styled.h3`
   justify-content: center;
   align-items: center;
   @media only screen and (min-width: 960px) {
+    font-size: 1.2rem;
+  }
+
+  @media only screen and (min-width: 1400px) {
     font-size: 1.4rem;
   }
 `;
@@ -485,7 +518,21 @@ const Text = styled.p`
   font-weight: 300;
 `;
 
-const DataBox = styled.div`
+const Title = styled.p`
+  color: white;
+  padding-right: 0.5rem;
+  font-size: 1.3rem;
+
+  @media only screen and (min-width: 960px) {
+    font-size: 1.1rem;
+  }
+
+  @media only screen and (min-width: 1400px) {
+    font-size: 1.7rem;
+  }
+`;
+
+const DataCircle = styled.div`
   display: flex;
   flex: 1;
   width: 100%;
@@ -501,13 +548,17 @@ const DataBox = styled.div`
 
   @media only screen and (min-width: 960px) {
     border: 7px solid #6be19b;
-    height: 100%;
+    height: 80%;
     border-radius: 50%;
     margin: 1rem;
     padding: 1rem;
     display: flex;
     align-items: center;
     flex-direction: column;
+  }
+
+  @media only screen and (min-width: 1400px) {
+    height: 100%;
   }
 `;
 
