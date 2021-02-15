@@ -356,8 +356,8 @@ export function Model() {
     let countdownSeconds = document.getElementById('timer');
     countdownSeconds.innerHTML = seconds;
     let counter = setInterval(() => {
-      if (seconds) playAudio(countdownTone);
       seconds--;
+      playAudio(countdownTone);
       countdownSeconds.innerHTML = seconds;
       if (seconds === 0) {
         countdownSeconds.innerHTML = 'Active';
