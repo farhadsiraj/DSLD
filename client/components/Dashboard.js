@@ -35,7 +35,6 @@ export default function Dashboard() {
         userDoc.data();
         setUser(userDoc.data());
       }
-      // console.log(user);
 
       let pastWorkouts = [];
       const workoutHistoryRef = db
