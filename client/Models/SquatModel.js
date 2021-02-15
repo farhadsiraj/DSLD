@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as tmPose from '@teachablemachine/pose';
-import positiveFeedback from '../../public/assets/audio/positiveFeedback_v1.mp3';
-import negativeFeedback from '../../public/assets/audio/negativeFeedback_v1.mp3';
+import positiveFeedback from '../../public/assets/audio/positiveFeedback_F.mp3';
+import negativeFeedback from '../../public/assets/audio/negativeFeedback_F.mp3';
+import countdownTone from '../../public/assets/audio/countdown_F.mp3';
+import countdownEndTone from '../../public/assets/audio/countdownEndTone_F.mp3';
 import styled from 'styled-components';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
@@ -229,14 +231,6 @@ export function Model() {
                 { merge: true }
               );
 
-            console.log('successfulReps', successfulReps);
-            console.log('successfulReps typeof', typeof successfulReps);
-            console.log('totalSets', totalSets);
-            console.log('totalSets typeof', typeof totalSets);
-            console.log('lifetimeReps', lifetimeReps);
-            console.log('lifetimeReps typeof', typeof lifetimeReps);
-            console.log('lifetimeSets', lifetimeSets);
-            console.log('lifetimeSets typeof', typeof lifetimeSets);
             db.collection('users')
               .doc(loggedIn)
               .set(
