@@ -101,11 +101,12 @@ export default function Dashboard() {
                     </Link>
                   </div>
                   <UserInfo>
-                    <Flex style={{ width: '90%' }}>
+                    <Flex style={{ width: '100%' }}>
                       <div
                         style={{
                           flexDirection: 'column',
                           flex: '1',
+                          maxWidth: '8rem',
                         }}
                       >
                         <UserStats>Age: {user.age}</UserStats>
@@ -461,16 +462,19 @@ const RecentSetsTitle = styled.h1`
 const UserStats = styled.h1`
   color: #355c7d;
   font-size: 2rem;
+  min-height: 4rem;
+  min-width: 8rem;
+  width: auto;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   padding: 1rem;
   border-radius: 1rem;
 
   @media only screen and (min-width: 960px) {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
   @media only screen and (min-width: 1400px) {
-    font-size: 1.8rem;
+    font-size: 1rem;
   }
 `;
 
@@ -551,8 +555,9 @@ const Title = styled.p`
 const DataCircle = styled.div`
   display: flex;
   flex: 1;
-  width: 100%;
+  width: 12rem;
   min-width: 12rem;
+  min-height: 12rem;
   padding: 1rem 0;
   justify-content: center;
   align-items: center;
@@ -564,7 +569,7 @@ const DataCircle = styled.div`
 
   @media only screen and (min-width: 960px) {
     border: 7px solid #6be19b;
-    height: 80%;
+    /* height: 80%; */
     border-radius: 50%;
     margin: 1rem;
     padding: 1rem;
@@ -574,7 +579,8 @@ const DataCircle = styled.div`
   }
 
   @media only screen and (min-width: 1400px) {
-    height: 100%;
+    height: 150px;
+    max-width: 150px;
   }
 `;
 
