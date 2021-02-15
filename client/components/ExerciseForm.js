@@ -49,7 +49,7 @@ export default function ExerciseForm() {
     } catch (error) {
       console.log(error);
       if (error === '') {
-        setError('Failed to update setup exercise profile');
+        setError('Failed to update setup exercise profile.');
       }
     }
     setLoading(false);
