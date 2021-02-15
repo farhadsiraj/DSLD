@@ -144,7 +144,6 @@ export function Model() {
     if (bool === true) {
       const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
       const prediction = await model.predict(posenetOutput);
-      console.log('PREDICTION', prediction);
 
       for (let i = 0; i < maxPredictions; i++) {
         const classPrediction = `${prediction[i].className}: ${Math.ceil(
@@ -229,14 +228,6 @@ export function Model() {
                 { merge: true }
               );
 
-            console.log('successfulReps', successfulReps);
-            console.log('successfulReps typeof', typeof successfulReps);
-            console.log('totalSets', totalSets);
-            console.log('totalSets typeof', typeof totalSets);
-            console.log('lifetimeReps', lifetimeReps);
-            console.log('lifetimeReps typeof', typeof lifetimeReps);
-            console.log('lifetimeSets', lifetimeSets);
-            console.log('lifetimeSets typeof', typeof lifetimeSets);
             db.collection('users')
               .doc(loggedIn)
               .set(
@@ -321,7 +312,6 @@ export function Model() {
   }
 
   async function togglePredict() {
-    console.log('predictStatus', predictStatus);
     if (predictStatus === 'pending') {
       predictStatus = 'active';
     } else if (predictStatus === 'active') {
@@ -383,9 +373,6 @@ export function Model() {
               <h3>Great Work!</h3>
               <h4>
                 {' '}
-                {console.log('Final Rep Count-->', finalRepCount)}
-                {console.log('Total Sets-->', totalSets)}
-                {console.log('successfulReps-->', successfulReps)}
                 You did {finalRepCount} {exercise}s in {totalSets} sets with an
                 accuracy of {accuracy}%.
               </h4>
@@ -436,10 +423,6 @@ export function Model() {
               <LabelContainer id="workout-data-small">
                 {document.getElementById('workout-data-small') ? (
                   <>
-                    {/* <Label id="rem-reps-container">
-                      Remaining Reps: Loading...
-                    </Label> */}
-
                     <Label id="acc-container">Accuracy: Loading...</Label>
                     <Label id="rep-container">Reps: Loading...</Label>
                     <Label id="set-container">Set: Loading...</Label>
@@ -460,7 +443,6 @@ export function Model() {
           </Webcam>
           <LabelContainerLarge id="workout-data-large">
             <LabelBox></LabelBox>
-
             <LabelBox>
               {document.getElementById('workout-data-large') ? (
                 <>
@@ -539,7 +521,6 @@ const ContentContainer = styled.div`
   margin-top: 65px;
   height: 100%;
   z-index: 1;
-  /* border: 3px solid orange; */
   @media only screen and (min-width: 960px) {
     width: 100%;
   }
@@ -550,7 +531,6 @@ const TopToolbar = styled.div`
   margin-top: 1rem;
   justify-content: space-between;
   width: 100%;
-  /* border: 3px solid hotpink; */
 `;
 
 const WorkoutType = styled.div`
@@ -563,7 +543,6 @@ const WorkoutType = styled.div`
   border-radius: 10px;
   background-color: #355c7d;
   width: 8rem;
-  /* border: 3px solid yellow; */
   @media only screen and (min-width: 960px) {
     padding: 1rem;
     font-size: 1.4rem;
@@ -573,7 +552,6 @@ const WorkoutType = styled.div`
 const ModelContainer = styled.div`
   display: flex;
   width: 100%;
-  /* border: 3px solid black; */
   flex-direction: column;
   align-items: center;
   @media only screen and (min-width: 960px) {
@@ -600,7 +578,6 @@ const Webcam = styled.div`
   width: 100%;
   max-width: 100rem;
   margin-top: 1rem;
-  /* border: 3px solid green; */
   @media only screen and (min-width: 960px) {
   }
 `;
@@ -609,7 +586,6 @@ const LabelContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* border: 3px dotted orange; */
   border-radius: 1rem;
   background-color: #f9a26c;
   margin-top: 1rem;
@@ -624,9 +600,7 @@ const LabelContainerLarge = styled.div`
   @media only screen and (min-width: 960px) {
     display: flex;
     justify-content: center;
-    /* align-items: center; */
     flex-direction: column;
-    /* border: 3px dotted hotpink; */
     border-radius: 1rem;
     background-color: #f9a26c;
     margin-top: 1rem;
@@ -640,7 +614,6 @@ const LabelContainerLarge = styled.div`
 const LabelBox = styled.div`
   display: flex;
   flex-direction: column;
-  /* border: 2px solid red; */
   padding: 2rem;
 `;
 
@@ -661,7 +634,6 @@ const WebcamToolbar = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* border: 3px dotted grey; */
   @media only screen and (min-width: 1400px) {
     flex-direction: row;
     justify-content: space-between;
@@ -688,7 +660,6 @@ const Button = styled.button`
 const WebcamDataContainer = styled.div`
   display: flex;
   width: 100%;
-  /* border: 3px solid black; */
   @media only screen and (min-width: 960px) {
   }
 `;
