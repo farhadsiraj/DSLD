@@ -12,15 +12,9 @@ export default function NavBar() {
   const [userDropdown, setUserDropdown] = useState(false);
   const [error, setError] = useState('');
   const { currentUser, logout } = useAuth();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState('');
+  const [isGoogleUser, setGoogleUser] = useState(null);
 
-  useEffect(async () => {
-    let getUser = await db.collection('users').doc(currentUser.uid).get();
-    setUser(getUser.data());
-    console.log('user', user);
-  }, []);
-
-  console.log('user in global', user);
   async function handleLogout() {
     setError('');
 
@@ -162,8 +156,9 @@ export default function NavBar() {
                   Profile Settings
                 </Link>
               </DropdownItem>
-              {}
+
               <DropdownItem>
+                {console.log('isgoogleuser in return statement', isGoogleUser)}
                 <Link
                   onClick={function () {
                     setUserDropdown(!userDropdown);
@@ -173,6 +168,7 @@ export default function NavBar() {
                   Account Settings
                 </Link>
               </DropdownItem>
+
               <DropdownItem>
                 <Link
                   onClick={function () {

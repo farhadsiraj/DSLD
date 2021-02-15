@@ -32,7 +32,6 @@ export default function Signup() {
 
       const user = await db.collection('users').doc(currentUser.user.uid).get();
       console.log('user in googlesubmit', user.data());
-
       if (!user.data().username) {
         history.push('/user-profile-form');
       } else {
