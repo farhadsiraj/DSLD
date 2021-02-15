@@ -17,6 +17,7 @@ export default function UserProfileForm() {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const history = useHistory();
 
@@ -63,7 +64,7 @@ export default function UserProfileForm() {
     } catch (error) {
       console.log(error);
       if (error === '') {
-        setError('Failed to update user profile');
+        setError('Failed to update user profile.');
       }
     }
     setLoading(false);

@@ -5,14 +5,41 @@ import { Link, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import ball from '../../public/assets/images/ball.png';
+import { db } from '../../firebase';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 export default function LoginForm() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login } = useAuth();
+  const { login, googleSignin } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+
+  async function googleSubmit() {
+    try {
+      let currentUser = await googleSignin();
+      db.collection('users').doc(currentUser.user.uid).set(
+        {
+          email: currentUser.user.email,
+          googleuser: true,
+        },
+        { merge: true }
+      );
+
+      const user = await db.collection('users').doc(currentUser.user.uid).get();
+
+      if (!user.data().username) {
+        history.push('/user-profile-form');
+      } else {
+        history.push('/dashboard');
+      }
+    } catch (error) {
+      setError('Failed to sign in');
+    }
+    setLoading(false);
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -64,6 +91,19 @@ export default function LoginForm() {
                   Log In
                 </Button>
               </Form>
+              <Button
+                style={googleButton}
+                disable={loading.toString()}
+                type="submit"
+                className="w-100 text-center mt-2"
+                onClick={googleSubmit}
+              >
+                Log in with
+                <FontAwesomeIcon
+                  style={{ marginLeft: '.5rem' }}
+                  icon={faGoogle}
+                />
+              </Button>
               <div className="w-100 text-center mt-4">
                 <Link to="/forgot-password" style={{ color: 'white' }}>
                   Forgot Password?
@@ -85,6 +125,11 @@ export default function LoginForm() {
 
 const buttonStyle = {
   backgroundColor: '#F9A26C',
+  border: 'none',
+};
+
+const googleButton = {
+  backgroundColor: '#9BD7D1',
   border: 'none',
 };
 

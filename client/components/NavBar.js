@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import { db } from '../../firebase';
 
 export default function NavBar() {
   const [hamburgerDropdown, setHamburgerDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [error, setError] = useState('');
   const { currentUser, logout } = useAuth();
+  const [user, setUser] = useState('');
+  const [isGoogleUser, setGoogleUser] = useState(null);
 
   async function handleLogout() {
     setError('');
@@ -153,7 +156,9 @@ export default function NavBar() {
                   Profile Settings
                 </Link>
               </DropdownItem>
+
               <DropdownItem>
+                {console.log('isgoogleuser in return statement', isGoogleUser)}
                 <Link
                   onClick={function () {
                     setUserDropdown(!userDropdown);
@@ -163,6 +168,7 @@ export default function NavBar() {
                   Account Settings
                 </Link>
               </DropdownItem>
+
               <DropdownItem>
                 <Link
                   onClick={function () {
