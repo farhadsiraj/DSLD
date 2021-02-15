@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import GlobalStyles from '../GlobalStyles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import { db } from '../../firebase';
 
 export default function NavBar() {
   const [hamburgerDropdown, setHamburgerDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [error, setError] = useState('');
   const { currentUser, logout } = useAuth();
+  const [user, setUser] = useState({});
 
+  useEffect(async () => {
+    let getUser = await db.collection('users').doc(currentUser.uid).get();
+    setUser(getUser.data());
+    console.log('user', user);
+  }, []);
+
+  console.log('user in global', user);
   async function handleLogout() {
     setError('');
 
@@ -153,6 +162,7 @@ export default function NavBar() {
                   Profile Settings
                 </Link>
               </DropdownItem>
+              {}
               <DropdownItem>
                 <Link
                   onClick={function () {
