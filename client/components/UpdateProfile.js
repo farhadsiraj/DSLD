@@ -87,7 +87,7 @@ export default function UpdateProfile() {
                 </Form.Group>
                 <Button
                   style={buttonStyle}
-                  disable={loading}
+                  disable={loading.toString()}
                   type="submit"
                   className="w-100 text-center mt-2"
                 >
