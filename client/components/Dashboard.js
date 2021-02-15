@@ -55,7 +55,7 @@ export default function Dashboard() {
       setWorkoutHistory(pastWorkouts);
     })();
   }, []);
-
+  console.log(workoutHistory);
   return (
     <div>
       {user ? (
@@ -386,7 +386,6 @@ const Workouts = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  /* height: 50rem; */
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     width: 100%;
@@ -459,12 +458,6 @@ const AccountSettingsContainer = styled.div`
   padding-bottom: 2rem;
 `;
 
-const CurrentSettings = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-`;
-
 const Title = styled.p`
   color: white;
   padding-right: 0.5rem;
@@ -490,13 +483,6 @@ const Text = styled.p`
   color: white;
   font-size: 1.3rem;
   font-weight: 300;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
 `;
 
 const DataBox = styled.div`
