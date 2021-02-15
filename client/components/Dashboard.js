@@ -101,13 +101,7 @@ export default function Dashboard() {
                   </div>
                   <UserInfo>
                     <Flex style={{ width: '100%' }}>
-                      <div
-                        style={{
-                          flexDirection: 'column',
-                          flex: '1',
-                          maxWidth: '8rem',
-                        }}
-                      >
+                      <UserStatsBox>
                         <UserStats>Age: {user.age}</UserStats>
                         <UserStats>Weight: {user.weight}</UserStats>
                         <UserStats>
@@ -115,7 +109,7 @@ export default function Dashboard() {
                           {Math.floor(user.height % 12)}"
                         </UserStats>
                         <UserStats>Sex: {user.sex}</UserStats>
-                      </div>
+                      </UserStatsBox>
                       <DataCircle>
                         <div>
                           <Title>Lifetime Reps:</Title>
@@ -458,12 +452,22 @@ const RecentSetsTitle = styled.h1`
   border-radius: 1rem;
 `;
 
-const UserStats = styled.h1`
+const UserStatsBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: '1';
+  width: 45%;
+  @media only screen and (min-width: 960px) {
+    width: 8rem;
+  }
+`;
+
+const UserStats = styled.div`
   color: #355c7d;
   font-size: 2rem;
-  min-height: 4rem;
-  min-width: 8rem;
-  width: auto;
+  width: 100%;
+  margin-bottom: 0.4rem;
+  height: auto;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   padding: 1rem;
@@ -471,6 +475,9 @@ const UserStats = styled.h1`
 
   @media only screen and (min-width: 960px) {
     font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
   @media only screen and (min-width: 1400px) {
     font-size: 1rem;
@@ -554,8 +561,8 @@ const Title = styled.p`
 const DataCircle = styled.div`
   display: flex;
   flex: 1;
-  width: 12rem;
-  min-width: 12rem;
+  /* width: 12rem; */
+  max-width: 16rem;
   min-height: 12rem;
   padding: 1rem 0;
   justify-content: center;
@@ -578,8 +585,8 @@ const DataCircle = styled.div`
   }
 
   @media only screen and (min-width: 1400px) {
-    height: 150px;
-    max-width: 150px;
+    height: 100%;
+    /* max-width: 250px; */
   }
 `;
 
