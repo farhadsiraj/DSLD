@@ -41,7 +41,8 @@ export default function Dashboard() {
       const workoutHistoryRef = db
         .collection('users')
         .doc(currentUser.uid)
-        .collection('workoutHistory');
+        .collection('workoutHistory')
+        .orderBy('date', 'asc');
 
       const historySnapshot = await workoutHistoryRef.get();
 
@@ -53,6 +54,7 @@ export default function Dashboard() {
           pastWorkouts.push(doc.data());
         }
       });
+      pastWorkouts.sort((a, b) => a.date.seconds - b.date.seconds);
       setWorkoutHistory(pastWorkouts);
     })();
   }, []);
@@ -100,6 +102,20 @@ export default function Dashboard() {
                   </div>
                   <UserInfo>
                     <Flex style={{ width: '90%' }}>
+                      <div
+                        style={{
+                          flexDirection: 'column',
+                          flex: '1',
+                        }}
+                      >
+                        <UserStats>Age: {user.age}</UserStats>
+                        <UserStats>Weight: {user.weight}</UserStats>
+                        <UserStats>
+                          Height: {Math.floor(user.height / 12)}'{' '}
+                          {Math.floor(user.height % 12)}"
+                        </UserStats>
+                        <UserStats>Sex: {user.sex}</UserStats>
+                      </div>
                       <DataCircle>
                         <div>
                           <Title>Lifetime Reps:</Title>
@@ -140,16 +156,6 @@ export default function Dashboard() {
                           </AcheivementText>
                         </div>
                       </DataCircle>
-                      <div
-                        style={{
-                          flexDirection: 'column',
-                          flex: '1',
-                        }}
-                      >
-                        <UserStats>Age: {user.age}</UserStats>
-                        <UserStats>Weight: {user.weight}</UserStats>
-                        <UserStats>Sex: {user.sex}</UserStats>
-                      </div>
                     </Flex>
                   </UserInfo>
                 </UserDataContainer>
