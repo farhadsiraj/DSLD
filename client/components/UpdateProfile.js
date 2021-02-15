@@ -179,7 +179,7 @@ const NestedHeaderImage = styled.img`
     display: flex;
     object-fit: cover;
     width: 30rem;
-    height: 31.3rem;
+    height: auto;
     max-height: 100%;
     max-width: 90%;
     border-radius: 2rem;
