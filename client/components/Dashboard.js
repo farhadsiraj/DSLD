@@ -153,14 +153,7 @@ export default function Dashboard() {
                 <AnalyticsContainer
                   style={{ marginTop: '2rem', justifyContent: 'flex-start' }}
                 >
-                  <CustomWorkoutTitle
-                    style={{
-                      paddingLeft: '1rem',
-                      marginLeft: '1rem',
-                    }}
-                  >
-                    Most Recent Sets
-                  </CustomWorkoutTitle>
+                  <RecentSetsTitle>Most Recent Sets</RecentSetsTitle>
                 </AnalyticsContainer>
                 <WorkoutContainer>
                   <Workouts>
@@ -170,7 +163,7 @@ export default function Dashboard() {
                         .reverse()
                         .map((ele, i) => {
                           return (
-                            <WorkoutBox key={i}>
+                            <WorkoutBox style={{ marginTop: '2rem' }} key={i}>
                               <CustomWorkoutTitle>
                                 {ele.workout.type[0].toUpperCase() +
                                   ele.workout.type.slice(1)}
@@ -438,7 +431,21 @@ const CustomWorkoutTitle = styled.h1`
   font-size: 2rem;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
-  padding: 1rem;
+  padding: 1rem 3rem;
+  border-radius: 1rem;
+
+  @media only screen and (min-width: 960px) {
+    position: absolute;
+    margin-bottom: 20rem;
+    box-shadow: 0px 17px 36px -9px rgba(0, 0, 0, 0.18);
+  }
+`;
+const RecentSetsTitle = styled.h1`
+  color: #355c7d;
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 1rem 3rem;
   border-radius: 1rem;
 `;
 

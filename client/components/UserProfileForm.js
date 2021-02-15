@@ -33,11 +33,7 @@ export default function UserProfileForm() {
     axios
       .post(`https://api.Cloudinary.com/v1_1/dsld-cloud/image/upload`, formData)
       .then(({ data: { public_id } }) => {
-        setIsUploading(true);
         updatedInfo.imageUrl = `https://res.cloudinary.com/dsld-cloud/image/upload/c_lfill,g_face,h_192,r_100,w_192/${public_id}.jpg`;
-      })
-      .then(() => {
-        setIsUploading(false);
       });
   }
 
@@ -147,7 +143,7 @@ export default function UserProfileForm() {
                 </Form.Group>
                 <Button
                   style={buttonStyle}
-                  disable="true"
+                  disable={loading.toString()}
                   type="submit"
                   className="w-100 text-center"
                 >
