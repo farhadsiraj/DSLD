@@ -264,7 +264,7 @@ export function Model() {
           let remRepsContainer = document.getElementById('rem-reps-container');
           let remSetsContainer = document.getElementById('rem-sets-container');
 
-          repContainer.innerHTML = `Total Reps: ${repCount}`;
+          repContainer.innerHTML = `Successful Reps: ${repCount}`;
           setContainer.innerHTML = `Total Sets: ${totalSets}`;
           accContainer.innerHTML = `Accuracy: ${accuracy}%`;
           remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
@@ -282,10 +282,10 @@ export function Model() {
           let remSetsContainer1 = document.getElementById(
             'rem1-sets-container'
           );
-          repContainer1.innerHTML = `Total Reps: ${repCount}`;
+          repContainer1.innerHTML = `Successful Reps: ${repCount}`;
           setContainer1.innerHTML = `Total Sets: ${totalSets}`;
           accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
-          remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
+          // remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
           remSetsContainer1.innerHTML = `Remaining Sets: ${setCount}`;
         }
       }
@@ -427,9 +427,11 @@ export function Model() {
               <LabelContainer id="workout-data-small">
                 {document.getElementById('workout-data-small') ? (
                   <>
+                    <Label id="rep-container">
+                      Successful Reps: Loading...
+                    </Label>
                     <Label id="acc-container">Accuracy: Loading...</Label>
-                    <Label id="rep-container">Reps: Loading...</Label>
-                    <Label id="set-container">Set: Loading...</Label>
+                    <Label id="set-container">Total Sets: Loading...</Label>
                     <Label id="rem-sets-container">
                       Remaining Sets: Loading...
                     </Label>
@@ -446,39 +448,43 @@ export function Model() {
             </WebcamToolbar>
           </Webcam>
           <LabelContainerLarge id="workout-data-large">
-            <LabelBox></LabelBox>
             <LabelBox>
               {document.getElementById('workout-data-large') ? (
                 <>
-                  <div style={{ padding: '1rem' }}>
-                    <LargeLabel id="rem1-reps-container">
-                      Remaining Reps: Loading...
-                    </LargeLabel>
-                  </div>
-                  <div style={{ padding: '1rem' }}>
-                    <LargeLabel id="acc1-container">
-                      Accuracy: Loading...
-                    </LargeLabel>
-                  </div>
-                  <div style={{ padding: '1rem' }}>
-                    <LargeLabel id="rep1-container">
-                      Reps: Loading...
-                    </LargeLabel>
-                  </div>
-                  <div style={{ padding: '1rem' }}>
-                    <LargeLabel id="set1-container">Set: Loading...</LargeLabel>
-                  </div>
-                  <div style={{ padding: '1rem' }}>
-                    <LargeLabel id="rem1-sets-container">
-                      Remaining Sets: Loading...
-                    </LargeLabel>
-                  </div>
+                  <LabelInnerBox>
+                    {' '}
+                    <div style={{ padding: '1rem' }}>
+                      <LargeLabel id="rep1-container">
+                        Successful Reps: Loading...
+                      </LargeLabel>
+                    </div>
+                    <div style={{ padding: '1rem' }}>
+                      <LargeLabel id="acc1-container">
+                        Accuracy: Loading...
+                      </LargeLabel>
+                    </div>
+                  </LabelInnerBox>
+
+                  <LabelInnerBox>
+                    {' '}
+                    <div style={{ padding: '1rem' }}>
+                      <LargeLabel id="set1-container">
+                        Total Sets: Loading...
+                      </LargeLabel>
+                    </div>
+                    <div style={{ padding: '1rem' }}>
+                      <LargeLabel id="rem1-sets-container">
+                        Remaining Sets: Loading...
+                      </LargeLabel>
+                    </div>
+                  </LabelInnerBox>
                 </>
               ) : (
-                <LargeLabel>Press Start To Begin</LargeLabel>
+                <LargeLabel style={{ color: 'white' }}>
+                  Press Start To Begin
+                </LargeLabel>
               )}
             </LabelBox>
-            <LabelBox></LabelBox>
           </LabelContainerLarge>
         </WebcamDataContainer>
       </ModelContainer>
@@ -497,6 +503,7 @@ const ModalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 900;
 `;
 
 const Modal = styled.div`
@@ -612,6 +619,7 @@ const LabelContainerLarge = styled.div`
     min-width: 8rem;
     padding: 1rem;
     width: 70%;
+    /* z-index: 800; */
   }
 `;
 
@@ -619,6 +627,17 @@ const LabelBox = styled.div`
   display: flex;
   flex-direction: column;
   padding: 2rem;
+  border-radius: 1rem;
+`;
+
+const LabelInnerBox = styled.h1`
+  color: #355c7d;
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const Label = styled.div`
@@ -626,7 +645,7 @@ const Label = styled.div`
   font-size: 1.2rem;
 `;
 const LargeLabel = styled.div`
-  color: white;
+  color: #325d79;
   font-size: 1.2rem;
   @media only screen and (min-width: 1400px) {
     font-size: 2rem;
