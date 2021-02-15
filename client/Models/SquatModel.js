@@ -262,7 +262,7 @@ export function Model() {
           let remRepsContainer = document.getElementById('rem-reps-container');
           let remSetsContainer = document.getElementById('rem-sets-container');
 
-          repContainer.innerHTML = `Total Reps: ${repCount}`;
+          repContainer.innerHTML = `Successful Reps: ${repCount}`;
           setContainer.innerHTML = `Total Sets: ${totalSets}`;
           accContainer.innerHTML = `Accuracy: ${accuracy}%`;
           remRepsContainer.innerHTML = `Remaining Reps: ${reps}`;
@@ -280,7 +280,7 @@ export function Model() {
           let remSetsContainer1 = document.getElementById(
             'rem1-sets-container'
           );
-          repContainer1.innerHTML = `Total Reps: ${repCount}`;
+          repContainer1.innerHTML = `Successful Reps: ${repCount}`;
           setContainer1.innerHTML = `Total Sets: ${totalSets}`;
           accContainer1.innerHTML = `Accuracy: ${accuracy}%`;
           // remRepsContainer1.innerHTML = `Remaining Reps: ${reps}`;
@@ -423,12 +423,14 @@ export function Model() {
               <LabelContainer id="workout-data-small">
                 {document.getElementById('workout-data-small') ? (
                   <>
+                    <Label id="rep-container">
+                      Successful Reps: Loading...
+                    </Label>
+                    <Label id="acc-container">Accuracy: Loading...</Label>
                     <Label id="set-container">Total Sets: Loading...</Label>
                     <Label id="rem-sets-container">
                       Remaining Sets: Loading...
                     </Label>
-                    <Label id="rep-container">Total Reps: Loading...</Label>
-                    <Label id="acc-container">Accuracy: Loading...</Label>
                   </>
                 ) : (
                   <Label>Press Start To Begin</Label>
@@ -449,7 +451,7 @@ export function Model() {
                     {' '}
                     <div style={{ padding: '1rem' }}>
                       <LargeLabel id="rep1-container">
-                        Total Reps: Loading...
+                        Successful Reps: Loading...
                       </LargeLabel>
                     </div>
                     <div style={{ padding: '1rem' }}>
@@ -497,6 +499,7 @@ const ModalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 900;
 `;
 
 const Modal = styled.div`
@@ -612,6 +615,7 @@ const LabelContainerLarge = styled.div`
     min-width: 8rem;
     padding: 1rem;
     width: 70%;
+    /* z-index: 800; */
   }
 `;
 
