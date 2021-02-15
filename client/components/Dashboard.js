@@ -341,7 +341,6 @@ const ProfilePicture = styled.img`
   width: 10rem;
   height: 10rem;
   border-radius: 50%;
-  border: 3px;
   border: 5px solid #f8b195;
   position: relative;
   overflow: hidden;
@@ -359,9 +358,9 @@ const UserInfo = styled.div`
   background-color: #355c7d;
   border-radius: 2rem;
   color: white;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   @media only screen and (min-width: 960px) {
     flex-direction: row;
     margin-left: 2rem;
@@ -455,32 +454,25 @@ const RecentSetsTitle = styled.h1`
 const UserStatsBox = styled.div`
   display: flex;
   flex-direction: column;
-  flex: '1';
-  width: 45%;
+  flex: 1;
+  width: 50%;
   @media only screen and (min-width: 960px) {
-    width: 8rem;
+    max-width: 15rem;
   }
 `;
 
-const UserStats = styled.div`
+const UserStats = styled.h1`
   color: #355c7d;
   font-size: 2rem;
-  width: 100%;
-  margin-bottom: 0.4rem;
-  height: auto;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   padding: 1rem;
   border-radius: 1rem;
-
   @media only screen and (min-width: 960px) {
-    font-size: 1rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+    font-size: 1.5rem;
   }
   @media only screen and (min-width: 1400px) {
-    font-size: 1rem;
+    font-size: 1.8rem;
   }
 `;
 
@@ -585,7 +577,7 @@ const DataCircle = styled.div`
   }
 
   @media only screen and (min-width: 1400px) {
-    height: 100%;
+    height: 80%;
     /* max-width: 250px; */
   }
 `;
