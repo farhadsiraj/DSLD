@@ -5,42 +5,65 @@ import { Link, useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styled from 'styled-components';
 import gym from '../../public/assets/images/gym.jpg';
+import firebase from 'firebase';
 
 export default function UpdateProfile() {
   const emailRef = useRef();
+  const currentPasswordRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { currentUser, updateEmail, updatePassword } = useAuth();
+  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+  function reauthenticate(currentPassword) {
+    console.log('currentPassword in reauthenticate', currentPassword);
+    let credential = firebase.auth.EmailAuthProvider.credential(
+      currentUser.email,
+      currentPassword
+    );
+
+    return currentUser.reauthenticateWithCredential(credential);
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError('Passwords do not match');
-    }
-
-    const promises = [];
-    setError('');
-    setLoading(true);
-    if (emailRef.current.value !== currentUser.email) {
-      promises.push(updateEmail(emailRef.current.value));
-    }
-    if (passwordRef.current.value) {
-      promises.push(updatePassword(passwordRef.current.value));
-    }
-
-    Promise.all(promises)
+    reauthenticate(currentPasswordRef.current.value)
       .then(() => {
-        history.push('/dashboard');
+        if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+          return setError('Passwords do not match');
+        }
+        const promises = [];
+        setError('');
+        setLoading(true);
+        if (emailRef.current.value !== currentUser.email) {
+          promises.push(updateEmail(emailRef.current.value));
+        }
+        if (passwordRef.current.value) {
+          promises.push(updatePassword(passwordRef.current.value));
+        }
+
+        Promise.all(promises)
+          .then(() => {
+            setMessage(
+              'Account settings updated. Redirecting to your profile...'
+            );
+            setTimeout(() => {
+              history.push('/dashboard');
+            }, 3000);
+          })
+          .catch(() => {
+            setError('Failed to update account');
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       })
-      .catch(() => {
-        setError('Failed to update account');
-      })
-      .finally(() => {
-        setLoading(false);
+      .catch((error) => {
+        setError('Current password is incorrect');
       });
   }
 
@@ -57,6 +80,7 @@ export default function UpdateProfile() {
           <Card className="bootstrap-form">
             <Card.Body>
               <h2 className="text-center mb-4">Update Profile</h2>
+              {message && <Alert variant="success">{message}</Alert>}
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group id="email">
@@ -67,6 +91,14 @@ export default function UpdateProfile() {
                     required
                     defaultValue={currentUser.email}
                     onClick={(event) => selectText(event)}
+                  />
+                </Form.Group>
+                <Form.Group id="password">
+                  <Form.Label>Current Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    ref={currentPasswordRef}
+                    placeholder="Enter current password"
                   />
                 </Form.Group>
                 <Form.Group id="password">
@@ -100,7 +132,7 @@ export default function UpdateProfile() {
         </div>
       </ContentContainer>
       <div className="w-100 text-center mt-3">
-        <Link to="/dashboard">Cancel</Link>
+        <Link to="/dashboard">Return to your profile</Link>
       </div>
     </GradientContainer>
   );
