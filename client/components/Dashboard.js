@@ -553,9 +553,8 @@ const Title = styled.p`
 const DataCircle = styled.div`
   display: flex;
   flex: 1;
-  /* width: 12rem; */
-  max-width: 16rem;
-  min-height: 12rem;
+  width: 100%;
+  min-width: 12rem;
   padding: 1rem 0;
   justify-content: center;
   align-items: center;
@@ -564,10 +563,9 @@ const DataCircle = styled.div`
   padding: 1rem;
   margin: 0.5rem;
   flex-direction: column;
-
   @media only screen and (min-width: 960px) {
     border: 7px solid #6be19b;
-    /* height: 80%; */
+    height: 80%;
     border-radius: 50%;
     margin: 1rem;
     padding: 1rem;
@@ -575,10 +573,10 @@ const DataCircle = styled.div`
     align-items: center;
     flex-direction: column;
   }
-
   @media only screen and (min-width: 1400px) {
-    height: 80%;
-    /* max-width: 250px; */
+    height: 100%;
+    max-width: 20rem;
+    max-height: 20rem;
   }
 `;
 
