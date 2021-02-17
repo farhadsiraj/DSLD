@@ -14,7 +14,7 @@
     ],
     "headers": [
       {
-        "source": "**/*.*",
+        "source": "**/*.@(eot|otf|ttf|ttc|woff|font.css)",
         "headers": [
           {
             "key": "Cache-Control",
