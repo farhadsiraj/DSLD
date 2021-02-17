@@ -103,7 +103,7 @@ export default function Dashboard() {
                     <Flex style={{ width: '100%' }}>
                       <UserStatsBox>
                         <UserStats>Age: {user.age}</UserStats>
-                        <UserStats>Weight: {user.weight}</UserStats>
+                        <UserStats>Weight: {user.weight} lbs</UserStats>
                         <UserStats>
                           Height: {Math.floor(user.height / 12)}'{' '}
                           {Math.floor(user.height % 12)}"
