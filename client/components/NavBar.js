@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 
 export default function NavBar() {
   const [hamburgerDropdown, setHamburgerDropdown] = useState(false);
@@ -14,6 +14,20 @@ export default function NavBar() {
   const { currentUser, logout } = useAuth();
   const [user, setUser] = useState('');
   const [isGoogleUser, setGoogleUser] = useState(null);
+
+  console.log('currentUser', currentUser);
+
+  useEffect(async () => {
+    if (currentUser) {
+      let loggedIn = auth.currentUser.uid;
+      const usersRef = db.collection('users').doc(loggedIn);
+
+      const dbUser = await usersRef.get();
+      console.log('dbUser', dbUser.data());
+      console.log('isgoogleuser', dbUser.data().googleuser);
+      setGoogleUser(dbUser.data().googleuser);
+    }
+  }, [currentUser]);
 
   async function handleLogout() {
     setError('');
@@ -157,17 +171,18 @@ export default function NavBar() {
                 </Link>
               </DropdownItem>
 
-              <DropdownItem>
-                {console.log('isgoogleuser in return statement', isGoogleUser)}
-                <Link
-                  onClick={function () {
-                    setUserDropdown(!userDropdown);
-                  }}
-                  to="/update-profile"
-                >
-                  Account Settings
-                </Link>
-              </DropdownItem>
+              {!isGoogleUser && (
+                <DropdownItem>
+                  <Link
+                    onClick={function () {
+                      setUserDropdown(!userDropdown);
+                    }}
+                    to="/update-profile"
+                  >
+                    Account Settings
+                  </Link>
+                </DropdownItem>
+              )}
 
               <DropdownItem>
                 <Link
