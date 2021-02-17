@@ -102,13 +102,15 @@ export default function Dashboard() {
                   <UserInfo>
                     <Flex style={{ width: '100%' }}>
                       <UserStatsBox>
-                        <UserStats>Age: {user.age}</UserStats>
-                        <UserStats>Weight: {user.weight} lbs</UserStats>
+                        <UserStats>Age: {user.age || 'N/A'}</UserStats>
                         <UserStats>
-                          Height: {Math.floor(user.height / 12)}'{' '}
-                          {Math.floor(user.height % 12)}"
+                          Weight: {user.weight || 'N/A'} lbs
                         </UserStats>
-                        <UserStats>Sex: {user.sex}</UserStats>
+                        <UserStats>
+                          Height: {Math.floor(user.height / 12) || 'N/A'}'{' '}
+                          {Math.floor(user.height % 12) || 'N/A'}"
+                        </UserStats>
+                        <UserStats>Sex: {user.sex || 'N/A'}</UserStats>
                       </UserStatsBox>
                       <DataCircle>
                         <div>
