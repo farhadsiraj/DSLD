@@ -108,7 +108,7 @@ export default function UserProfileForm() {
                   <Form.Control
                     type="integer"
                     ref={heightRef}
-                    placeholder="Enter your height in inches"
+                    placeholder="Height in inches"
                     maxLength="3"
                     pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                   />
@@ -118,7 +118,7 @@ export default function UserProfileForm() {
                   <Form.Control
                     type="integer"
                     ref={weightRef}
-                    placeholder="Enter your weight"
+                    placeholder="Weight in pounds"
                     maxLength="3"
                     pattern="^([1-9]|[1-9][0-9]|[1-9][0-9][0-9])$"
                   />

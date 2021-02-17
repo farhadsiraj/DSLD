@@ -19,7 +19,6 @@ export default function UpdateProfile() {
   const history = useHistory();
 
   function reauthenticate(currentPassword) {
-    console.log('currentPassword in reauthenticate', currentPassword);
     let credential = firebase.auth.EmailAuthProvider.credential(
       currentUser.email,
       currentPassword
