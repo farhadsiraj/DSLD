@@ -6,9 +6,9 @@ DSLD (Don’t Skip Leg Day) is a fitness companion that uses computer vision and
 
 <br>
 
-![DSLD Home Example](public/assets/images/DSLDHome.png)
+![DSLD Home Example](https://user-images.githubusercontent.com/36062933/108451099-39e35e00-7234-11eb-89dd-26b27b8455b9.png)
 ![DSLD Formcheck Example](public/assets/images/DLSDFormcheck.png)
-![DSLD Dashboard Example](public/assets/images/DSLDDashboard.png)
+![DSLD Dashboard Example](https://user-images.githubusercontent.com/36062933/108451107-3b148b00-7234-11eb-90e6-724167159463.png)
 <br>
 
 ## Contributors
