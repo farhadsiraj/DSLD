@@ -455,7 +455,7 @@ const UserStatsBox = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  width: 50%;
+  width: 100%;
   @media only screen and (min-width: 960px) {
     max-width: 15rem;
   }
@@ -463,16 +463,16 @@ const UserStatsBox = styled.div`
 
 const UserStats = styled.h1`
   color: #355c7d;
-  font-size: 2rem;
+  font-size: 1.5rem;
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   padding: 1rem;
   border-radius: 1rem;
   @media only screen and (min-width: 960px) {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   @media only screen and (min-width: 1400px) {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 `;
 
