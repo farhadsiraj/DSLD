@@ -38,6 +38,7 @@ export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [countdownId, setCountdownId] = useState(null);
   const [state, setState] = useState({
     repCount: 0,
     lifetimeReps: null,
@@ -351,22 +352,22 @@ export function Model() {
     };
   }, []);
 
-  let seconds;
+  let counter;
   function countdown(time, callback, val) {
-    seconds = time;
     let countdownSeconds = document.getElementById('timer');
-    countdownSeconds.innerHTML = seconds;
-    let counter = setInterval(() => {
-      seconds--;
+    countdownSeconds.innerHTML = time;
+    counter = setInterval(() => {
+      time--;
       playAudio(countdownTone);
-      countdownSeconds.innerHTML = seconds;
-      if (seconds === 0) {
+      countdownSeconds.innerHTML = time;
+      if (time === 0) {
         countdownSeconds.innerHTML = 'Active';
         playAudio(countdownEndTone);
         clearInterval(counter);
         callback(val);
       }
     }, 1000);
+    setCountdownId(counter);
   }
 
   return (
@@ -415,8 +416,10 @@ export function Model() {
                 style={{ backgroundColor: toggleStart ? '#FD374C' : '#6BE19B' }}
                 id="togglePredict"
                 onClick={() => {
-                  if (predictStatus === 'pending') {
+                  if (predictStatus === 'pending' && !toggleStart) {
                     countdown(10, togglePredict);
+                  } else if (predictStatus === 'pending' && toggleStart) {
+                    clearInterval(countdownId);
                   } else {
                     togglePredict();
                   }
