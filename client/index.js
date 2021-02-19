@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Routes from './routes';
 import { AuthProvider } from './components/contexts/AuthContext';
-import { Model } from '.././client/Models/SquatModel';
 
 ReactDOM.render(
   <AuthProvider>
