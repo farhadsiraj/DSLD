@@ -38,6 +38,7 @@ export function Model() {
   const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [countdownId, setCountdownId] = useState(null);
   const [state, setState] = useState({
     repCount: 0,
     lifetimeReps: null,
@@ -366,6 +367,7 @@ export function Model() {
         callback(val);
       }
     }, 1000);
+    setCountdownId(counter);
   }
 
   return (
@@ -417,7 +419,7 @@ export function Model() {
                   if (predictStatus === 'pending' && !toggleStart) {
                     countdown(10, togglePredict);
                   } else if (predictStatus === 'pending' && toggleStart) {
-                    clearInterval)c
+                    clearInterval(countdownId);
                   } else {
                     togglePredict();
                   }
