@@ -15,16 +15,11 @@ export default function NavBar() {
   const [user, setUser] = useState('');
   const [isGoogleUser, setGoogleUser] = useState(null);
 
-  console.log('currentUser', currentUser);
-
   useEffect(async () => {
     if (currentUser) {
       let loggedIn = auth.currentUser.uid;
       const usersRef = db.collection('users').doc(loggedIn);
-
       const dbUser = await usersRef.get();
-      console.log('dbUser', dbUser.data());
-      console.log('isgoogleuser', dbUser.data().googleuser);
       setGoogleUser(dbUser.data().googleuser);
     }
   }, [currentUser]);
