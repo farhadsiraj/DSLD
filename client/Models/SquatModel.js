@@ -54,7 +54,6 @@ export function Model() {
       console.log('No user data found.');
     } else {
       const user = doc.data();
-      console.log(user);
       lifetimeReps = user.lifetimeReps;
       lifetimeSets = user.lifetimeSets;
     }
