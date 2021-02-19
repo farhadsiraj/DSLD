@@ -351,16 +351,15 @@ export function Model() {
     };
   }, []);
 
-  let seconds;
+  let counter;
   function countdown(time, callback, val) {
-    seconds = time;
     let countdownSeconds = document.getElementById('timer');
-    countdownSeconds.innerHTML = seconds;
-    let counter = setInterval(() => {
-      seconds--;
+    countdownSeconds.innerHTML = time;
+    counter = setInterval(() => {
+      time--;
       playAudio(countdownTone);
-      countdownSeconds.innerHTML = seconds;
-      if (seconds === 0) {
+      countdownSeconds.innerHTML = time;
+      if (time === 0) {
         countdownSeconds.innerHTML = 'Active';
         playAudio(countdownEndTone);
         clearInterval(counter);
@@ -415,8 +414,10 @@ export function Model() {
                 style={{ backgroundColor: toggleStart ? '#FD374C' : '#6BE19B' }}
                 id="togglePredict"
                 onClick={() => {
-                  if (predictStatus === 'pending') {
+                  if (predictStatus === 'pending' && !toggleStart) {
                     countdown(10, togglePredict);
+                  } else if (predictStatus === 'pending' && toggleStart) {
+                    clearInterval)c
                   } else {
                     togglePredict();
                   }
