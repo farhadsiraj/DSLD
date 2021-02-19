@@ -57,9 +57,7 @@ export default function Dashboard() {
       setWorkoutHistory(pastWorkouts);
     })();
   }, []);
-  // console.log(user);
 
-  console.log(workoutHistory);
   return (
     <div>
       {user ? (

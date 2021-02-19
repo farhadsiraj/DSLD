@@ -21,7 +21,6 @@ export default function Signup() {
   async function googleSubmit() {
     try {
       let currentUser = await googleSignin();
-      console.log(currentUser);
       db.collection('users').doc(currentUser.user.uid).set(
         {
           email: currentUser.user.email,
@@ -31,7 +30,6 @@ export default function Signup() {
       );
 
       const user = await db.collection('users').doc(currentUser.user.uid).get();
-      console.log('user in googlesubmit', user.data());
       if (!user.data().username) {
         history.push('/user-profile-form');
       } else {
