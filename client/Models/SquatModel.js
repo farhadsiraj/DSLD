@@ -324,7 +324,7 @@ export function Model() {
   let sound;
 
   async function playAudio(audio) {
-    const context = new AudioContext();
+    const context = new webkitAudioContext();
     await window
       .fetch(audio)
       .then((response) => response.arrayBuffer())
