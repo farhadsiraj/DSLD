@@ -1,15 +1,22 @@
-<h1 align="center"><img src="public/assets/images/DSLD-192.png" /></h1>
-
-<h1 align="center">DSLD (Don't Skip Leg Day)</h1>
+<h1 align="center"><img src="https://user-images.githubusercontent.com/36062933/108613103-b9039e00-73bc-11eb-8c80-ff6288fa5b25.png" /></h1>
 
 DSLD (Don’t Skip Leg Day) is a fitness companion that uses computer vision and machine learning to track a user's body position to ensure their posture is correct as they execute a squat. Users can sign up for an account, build their profile, workout and save their workouts to their profile.
 
-<br>
+#
+
+## Screenshots
+
+#
 
 ![DSLD Home Example](https://user-images.githubusercontent.com/36062933/108451099-39e35e00-7234-11eb-89dd-26b27b8455b9.png)
-![DSLD Formcheck Example](public/assets/images/DLSDFormcheck.png)
+
+#
+
+![DSLD Formcheck Example](https://user-images.githubusercontent.com/36062933/108612898-97a1b280-73ba-11eb-92f3-097bba450a80.gif)
+
+#
+
 ![DSLD Dashboard Example](https://user-images.githubusercontent.com/36062933/108451107-3b148b00-7234-11eb-90e6-724167159463.png)
-<br>
 
 ## Contributors
 
