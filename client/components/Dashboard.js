@@ -24,6 +24,8 @@ export default function Dashboard() {
     }
   }
 
+  
+
   useEffect(async () => {
     (async () => {
       const userRef = db.collection('users').doc(currentUser.uid);

@@ -367,7 +367,7 @@ export function Model() {
         callback(val);
       }
     }, 1000);
-    setCountdownId(counter);
+    if (countdownId === null) setCountdownId(counter);
   }
 
   return (
