@@ -72,5 +72,7 @@ DSLD (Don’t Skip Leg Day) is a fitness companion that uses computer vision and
 
 - Thanks to [Fullstack Academy](https://www.fullstackacademy.com/)
 - _Huge_ thanks to our amazing team for all of the hard work and dedication over the course of creating this app.
+- Vector images provided by [Freepik](https://www.freepik.com/)
+- Audio tones courtesy of [ZapSplat](https://www.zapsplat.com/)
 
 #
