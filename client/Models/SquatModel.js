@@ -7,6 +7,7 @@ import countdownEndTone from '../../public/assets/audio/countdownEnd_F.mp3';
 import styled from 'styled-components';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
+import { setLifetimeStats, setRepPrefs } from './Functions';
 
 // needs to be outside of Model function scope to toggle Start/Stop
 let loggedIn;
@@ -47,40 +48,40 @@ export function Model() {
 
   loggedIn = auth.currentUser.uid;
 
-  async function setLifetimeStats() {
-    const usersRef = db.collection('users').doc(loggedIn);
+  // async function setLifetimeStats() {
+  //   const usersRef = db.collection('users').doc(loggedIn);
 
-    const doc = await usersRef.get();
-    if (!doc.exists) {
-      console.log('No user data found.');
-    } else {
-      const user = doc.data();
-      lifetimeReps = user.lifetimeReps;
-      lifetimeSets = user.lifetimeSets;
-    }
-  }
+  //   const doc = await usersRef.get();
+  //   if (!doc.exists) {
+  //     console.log('No user data found.');
+  //   } else {
+  //     const user = doc.data();
+  //     lifetimeReps = user.lifetimeReps;
+  //     lifetimeSets = user.lifetimeSets;
+  //   }
+  // }
   setLifetimeStats();
 
-  async function setRepPrefs() {
-    const usersRef = db
-      .collection('users')
-      .doc(loggedIn)
-      .collection('setupWorkout')
-      .doc('setup');
-    const doc = await usersRef.get();
-    if (!doc.exists) {
-      console.log('No default workout preferences set.');
-    } else {
-      const user = doc.data();
-      exercise = user.exercise;
-      totalReps = user.reps;
-      successfulReps = user.reps * user.sets;
-      reps = user.reps;
-      totalSets = user.sets;
-      setCount = totalSets;
-      restTimer = user.restTimer;
-    }
-  }
+  // async function setRepPrefs() {
+  //   const usersRef = db
+  //     .collection('users')
+  //     .doc(loggedIn)
+  //     .collection('setupWorkout')
+  //     .doc('setup');
+  //   const doc = await usersRef.get();
+  //   if (!doc.exists) {
+  //     console.log('No default workout preferences set.');
+  //   } else {
+  //     const user = doc.data();
+  //     exercise = user.exercise;
+  //     totalReps = user.reps;
+  //     successfulReps = user.reps * user.sets;
+  //     reps = user.reps;
+  //     totalSets = user.sets;
+  //     setCount = totalSets;
+  //     restTimer = user.restTimer;
+  //   }
+  // }
   setRepPrefs();
 
   // Squat v2
