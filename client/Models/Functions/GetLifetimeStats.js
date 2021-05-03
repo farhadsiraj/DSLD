@@ -1,6 +1,6 @@
 import { db, auth } from '../../../firebase';
 
-async function setLifetimeStats() {
+async function getLifetimeStats() {
   const loggedIn = auth.currentUser.uid;
   const usersRef = db.collection('users').doc(loggedIn);
 
@@ -9,8 +9,9 @@ async function setLifetimeStats() {
     console.log('No user data found.');
   } else {
     const user = doc.data();
-    lifetimeReps = user.lifetimeReps;
-    lifetimeSets = user.lifetimeSets;
+    let lifetimeReps = user.lifetimeReps;
+    let lifetimeSets = user.lifetimeSets;
+    return [lifetimeReps, lifetimeSets];
   }
 }
-export default setLifetimeStats;
+export default getLifetimeStats;
