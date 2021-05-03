@@ -12,6 +12,8 @@ import {
   setRepPrefs,
   setWorkoutStats,
   updateLifetimeStats,
+  countdown,
+  playAudio,
 } from './Functions';
 
 // needs to be outside of Model function scope to toggle Start/Stop
@@ -41,17 +43,25 @@ let finalRepCount;
 
 export function Model() {
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [countdownId, setCountdownId] = useState(null);
-  const [state, setState] = useState({
-    repCount: 0,
-    lifetimeReps: null,
-    lifetimeSets: null,
-  });
+  // const [state, setState] = useState({
+  //   repCount: 0,
+  //   lifetimeReps: null,
+  //   lifetimeSets: null,
+  // });
+  useEffect(() => {
+    init();
 
-  setRepPrefs();
+    return function cleanup() {
+      if (predictStatus === 'active') togglePredict();
+      repCount = 0;
+      window.cancelAnimationFrame(startAnimation);
+      window.cancelAnimationFrame(startAnimation2);
+    };
+  }, []);
 
   // Squat v2
   // https://teachablemachine.withgoogle.com/models/J5d1HwacC/
@@ -190,9 +200,8 @@ export function Model() {
         finalRepCount = successfulReps;
 
         if (reps === 0) {
-          console.log('BEFORE', setCount);
           setCount = setCount - 1;
-          console.log('AFTER', setCount);
+
           if (setCount === 0) {
             let workout = {
               type: exercise,
@@ -219,11 +228,8 @@ export function Model() {
             window.cancelAnimationFrame(startAnimation2);
           } else {
             reps = totalReps;
-            // console.log('ELSE BEFORE', setCount);
-            // setCount = setCount - 1;
-            // console.log('ELSE AFTER', setCount);
             togglePredict();
-            countdown(restTimer, togglePredict);
+            setCountdownId(countdown(restTimer, togglePredict));
           }
         }
       }
@@ -294,55 +300,6 @@ export function Model() {
     }
   }
 
-  let sound;
-
-  async function playAudio(audio) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const context = new AudioContext();
-
-    await window
-      .fetch(audio)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
-        sound = audioBuffer;
-      });
-
-    const source = context.createBufferSource();
-    source.buffer = sound;
-    source.connect(context.destination);
-    source.start();
-  }
-
-  useEffect(() => {
-    init();
-
-    return function cleanup() {
-      if (predictStatus === 'active') togglePredict();
-      repCount = 0;
-      window.cancelAnimationFrame(startAnimation);
-      window.cancelAnimationFrame(startAnimation2);
-    };
-  }, []);
-
-  let counter;
-  function countdown(time, callback, val) {
-    let countdownSeconds = document.getElementById('timer');
-    countdownSeconds.innerHTML = time;
-    counter = setInterval(() => {
-      time--;
-      playAudio(countdownTone);
-      countdownSeconds.innerHTML = time;
-      if (time === 0) {
-        countdownSeconds.innerHTML = 'Active';
-        playAudio(countdownEndTone);
-        clearInterval(counter);
-        callback(val);
-      }
-    }, 1000);
-    if (countdownId === null) setCountdownId(counter);
-  }
-
   return (
     <ContentContainer>
       {modalOpen && (
@@ -390,7 +347,7 @@ export function Model() {
                 id="togglePredict"
                 onClick={() => {
                   if (predictStatus === 'pending' && !toggleStart) {
-                    countdown(10, togglePredict);
+                    setCountdownId(countdown(10, togglePredict));
                   } else if (predictStatus === 'pending' && toggleStart) {
                     clearInterval(countdownId);
                   } else {
