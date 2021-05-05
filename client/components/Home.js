@@ -29,7 +29,7 @@ export default function Home() {
                 <Text>
                   DSLD (a.k.a Don't Skip Leg Day) keeps you honest by verifying
                   completed reps to ensure you get the most out of your time in
-                  the gym.
+                  the gym or at home.
                 </Text>
 
                 <Link

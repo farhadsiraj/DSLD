@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Button, Card, Form, Alert } from 'react-bootstrap';
 import { useAuth } from '../components/contexts/AuthContext';
 import { Link, useHistory } from 'react-router-dom';
@@ -16,6 +16,14 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+
+  const _isMounted = useRef(true);
+
+  useEffect(() => {
+    return () => {
+      _isMounted.current = false;
+    };
+  }, []);
 
   async function googleSubmit() {
     try {
@@ -52,7 +60,9 @@ export default function LoginForm() {
     } catch (error) {
       setError('Failed to sign in');
     }
-    setLoading(false);
+    if (_isMounted.current) {
+      setLoading(false);
+    }
   }
 
   return (
