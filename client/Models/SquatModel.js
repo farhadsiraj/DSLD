@@ -7,6 +7,14 @@ import countdownEndTone from '../../public/assets/audio/countdownEnd_F.mp3';
 import styled from 'styled-components';
 import { db, auth } from '../../firebase';
 import { useHistory } from 'react-router-dom';
+import {
+  getLifetimeStats,
+  setRepPrefs,
+  setWorkoutStats,
+  updateLifetimeStats,
+  countdown,
+  playAudio,
+} from './Functions';
 
 // needs to be outside of Model function scope to toggle Start/Stop
 let loggedIn;
@@ -35,53 +43,25 @@ let finalRepCount;
 
 export function Model() {
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [toggleStart, setToggle] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [countdownId, setCountdownId] = useState(null);
-  const [state, setState] = useState({
-    repCount: 0,
-    lifetimeReps: null,
-    lifetimeSets: null,
-  });
+  // const [state, setState] = useState({
+  //   repCount: 0,
+  //   lifetimeReps: null,
+  //   lifetimeSets: null,
+  // });
+  useEffect(() => {
+    init();
 
-  loggedIn = auth.currentUser.uid;
-
-  async function setLifetimeStats() {
-    const usersRef = db.collection('users').doc(loggedIn);
-
-    const doc = await usersRef.get();
-    if (!doc.exists) {
-      console.log('No user data found.');
-    } else {
-      const user = doc.data();
-      lifetimeReps = user.lifetimeReps;
-      lifetimeSets = user.lifetimeSets;
-    }
-  }
-  setLifetimeStats();
-
-  async function setRepPrefs() {
-    const usersRef = db
-      .collection('users')
-      .doc(loggedIn)
-      .collection('setupWorkout')
-      .doc('setup');
-    const doc = await usersRef.get();
-    if (!doc.exists) {
-      console.log('No default workout preferences set.');
-    } else {
-      const user = doc.data();
-      exercise = user.exercise;
-      totalReps = user.reps;
-      successfulReps = user.reps * user.sets;
-      reps = user.reps;
-      totalSets = user.sets;
-      setCount = totalSets;
-      restTimer = user.restTimer;
-    }
-  }
-  setRepPrefs();
+    return function cleanup() {
+      if (predictStatus === 'active') togglePredict();
+      repCount = 0;
+      window.cancelAnimationFrame(startAnimation);
+      window.cancelAnimationFrame(startAnimation2);
+    };
+  }, []);
 
   // Squat v2
   // https://teachablemachine.withgoogle.com/models/J5d1HwacC/
@@ -119,10 +99,20 @@ export function Model() {
     canvas.width = size;
     canvas.height = 480;
     ctx = canvas.getContext('2d');
-    // labelContainer = document.getElementById('label-container');
-    // for (let i = 0; i < maxPredictions; i++) {
-    //   labelContainer.appendChild(document.createElement('div'));
-    // }
+
+    // Get lifetime stats
+    [lifetimeReps, lifetimeSets] = await getLifetimeStats();
+
+    // Set workout preferences
+    [
+      exercise,
+      totalReps,
+      successfulReps,
+      reps,
+      totalSets,
+      setCount,
+      restTimer,
+    ] = await setRepPrefs();
   }
 
   async function loop() {
@@ -209,37 +199,26 @@ export function Model() {
         accuracy = Math.ceil((successfulReps / denominator) * 100);
         finalRepCount = successfulReps;
 
-        if (reps <= 0) {
-          setCount--;
-          if (setCount === 0) {
-            db.collection('users')
-              .doc(loggedIn)
-              .collection('workoutHistory')
-              .doc()
-              .set(
-                {
-                  date: new Date(),
-                  workout: {
-                    type: exercise,
-                    sets: totalSets,
-                    reps: totalReps,
-                    accuracy: accuracy,
-                    successfulReps: successfulReps,
-                  },
-                },
-                { merge: true }
-              );
+        if (reps === 0) {
+          setCount = setCount - 1;
 
-            db.collection('users')
-              .doc(loggedIn)
-              .set(
-                {
-                  lifetimeReps:
-                    parseInt(lifetimeReps) + parseInt(successfulReps),
-                  lifetimeSets: parseInt(lifetimeSets) + parseInt(totalSets),
-                },
-                { merge: true }
-              );
+          if (setCount === 0) {
+            let workout = {
+              type: exercise,
+              sets: totalSets,
+              reps: totalReps,
+              accuracy: accuracy,
+              successfulReps: successfulReps,
+            };
+
+            setWorkoutStats(workout);
+
+            let updateStats = {
+              lifetimeReps: parseInt(lifetimeReps) + parseInt(successfulReps),
+              lifetimeSets: parseInt(lifetimeSets) + parseInt(totalSets),
+            };
+            updateLifetimeStats(updateStats);
+
             counterStatus = 'pending';
             lineColor = '#9BD7D1';
 
@@ -248,9 +227,9 @@ export function Model() {
             window.cancelAnimationFrame(startAnimation);
             window.cancelAnimationFrame(startAnimation2);
           } else {
-            togglePredict();
-            countdown(restTimer, togglePredict);
             reps = totalReps;
+            togglePredict();
+            setCountdownId(countdown(restTimer, togglePredict));
           }
         }
       }
@@ -321,55 +300,6 @@ export function Model() {
     }
   }
 
-  let sound;
-
-  async function playAudio(audio) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const context = new AudioContext();
-
-    await window
-      .fetch(audio)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
-        sound = audioBuffer;
-      });
-
-    const source = context.createBufferSource();
-    source.buffer = sound;
-    source.connect(context.destination);
-    source.start();
-  }
-
-  useEffect(() => {
-    init();
-
-    return function cleanup() {
-      if (predictStatus === 'active') togglePredict();
-      repCount = 0;
-      window.cancelAnimationFrame(startAnimation);
-      window.cancelAnimationFrame(startAnimation2);
-    };
-  }, []);
-
-  let counter;
-  function countdown(time, callback, val) {
-    let countdownSeconds = document.getElementById('timer');
-    countdownSeconds.innerHTML = time;
-    counter = setInterval(() => {
-      time--;
-      playAudio(countdownTone);
-      countdownSeconds.innerHTML = time;
-      if (time === 0) {
-        countdownSeconds.innerHTML = 'Active';
-        playAudio(countdownEndTone);
-        clearInterval(counter);
-        callback(val);
-      }
-    }, 1000);
-    if (countdownId === null) setCountdownId(counter);
-  }
-
   return (
     <ContentContainer>
       {modalOpen && (
@@ -417,7 +347,7 @@ export function Model() {
                 id="togglePredict"
                 onClick={() => {
                   if (predictStatus === 'pending' && !toggleStart) {
-                    countdown(10, togglePredict);
+                    setCountdownId(countdown(10, togglePredict));
                   } else if (predictStatus === 'pending' && toggleStart) {
                     clearInterval(countdownId);
                   } else {

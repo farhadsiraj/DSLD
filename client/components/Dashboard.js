@@ -24,8 +24,6 @@ export default function Dashboard() {
     }
   }
 
-  
-
   useEffect(async () => {
     (async () => {
       const userRef = db.collection('users').doc(currentUser.uid);
@@ -107,8 +105,8 @@ export default function Dashboard() {
                           Weight: {user.weight || 'N/A'} lbs
                         </UserStats>
                         <UserStats>
-                          Height: {Math.floor(user.height / 12) || 'N/A'}'{' '}
-                          {Math.floor(user.height % 12) || 'N/A'}"
+                          Height: {Math.floor(user.height / 12) || 0}'{' '}
+                          {Math.floor(user.height % 12) || 0}"
                         </UserStats>
                         <UserStats>Sex: {user.sex || 'N/A'}</UserStats>
                       </UserStatsBox>

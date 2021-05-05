@@ -2,6 +2,8 @@
 
 DSLD (Don’t Skip Leg Day) is a fitness companion that uses computer vision and machine learning to track a user's body position to ensure their posture is correct as they execute a squat. Users can sign up for an account, build their profile, workout and save their workouts to their profile.
 
+- [Check out DSLD here](https://dsld-6914b.web.app/)
+
 #
 
 ## Screenshots
