@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/farhadsiraj/DSLD.git"
+    "url": "git+https://github.com/2011-FSA-CRAB/DSLD.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/farhadsiraj/DSLD/issues"
+    "url": "https://github.com/2011-FSA-CRAB/DSLD/issues"
   },
-  "homepage": "https://github.com/farhadsiraj/DSLD#readme",
+  "homepage": "https://github.com/2011-FSA-CRAB/DSLD#readme",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-brands-svg-icons": "^5.15.2",
